@@ -61,8 +61,12 @@ class LoginPage extends StatelessWidget {
           ),
           obscureText: true,
         ),
-        TextButton(onPressed: () {}, child: Text('Forgot Password')),
-        SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextButton(onPressed: () {}, child: Text('Forgot Password')),
+          ],
+        ),
         ElevatedButton(
           onPressed: () {},
           child: Text(
@@ -70,10 +74,10 @@ class LoginPage extends StatelessWidget {
             style: TextStyle(fontSize: 20),
           ),
           style: ButtonStyle(
-            shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15))),
             padding:
-                MaterialStatePropertyAll(EdgeInsets.symmetric(vertical: 15)),
+                MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 15)),
           ),
         ),
         Row(
