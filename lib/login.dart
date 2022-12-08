@@ -67,6 +67,7 @@ class LoginPage extends StatelessWidget {
             TextButton(onPressed: () {}, child: Text('Forgot Password')),
           ],
         ),
+        SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {},
           child: Text(
