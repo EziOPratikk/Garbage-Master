@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:garbage_master/register.dart';
+import 'package:garbage_master/UI/Homepage.dart';
+import 'package:garbage_master/UI/register.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -77,7 +78,10 @@ class LoginPage extends StatelessWidget {
         ),
         SizedBox(height: 20),
         ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => Homepage()));
+          },
           child: Text(
             'Login',
             style: TextStyle(fontSize: 20),

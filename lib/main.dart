@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:garbage_master/UI/splash.dart';
 
-import 'login.dart';
-import 'register.dart';
+import 'UI/login.dart';
+import 'UI/register.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Garbage Master',
       theme: ThemeData(primarySwatch: Colors.green),
-      home: LoginPage(),
+      home: SplashScreen(),
     );
   }
 }
