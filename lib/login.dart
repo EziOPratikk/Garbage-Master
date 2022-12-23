@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:garbage_master/register.dart';
 
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // ignore: prefer_const_constructors
     return SafeArea(
       child: Scaffold(
-          body: Container(
-        margin: EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            _header(context),
-            _inputField(context),
-          ],
+          body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _header(context),
+              _inputField(context),
+            ],
+          ),
         ),
       )),
     );
@@ -22,11 +24,17 @@ class LoginPage extends StatelessWidget {
   _header(context) {
     return Column(
       children: [
-        Text(
-          'LOGO',
-          style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+        Container(
+          height: 200,
+          margin: EdgeInsets.only(bottom: 10),
+          child: Image.asset('assets/images/Logo.png', fit: BoxFit.cover),
         ),
+        // Text(
+        //   'LOGO',
+        //   style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+        // ),
         Text('Welcome to Garbage Master'),
+        SizedBox(height: 40),
       ],
     );
   }
@@ -35,7 +43,7 @@ class LoginPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TextField(
+        TextFormField(
           decoration: InputDecoration(
             hintText: "Email",
             border: OutlineInputBorder(
@@ -48,7 +56,7 @@ class LoginPage extends StatelessWidget {
           ),
         ),
         SizedBox(height: 20),
-        TextField(
+        TextFormField(
           decoration: InputDecoration(
             hintText: "Password",
             border: OutlineInputBorder(
@@ -84,7 +92,12 @@ class LoginPage extends StatelessWidget {
         Row(
           children: [
             Text('Don\'t have an account?'),
-            TextButton(onPressed: () {}, child: Text('Register')),
+            TextButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => RegisterPage()));
+                },
+                child: Text('Register')),
           ],
         )
       ],
