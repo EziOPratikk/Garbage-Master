@@ -11,7 +11,9 @@ class RegisterPage extends StatelessWidget {
             children: [
               IconButton(
                 icon: Icon(Icons.arrow_back_ios_new_rounded),
-                onPressed: null,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
                 color: Theme.of(context).primaryColor,
               ),
               Container(

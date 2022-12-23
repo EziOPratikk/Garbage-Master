@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:garbage_master/register.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -91,7 +92,12 @@ class LoginPage extends StatelessWidget {
         Row(
           children: [
             Text('Don\'t have an account?'),
-            TextButton(onPressed: () {}, child: Text('Register')),
+            TextButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => RegisterPage()));
+                },
+                child: Text('Register')),
           ],
         )
       ],
