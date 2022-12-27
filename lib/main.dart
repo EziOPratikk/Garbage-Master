@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:garbage_master/UI/splash.dart';
+import './UI/splash.dart';
 
-import 'UI/login.dart';
-import 'UI/register.dart';
+import './UI/login.dart';
+import './UI/register.dart';
 
 void main() => runApp(MyApp());
 
@@ -17,4 +17,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-//this is a branch test

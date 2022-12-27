@@ -17,7 +17,6 @@ class _SplashScreenState extends State<SplashScreen> {
         return LoginPage();
       }));
     });
-    // TODO: implement initState
     super.initState();
   }
 
