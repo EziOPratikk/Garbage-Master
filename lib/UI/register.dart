@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import './terms_&_condtions.dart';
+
 class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -152,19 +154,47 @@ class RegisterPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          CheckboxListTile(
-            title: Text("I agree to the Terms & Conditions"),
-            value: false,
-            onChanged: null,
-            controlAffinity: ListTileControlAffinity.leading,
-          ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.start,
-          //   children: [
-          //     Checkbox(value: false, onChanged: null),
-          //     Text('I agree to the Terms & Conditions'),
-          //   ],
+          // CheckboxListTile(
+          //   activeColor: Theme.of(context).primaryColor,
+          //   title: Text("I agree to the Terms & Conditions"),
+          //   value: false,
+          //   onChanged: null,
+          //   controlAffinity: ListTileControlAffinity.leading,
           // ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Checkbox(
+                activeColor: Theme.of(context).primaryColor,
+                value: false,
+                onChanged: null,
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TermsConditions()));
+                },
+                child: Text.rich(
+                  TextSpan(
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 70, 70, 70),
+                    ),
+                    children: [
+                      TextSpan(text: 'I agree to the '),
+                      TextSpan(
+                        text: 'Terms & Conditions',
+                        style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            color: Theme.of(context).primaryColor),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
           SizedBox(height: 10),
           ElevatedButton(
             child: Text(
