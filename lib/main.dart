@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import './UI/splash.dart';
-import './UI/login.dart';
-import './UI/register.dart';
-import './UI/terms_&_condtions.dart';
+import './widgets/splash.dart';
+import './widgets/login.dart';
+import './widgets/register.dart';
+import './widgets/terms_&_condtions.dart';
 
 void main() => runApp(MyApp());
 

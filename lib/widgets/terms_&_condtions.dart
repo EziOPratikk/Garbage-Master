@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:garbage_master/UI/register.dart';
+
+import './register.dart';
 
 class TermsConditions extends StatelessWidget {
   @override
