@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './login.dart';
+import 'login_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -29,10 +29,8 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset('assets/images/Logo.png', fit: BoxFit.cover),
-            SizedBox(height: 20),
-            // Text('Welcome to Garbage Master'),
-            SizedBox(height: 20),
-            CircularProgressIndicator(),
+            SizedBox(height: 50),
+            CircularProgressIndicator(color: Theme.of(context).accentColor),
           ],
         ),
       ),
