@@ -62,6 +62,11 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   _inputField(context) {
+    final outlineInputBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide.none,
+    );
+    final textFieldFillColor = Theme.of(context).primaryColor.withOpacity(0.2);
     return Form(
       key: _formKey,
       child: Column(
@@ -71,11 +76,8 @@ class _RegisterPageState extends State<RegisterPage> {
             decoration: InputDecoration(
               counterText: "",
               hintText: 'Username',
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              fillColor: Theme.of(context).primaryColor.withOpacity(0.2),
+              border: outlineInputBorder,
+              fillColor: textFieldFillColor,
               filled: true,
               prefixIcon: Icon(Icons.person),
             ),
@@ -96,11 +98,8 @@ class _RegisterPageState extends State<RegisterPage> {
             decoration: InputDecoration(
               counterText: "",
               hintText: 'Mobile Number',
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              fillColor: Theme.of(context).primaryColor.withOpacity(0.2),
+              border: outlineInputBorder,
+              fillColor: textFieldFillColor,
               filled: true,
               prefixIcon: Icon(Icons.phone_android_rounded),
             ),
@@ -120,11 +119,8 @@ class _RegisterPageState extends State<RegisterPage> {
           TextFormField(
             decoration: InputDecoration(
               hintText: 'Address',
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              fillColor: Theme.of(context).primaryColor.withOpacity(0.2),
+              border: outlineInputBorder,
+              fillColor: textFieldFillColor,
               filled: true,
               prefixIcon: Icon(Icons.location_on),
             ),
@@ -144,11 +140,8 @@ class _RegisterPageState extends State<RegisterPage> {
             decoration: InputDecoration(
               counterText: "",
               hintText: 'Postal Code',
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              fillColor: Theme.of(context).primaryColor.withOpacity(0.2),
+              border: outlineInputBorder,
+              fillColor: textFieldFillColor,
               filled: true,
               prefixIcon: Icon(Icons.location_on_rounded),
             ),
@@ -168,11 +161,8 @@ class _RegisterPageState extends State<RegisterPage> {
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
               hintText: 'Email',
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              fillColor: Theme.of(context).primaryColor.withOpacity(0.2),
+              border: outlineInputBorder,
+              fillColor: textFieldFillColor,
               filled: true,
               prefixIcon: Icon(Icons.email_rounded),
             ),
@@ -192,11 +182,8 @@ class _RegisterPageState extends State<RegisterPage> {
             decoration: InputDecoration(
               counterText: "",
               hintText: 'Password',
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              fillColor: Theme.of(context).primaryColor.withOpacity(0.2),
+              border: outlineInputBorder,
+              fillColor: textFieldFillColor,
               filled: true,
               prefixIcon: Icon(Icons.password_rounded),
             ),
@@ -215,11 +202,8 @@ class _RegisterPageState extends State<RegisterPage> {
             decoration: InputDecoration(
               counterText: "",
               hintText: 'Confirm Password',
-              border: OutlineInputBorder(
-                borderSide: BorderSide.none,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              fillColor: Theme.of(context).primaryColor.withOpacity(0.2),
+              border: outlineInputBorder,
+              fillColor: textFieldFillColor,
               filled: true,
               prefixIcon: Icon(Icons.password_rounded),
             ),

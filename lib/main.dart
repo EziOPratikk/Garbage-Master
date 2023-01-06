@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         primaryColor: Color(0xff5C964A),
         accentColor: Color(0xffFFD261),
         snackBarTheme: SnackBarThemeData(
-          backgroundColor: Colors.green.withOpacity(0.8),
+          backgroundColor: Color(0xff5C964A).withOpacity(0.8),
         ),
       ),
       home: SplashScreen(),

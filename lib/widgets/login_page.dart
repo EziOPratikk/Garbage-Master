@@ -40,6 +40,11 @@ class LoginPage extends StatelessWidget {
   }
 
   _inputField(context) {
+    final outlineInputBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(10),
+      borderSide: BorderSide.none,
+    );
+    final textFieldFillColor = Theme.of(context).primaryColor.withOpacity(0.2);
     return Form(
       key: _formKey,
       child: Column(
@@ -48,11 +53,8 @@ class LoginPage extends StatelessWidget {
           TextFormField(
             decoration: InputDecoration(
               hintText: "Email",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none,
-              ),
-              fillColor: Theme.of(context).primaryColor.withOpacity(0.2),
+              border: outlineInputBorder,
+              fillColor: textFieldFillColor,
               filled: true,
               prefixIcon: Icon(Icons.email_rounded),
             ),
@@ -73,11 +75,8 @@ class LoginPage extends StatelessWidget {
             decoration: InputDecoration(
               counterText: "",
               hintText: "Password",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none,
-              ),
-              fillColor: Theme.of(context).primaryColor.withOpacity(0.2),
+              border: outlineInputBorder,
+              fillColor: textFieldFillColor,
               filled: true,
               prefixIcon: Icon(Icons.password_rounded),
             ),
