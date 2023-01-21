@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Garbage Master',
-      theme: ThemeData(primarySwatch: Colors.green),
+      theme: ThemeData(primarySwatch:  Colors.green),
       home: SplashScreen(),
     );
   }
