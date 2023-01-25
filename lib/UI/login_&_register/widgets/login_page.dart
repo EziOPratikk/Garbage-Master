@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import './home_page.dart';
+import '../../homepage/widgets/home_page.dart';
 import './register_page.dart';
 import './forgot_password.dart';
 
@@ -63,7 +63,8 @@ class LoginPage extends StatelessWidget {
                 return 'Required';
               }
 
-              if (!RegExp(r'^[a-z0-9]+@gmail\.com+$').hasMatch(value)) {
+              if (!RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
+                  .hasMatch(value)) {
                 return 'Invalid Email Address';
               }
 
@@ -86,28 +87,33 @@ class LoginPage extends StatelessWidget {
                 return 'Required';
               }
 
+              if (value.length < 8) {
+                return 'Password should be atleast of 8 characters';
+              }
+
               return null;
             },
-            maxLength: 15,
           ),
+          SizedBox(height: 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               TextButton(
-                  style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all(
-                        Theme.of(context).primaryColor),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ForgotPassword()));
-                  },
-                  child: Text('Forgot Password')),
+                style: ButtonStyle(
+                  foregroundColor:
+                      MaterialStateProperty.all(Theme.of(context).primaryColor),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ForgotPassword()));
+                },
+                child: Text('Forgot Password?'),
+              ),
             ],
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 15),
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
@@ -116,13 +122,13 @@ class LoginPage extends StatelessWidget {
                     behavior: SnackBarBehavior.floating,
                     margin: EdgeInsets.all(15),
                     elevation: 5,
-                    content: Text('Logging in please wait'),
+                    content: Text('Logging in please wait....'),
                     backgroundColor:
                         Theme.of(context).snackBarTheme.backgroundColor,
                   ),
                 );
-                // Navigator.push(context,
-                //     MaterialPageRoute(builder: (context) => Homepage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => HomePage()));
               }
             },
             child: Text(

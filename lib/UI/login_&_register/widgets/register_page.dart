@@ -10,6 +10,44 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isChecked = false;
+  final List<String> dropDownList = [
+    'Ward 1',
+    'Ward 2',
+    'Ward 3',
+    'Ward 4',
+    'Ward 5',
+    'Ward 6',
+    'Ward 7',
+    'Ward 8',
+    'Ward 9',
+    'Ward 10',
+    'Ward 11',
+    'Ward 12',
+    'Ward 13',
+    'Ward 14',
+    'Ward 15',
+    'Ward 16',
+    'Ward 17',
+    'Ward 18',
+    'Ward 19',
+    'Ward 20',
+    'Ward 21',
+    'Ward 22',
+    'Ward 23',
+    'Ward 24',
+    'Ward 25',
+    'Ward 26',
+    'Ward 27',
+    'Ward 28',
+    'Ward 29',
+    'Ward 30',
+    'Ward 31',
+    'Ward 32',
+  ];
+  String? dropDownValue;
+
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -116,45 +154,32 @@ class _RegisterPageState extends State<RegisterPage> {
             maxLength: 10,
           ),
           SizedBox(height: 20),
-          TextFormField(
+          DropdownButtonFormField(
             decoration: InputDecoration(
-              hintText: 'Address',
-              border: outlineInputBorder,
-              fillColor: textFieldFillColor,
-              filled: true,
-              prefixIcon: Icon(Icons.location_on),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Required';
-              }
-              if (!RegExp(r'^[a-zA-Z] + $').hasMatch(value)) {
-                return 'Invalid Address';
-              }
-              return null;
-            },
-          ),
-          SizedBox(height: 20),
-          TextFormField(
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              counterText: "",
-              hintText: 'Postal Code',
+              hintText: 'Kathmandu Metro Ward',
               border: outlineInputBorder,
               fillColor: textFieldFillColor,
               filled: true,
               prefixIcon: Icon(Icons.location_on_rounded),
             ),
+            menuMaxHeight: 200,
+            items: dropDownList.map((String item) {
+              return DropdownMenuItem(
+                child: Text(item),
+                value: item,
+              );
+            }).toList(),
+            onChanged: (String? val) {
+              setState(() {
+                dropDownValue = val!;
+              });
+            },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Requred';
-              }
-              if (!RegExp(r'^[4][4]+600').hasMatch(value) || value.length < 5) {
-                return 'Invalid Postal Code';
+                return 'Required';
               }
               return null;
             },
-            maxLength: 5,
           ),
           SizedBox(height: 20),
           TextFormField(
@@ -170,7 +195,8 @@ class _RegisterPageState extends State<RegisterPage> {
               if (value == null || value.isEmpty) {
                 return 'Requred';
               }
-              if (!RegExp(r'^[a-z0-9]+@gmail\.com+$').hasMatch(value)) {
+              if (!RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
+                  .hasMatch(value)) {
                 return 'Invalid Email Address';
               }
               return null;
@@ -188,13 +214,18 @@ class _RegisterPageState extends State<RegisterPage> {
               prefixIcon: Icon(Icons.password_rounded),
             ),
             obscureText: true,
+            controller: _passwordController,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Required';
               }
+
+              if (value.length < 8) {
+                return 'Password should be atleast of 8 characters';
+              }
+
               return null;
             },
-            maxLength: 15,
           ),
           SizedBox(height: 20),
           TextFormField(
@@ -208,14 +239,24 @@ class _RegisterPageState extends State<RegisterPage> {
               prefixIcon: Icon(Icons.password_rounded),
             ),
             obscureText: true,
+            controller: _confirmPasswordController,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Required';
               }
+
+              if (value.length < 8) {
+                return 'Password should be atleast of 8 characters';
+              }
+
+              if (_passwordController.text != _confirmPasswordController.text) {
+                return 'Password and Confirm Password doesn\'t match';
+              }
+
               return null;
             },
-            maxLength: 15,
           ),
+          SizedBox(height: 10),
         ],
       ),
     );
@@ -277,7 +318,7 @@ class _RegisterPageState extends State<RegisterPage> {
           _isChecked
               ? ElevatedButton(
                   child: Text(
-                    'Continue',
+                    'Register',
                     style: TextStyle(fontSize: 20),
                   ),
                   onPressed: () {
@@ -286,7 +327,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           behavior: SnackBarBehavior.floating,
                           margin: EdgeInsets.all(15),
                           elevation: 5,
-                          content: Text('Registering in please wait'),
+                          content: Text('Registering in please wait....'),
                           backgroundColor:
                               Theme.of(context).snackBarTheme.backgroundColor));
                     }
@@ -305,7 +346,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 )
               : ElevatedButton(
                   child: Text(
-                    'Continue',
+                    'Register',
                     style: TextStyle(fontSize: 20),
                   ),
                   onPressed: null,

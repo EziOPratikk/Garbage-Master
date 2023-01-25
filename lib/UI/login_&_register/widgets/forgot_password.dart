@@ -36,7 +36,7 @@ class ForgotPassword extends StatelessWidget {
                 ),
                 SizedBox(height: 20),
                 Text(
-                  'Don\'t worry!. Just enter the mobile number associated with your account then you\'re good to go.',
+                  'Don\'t worry!. Just enter the email address associated with your account then you\'re good to go.',
                   style: TextStyle(
                     fontSize: 15,
                     color: Color(0xff767676),
@@ -49,10 +49,10 @@ class ForgotPassword extends StatelessWidget {
                   child: Column(
                     children: [
                       TextFormField(
-                        keyboardType: TextInputType.phone,
+                        keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           counterText: "",
-                          hintText: 'Mobile Number',
+                          hintText: 'Email Address',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none,
@@ -60,19 +60,20 @@ class ForgotPassword extends StatelessWidget {
                           fillColor:
                               Theme.of(context).primaryColor.withOpacity(0.2),
                           filled: true,
-                          prefixIcon: Icon(Icons.phone_android_rounded),
+                          prefixIcon: Icon(Icons.email_rounded),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Required';
                           }
-                          if (!RegExp(r'^[9][8][0-9]').hasMatch(value) ||
-                              value.length < 10) {
-                            return 'Invalid Mobile Number';
+                          if (!RegExp(
+                                  r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
+                              .hasMatch(value)) {
+                            return 'Invalid Email Address';
                           }
+
                           return null;
                         },
-                        maxLength: 10,
                       ),
                     ],
                   ),
@@ -93,7 +94,7 @@ class ForgotPassword extends StatelessWidget {
                                 behavior: SnackBarBehavior.floating,
                                 margin: EdgeInsets.all(15),
                                 elevation: 5,
-                                content: Text('Loading please wait'),
+                                content: Text('Loading please wait....'),
                                 backgroundColor: Theme.of(context)
                                     .snackBarTheme
                                     .backgroundColor,
