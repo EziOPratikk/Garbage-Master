@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../homepage/widgets/home_page.dart';
+import '../../homepage/widgets/main_screen.dart';
 import './register_page.dart';
 import './forgot_password.dart';
 
@@ -12,7 +12,7 @@ class LoginPage extends StatelessWidget {
       child: Scaffold(
           body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.all(20),
+          margin: const EdgeInsets.all(20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -30,11 +30,11 @@ class LoginPage extends StatelessWidget {
       children: [
         Container(
           height: 200,
-          margin: EdgeInsets.only(bottom: 10),
+          margin: const EdgeInsets.only(bottom: 10),
           child: Image.asset('assets/images/Logo.png', fit: BoxFit.cover),
         ),
-        Text('Welcome to Garbage Master'),
-        SizedBox(height: 40),
+        const Text('Welcome to Garbage Master'),
+        const SizedBox(height: 40),
       ],
     );
   }
@@ -56,7 +56,7 @@ class LoginPage extends StatelessWidget {
               border: outlineInputBorder,
               fillColor: textFieldFillColor,
               filled: true,
-              prefixIcon: Icon(Icons.email_rounded),
+              prefixIcon: const Icon(Icons.email_rounded),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -71,7 +71,7 @@ class LoginPage extends StatelessWidget {
               return null;
             },
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           TextFormField(
             decoration: InputDecoration(
               counterText: "",
@@ -79,7 +79,7 @@ class LoginPage extends StatelessWidget {
               border: outlineInputBorder,
               fillColor: textFieldFillColor,
               filled: true,
-              prefixIcon: Icon(Icons.password_rounded),
+              prefixIcon: const Icon(Icons.password_rounded),
             ),
             obscureText: true,
             validator: (value) {
@@ -94,7 +94,7 @@ class LoginPage extends StatelessWidget {
               return null;
             },
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -109,44 +109,46 @@ class LoginPage extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => ForgotPassword()));
                 },
-                child: Text('Forgot Password?'),
+                child: const Text('Forgot Password?'),
               ),
             ],
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           ElevatedButton(
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     behavior: SnackBarBehavior.floating,
-                    margin: EdgeInsets.all(15),
+                    margin: const EdgeInsets.all(15),
                     elevation: 5,
-                    content: Text('Logging in please wait....'),
+                    content: const Text('Logging in please wait....'),
                     backgroundColor:
                         Theme.of(context).snackBarTheme.backgroundColor,
                   ),
                 );
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => HomePage()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const MainScreen()));
               }
             },
-            child: Text(
-              'Login',
-              style: TextStyle(fontSize: 20),
-            ),
             style: ButtonStyle(
               backgroundColor:
                   MaterialStateProperty.all(Theme.of(context).primaryColor),
               shape: MaterialStateProperty.all(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15))),
-              padding:
-                  MaterialStateProperty.all(EdgeInsets.symmetric(vertical: 15)),
+              padding: MaterialStateProperty.all(
+                  const EdgeInsets.symmetric(vertical: 15)),
+            ),
+            child: const Text(
+              'Login',
+              style: TextStyle(fontSize: 20),
             ),
           ),
           Row(
             children: [
-              Text('Don\'t have an account?'),
+              const Text('Don\'t have an account?'),
               TextButton(
                   style: ButtonStyle(
                     foregroundColor: MaterialStateProperty.all(
@@ -158,7 +160,7 @@ class LoginPage extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => RegisterPage()));
                   },
-                  child: Text('Register')),
+                  child: const Text('Register')),
             ],
           )
         ],

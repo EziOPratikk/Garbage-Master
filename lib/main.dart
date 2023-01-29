@@ -8,6 +8,8 @@ import './UI/login_&_register/widgets/forgot_password.dart';
 import './UI/login_&_register/widgets/terms_&_condtions.dart';
 import './UI/homepage/widgets/home_page.dart';
 import './UI/homepage/widgets/data_input_page.dart';
+import './UI/homepage/widgets/profile_page.dart';
+import 'UI/homepage/widgets/main_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,16 +28,19 @@ class MyApp extends StatelessWidget {
       title: 'Garbage Master',
       theme: ThemeData(
         primarySwatch: Colors.green,
-        primaryColor: Color(0xff5C964A),
-        accentColor: Color(0xffFFD261),
-        snackBarTheme: SnackBarThemeData(
-          backgroundColor: Color(0xff5C964A).withOpacity(0.8),
+        primaryColor: const Color(0xff5C964A),
+        accentColor: const Color(0xffFFD261),
+        snackBarTheme: const SnackBarThemeData(
+          backgroundColor: Color(0xffFFD261),
         ),
-        textTheme: TextTheme(
-          headline6: TextStyle(color: Color(0xff5C964A)),
+        textTheme: const TextTheme(
+          headline6: TextStyle(
+            color: Color(0xff5C964A),
+            fontSize: 22,
+          ),
         ),
       ),
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }

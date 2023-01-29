@@ -8,13 +8,13 @@ class ForgotPassword extends StatelessWidget {
       child: Scaffold(
         body: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.all(15),
+            margin: const EdgeInsets.all(15),
             child: Column(
               children: [
                 Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.arrow_back_ios_new_rounded),
+                      icon: const Icon(Icons.arrow_back_ios_new_rounded),
                       onPressed: () {
                         Navigator.pop(context);
                       },
@@ -27,15 +27,15 @@ class ForgotPassword extends StatelessWidget {
                   child: Image.asset('assets/images/forgot password.png',
                       fit: BoxFit.cover),
                 ),
-                Text(
+                const Text(
                   'Forgot Password ?',
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 20),
-                Text(
+                const SizedBox(height: 20),
+                const Text(
                   'Don\'t worry!. Just enter the email address associated with your account then you\'re good to go.',
                   style: TextStyle(
                     fontSize: 15,
@@ -43,7 +43,7 @@ class ForgotPassword extends StatelessWidget {
                   ),
                   textAlign: TextAlign.justify,
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 Form(
                   key: _formKey,
                   child: Column(
@@ -60,7 +60,7 @@ class ForgotPassword extends StatelessWidget {
                           fillColor:
                               Theme.of(context).primaryColor.withOpacity(0.2),
                           filled: true,
-                          prefixIcon: Icon(Icons.email_rounded),
+                          prefixIcon: const Icon(Icons.email_rounded),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -78,23 +78,19 @@ class ForgotPassword extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 Row(
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        child: Text(
-                          'Reset',
-                          style: TextStyle(fontSize: 20),
-                        ),
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 behavior: SnackBarBehavior.floating,
-                                margin: EdgeInsets.all(15),
+                                margin: const EdgeInsets.all(15),
                                 elevation: 5,
-                                content: Text('Loading please wait....'),
+                                content: const Text('Loading please wait....'),
                                 backgroundColor: Theme.of(context)
                                     .snackBarTheme
                                     .backgroundColor,
@@ -105,8 +101,8 @@ class ForgotPassword extends StatelessWidget {
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all(
                               Theme.of(context).primaryColor),
-                          padding:
-                              MaterialStateProperty.all(EdgeInsets.symmetric(
+                          padding: MaterialStateProperty.all(
+                              const EdgeInsets.symmetric(
                             vertical: 15,
                           )),
                           shape: MaterialStateProperty.all(
@@ -114,6 +110,10 @@ class ForgotPassword extends StatelessWidget {
                               borderRadius: BorderRadius.circular(15),
                             ),
                           ),
+                        ),
+                        child: const Text(
+                          'Reset',
+                          style: TextStyle(fontSize: 20),
                         ),
                       ),
                     ),
