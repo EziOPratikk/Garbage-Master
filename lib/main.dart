@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import './UI/login_&_register/widgets/splash_screen.dart';
-import './UI/login_&_register/widgets/login_page.dart';
-import './UI/login_&_register/widgets/register_page.dart';
-import './UI/login_&_register/widgets/forgot_password.dart';
-import './UI/login_&_register/widgets/terms_&_condtions.dart';
-import './UI/homepage/widgets/home_page.dart';
-import './UI/homepage/widgets/data_input_page.dart';
 
-void main() {
+late SharedPreferences sharedPreferences;
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  sharedPreferences = await SharedPreferences.getInstance();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
   runApp(MyApp());
 }
 

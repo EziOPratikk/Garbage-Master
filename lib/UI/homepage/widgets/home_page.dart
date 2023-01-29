@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:garbage_master/UI/homepage/widgets/data_input_page.dart';
 import 'package:intl/intl.dart';
 
+import '../../../map/mapDart.dart';
+
 class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
@@ -115,7 +117,14 @@ class _HomePageState extends State<HomePage> {
                     title: "Network Data",
                   ),
                   HomepageItemWidget(
-                    func: () {},
+                    func: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => GarbageMap(),
+                        ),
+                      );
+                    },
                     imgSrc: "assets/images/map.png",
                     title: "View Map",
                   ),
