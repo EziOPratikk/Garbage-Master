@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:garbage_master/UI/homepage/widgets/data_input_page.dart';
+import '../../../map/screens/WardMap.dart';
+
 import 'package:intl/intl.dart';
-import '../../../map/mapDart.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -119,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => GarbageMap(),
+                          builder: (context) => WardMap(),
                         ),
                       );
                     },

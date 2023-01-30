@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:garbage_master/map/helpers/shared_prefs.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
-
 class WardMap extends StatefulWidget {
   const WardMap({Key? key}) : super(key: key);
 
@@ -47,10 +46,11 @@ class _WardMapState extends State<WardMap> {
     _onMapCreated(MapboxMapController controller) async {
       this.controller = controller;
     }
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Garbage Map'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Garbage Map'),
+      // ),
       body: SafeArea(
         child: Center(
             child: Stack(
@@ -58,7 +58,8 @@ class _WardMapState extends State<WardMap> {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.8,
               child: MapboxMap(
-                accessToken: 'pk.eyJ1Ijoia3VyaXNpb24iLCJhIjoiY2xiZnRnZGJpMDhjdzNvbXU4bzFhb2Q1MyJ9.vJzZeGHtxsyHMst4Kic9Uw',
+                accessToken:
+                    'pk.eyJ1Ijoia3VyaXNpb24iLCJhIjoiY2xiZnRnZGJpMDhjdzNvbXU4bzFhb2Q1MyJ9.vJzZeGHtxsyHMst4Kic9Uw',
                 initialCameraPosition: _initialCameraPosition,
                 onMapCreated: _onMapCreated,
                 onStyleLoadedCallback: _onStyleLoadedCallback,
@@ -71,6 +72,7 @@ class _WardMapState extends State<WardMap> {
         )),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).primaryColor,
         onPressed: () {
           controller.animateCamera(
             CameraUpdate.newCameraPosition(_initialCameraPosition),
