@@ -9,26 +9,29 @@ class SplashScreen extends StatefulWidget {
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
+
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
     initializedLocationAndSave();
   }
-  void initializedLocationAndSave() async{
-    Location location= Location();
+
+  void initializedLocationAndSave() async {
+    Location location = Location();
     bool? serviceEnabled;
     PermissionStatus? permissionGranted;
     serviceEnabled = await location.serviceEnabled();
-    if(!serviceEnabled){
+    if (!serviceEnabled) {
       serviceEnabled = await location.requestService();
     }
     permissionGranted = await location.hasPermission();
-    if(permissionGranted == PermissionStatus.denied){
+    if (permissionGranted == PermissionStatus.denied) {
       permissionGranted = await location.requestPermission();
     }
     LocationData locationData = await location.getLocation();
-    LatLng currentLatLng = LatLng(locationData.latitude!, locationData.longitude!);
+    LatLng currentLatLng =
+        LatLng(locationData.latitude!, locationData.longitude!);
     sharedPreferences.setDouble('latitude', locationData.latitude!);
     sharedPreferences.setDouble('longitude', locationData.longitude!);
     Future.delayed(const Duration(seconds: 3), () {
@@ -48,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             Image.asset('assets/images/Logo.png', fit: BoxFit.cover),
             const SizedBox(height: 50),
-            CircularProgressIndicator(color: Theme.of(context).accentColor),
+            CircularProgressIndicator(color: Colors.amber),
           ],
         ),
       ),
