@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:garbage_master/UI/homepage/widgets/data_input_page.dart';
 import 'package:intl/intl.dart';
-
 import '../../../map/mapDart.dart';
 
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  int _bottomNavBarCurrentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -36,14 +36,14 @@ class _HomePageState extends State<HomePage> {
           bottomRight: Radius.circular(25),
         ),
       ),
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       child: Row(
         children: [
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Hi User !',
                   style: TextStyle(
                     color: Colors.white,
@@ -51,18 +51,18 @@ class _HomePageState extends State<HomePage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Text(
                   'Today,  ${DateFormat('dd MMM yyy').format(DateTime.now())}',
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
               ],
             ),
           ),
           IconButton(
-            style: ButtonStyle(),
+            style: const ButtonStyle(),
             color: Colors.white,
-            icon: Icon(
+            icon: const Icon(
               Icons.notifications_none_rounded,
               size: 32,
             ),
@@ -73,21 +73,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  int itemCOunt() {
-    return 1;
-  }
-
   _body(context) {
     return Expanded(
       child: Container(
-        margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+        margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
         child: Column(
           children: [
-            Text(
+            const Text(
               'Home',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
@@ -95,7 +91,9 @@ class _HomePageState extends State<HomePage> {
                 mainAxisSpacing: 30,
                 children: [
                   HomepageItemWidget(
-                    func: () {
+                    imgSrc: "assets/images/input data.png",
+                    title: "Input Garbage Data",
+                    tapFunc: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -103,21 +101,21 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     },
-                    imgSrc: "assets/images/input data.png",
-                    title: "Input Garbage Data",
                   ),
                   HomepageItemWidget(
-                    func: () {},
                     imgSrc: "assets/images/event.png",
                     title: "Events",
+                    tapFunc: () {},
                   ),
                   HomepageItemWidget(
-                    func: () {},
                     imgSrc: "assets/images/wastedata.png",
-                    title: "Network Data",
+                    title: "Recent Data",
+                    tapFunc: () {},
                   ),
                   HomepageItemWidget(
-                    func: () {
+                    imgSrc: "assets/images/map.png",
+                    title: "View Map",
+                    tapFunc: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -125,8 +123,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     },
-                    imgSrc: "assets/images/map.png",
-                    title: "View Map",
                   ),
                 ],
               ),
@@ -162,30 +158,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      child: BottomNavigationBar(
-        elevation: 10,
-        fixedColor: Theme.of(context).primaryColor,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_filled),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.call),
-            label: 'Contact Us',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _bottomNavBarCurrentIndex,
-        onTap: (int newIndex) {
-          setState(() {
-            _bottomNavBarCurrentIndex = newIndex;
-          });
-        },
-      ),
     );
   }
 }
@@ -193,26 +165,34 @@ class _HomePageState extends State<HomePage> {
 class HomepageItemWidget extends StatelessWidget {
   final String title;
   final String imgSrc;
-  final VoidCallback func;
+  final VoidCallback tapFunc;
 
   const HomepageItemWidget(
-      {Key? key, required this.func, required this.imgSrc, required this.title})
+      {Key? key,
+      required this.tapFunc,
+      required this.imgSrc,
+      required this.title})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: func,
+      onTap: tapFunc,
       child: Card(
         elevation: 5,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Expanded(child: Image.asset(imgSrc)),
+              Expanded(
+                child: Image.asset(imgSrc),
+              ),
               Text(
                 title,
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15),
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                ),
               ),
             ],
           ),

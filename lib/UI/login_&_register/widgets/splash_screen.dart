@@ -1,23 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:garbage_master/map/mapDart.dart';
 import 'package:location/location.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../main.dart';
 import 'login_page.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
-
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
-
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-
     super.initState();
     initializedLocationAndSave();
   }

@@ -55,12 +55,12 @@ class _RegisterPageState extends State<RegisterPage> {
       child: Scaffold(
         body: SingleChildScrollView(
           child: Container(
-            margin: EdgeInsets.all(15),
+            margin: const EdgeInsets.all(15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 IconButton(
-                  icon: Icon(Icons.arrow_back_ios_new_rounded),
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded),
                   onPressed: () {
                     Navigator.pop(context);
                   },
@@ -68,7 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 Container(
                   width: double.infinity,
-                  margin: EdgeInsets.all(5),
+                  margin: const EdgeInsets.all(5),
                   child: Column(
                     children: [
                       _header(context),
@@ -87,7 +87,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   _header(context) {
     return Column(
-      children: [
+      children: const [
         Text(
           'Registration',
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -117,7 +117,7 @@ class _RegisterPageState extends State<RegisterPage> {
               border: outlineInputBorder,
               fillColor: textFieldFillColor,
               filled: true,
-              prefixIcon: Icon(Icons.person),
+              prefixIcon: const Icon(Icons.person),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -130,7 +130,7 @@ class _RegisterPageState extends State<RegisterPage> {
             },
             maxLength: 20,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           TextFormField(
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
@@ -139,7 +139,7 @@ class _RegisterPageState extends State<RegisterPage> {
               border: outlineInputBorder,
               fillColor: textFieldFillColor,
               filled: true,
-              prefixIcon: Icon(Icons.phone_android_rounded),
+              prefixIcon: const Icon(Icons.phone_android_rounded),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -153,14 +153,14 @@ class _RegisterPageState extends State<RegisterPage> {
             },
             maxLength: 10,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           DropdownButtonFormField(
             decoration: InputDecoration(
               hintText: 'Kathmandu Metro Ward',
               border: outlineInputBorder,
               fillColor: textFieldFillColor,
               filled: true,
-              prefixIcon: Icon(Icons.location_on_rounded),
+              prefixIcon: const Icon(Icons.location_on_rounded),
             ),
             menuMaxHeight: 200,
             items: dropDownList.map((String item) {
@@ -181,7 +181,7 @@ class _RegisterPageState extends State<RegisterPage> {
               return null;
             },
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           TextFormField(
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
@@ -189,7 +189,7 @@ class _RegisterPageState extends State<RegisterPage> {
               border: outlineInputBorder,
               fillColor: textFieldFillColor,
               filled: true,
-              prefixIcon: Icon(Icons.email_rounded),
+              prefixIcon: const Icon(Icons.email_rounded),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -202,7 +202,7 @@ class _RegisterPageState extends State<RegisterPage> {
               return null;
             },
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           TextFormField(
             keyboardType: TextInputType.visiblePassword,
             decoration: InputDecoration(
@@ -211,7 +211,7 @@ class _RegisterPageState extends State<RegisterPage> {
               border: outlineInputBorder,
               fillColor: textFieldFillColor,
               filled: true,
-              prefixIcon: Icon(Icons.password_rounded),
+              prefixIcon: const Icon(Icons.password_rounded),
             ),
             obscureText: true,
             controller: _passwordController,
@@ -227,7 +227,7 @@ class _RegisterPageState extends State<RegisterPage> {
               return null;
             },
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           TextFormField(
             keyboardType: TextInputType.visiblePassword,
             decoration: InputDecoration(
@@ -236,7 +236,7 @@ class _RegisterPageState extends State<RegisterPage> {
               border: outlineInputBorder,
               fillColor: textFieldFillColor,
               filled: true,
-              prefixIcon: Icon(Icons.password_rounded),
+              prefixIcon: const Icon(Icons.password_rounded),
             ),
             obscureText: true,
             controller: _confirmPasswordController,
@@ -256,7 +256,7 @@ class _RegisterPageState extends State<RegisterPage> {
               return null;
             },
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
         ],
       ),
     );
@@ -279,7 +279,7 @@ class _RegisterPageState extends State<RegisterPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Checkbox(
-                activeColor: Theme.of(context).accentColor,
+                activeColor: Theme.of(context).colorScheme.secondary,
                 value: _isChecked,
                 onChanged: (val) {
                   setState(() {
@@ -296,11 +296,11 @@ class _RegisterPageState extends State<RegisterPage> {
                 },
                 child: Text.rich(
                   TextSpan(
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color.fromARGB(255, 70, 70, 70),
                     ),
                     children: [
-                      TextSpan(text: 'I agree to the '),
+                      const TextSpan(text: 'I agree to the '),
                       TextSpan(
                         text: 'Terms & Conditions',
                         style: TextStyle(
@@ -314,20 +314,16 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             ],
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           _isChecked
               ? ElevatedButton(
-                  child: Text(
-                    'Register',
-                    style: TextStyle(fontSize: 20),
-                  ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           behavior: SnackBarBehavior.floating,
-                          margin: EdgeInsets.all(15),
+                          margin: const EdgeInsets.all(15),
                           elevation: 5,
-                          content: Text('Registering in please wait....'),
+                          content: const Text('Registering in please wait....'),
                           backgroundColor:
                               Theme.of(context).snackBarTheme.backgroundColor));
                     }
@@ -341,14 +337,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     padding: MaterialStateProperty.all(
-                        EdgeInsets.symmetric(vertical: 15)),
+                        const EdgeInsets.symmetric(vertical: 15)),
                   ),
-                )
-              : ElevatedButton(
-                  child: Text(
+                  child: const Text(
                     'Register',
                     style: TextStyle(fontSize: 20),
                   ),
+                )
+              : ElevatedButton(
                   onPressed: null,
                   style: ButtonStyle(
                     shape: MaterialStateProperty.all(
@@ -357,7 +353,11 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     padding: MaterialStateProperty.all(
-                        EdgeInsets.symmetric(vertical: 15)),
+                        const EdgeInsets.symmetric(vertical: 15)),
+                  ),
+                  child: const Text(
+                    'Register',
+                    style: TextStyle(fontSize: 20),
                   ),
                 ),
         ],
