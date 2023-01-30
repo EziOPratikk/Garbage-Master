@@ -13,14 +13,14 @@ class WardMap extends StatefulWidget {
 class _WardMapState extends State<WardMap> {
   // Mapbox related
   LatLng latLng = getLatLngFromSharedPrefs();
-  late CameraPosition _initialCameraPosition;
+  late CameraPosition _inittialCameraPosition;
   late MapboxMapController controller;
   // Carousel related
 
   @override
   void initState() {
     super.initState();
-    _initialCameraPosition = CameraPosition(
+    _inittialCameraPosition = CameraPosition(
       target: latLng,
       zoom: 15.0,
     );
@@ -40,31 +40,34 @@ class _WardMapState extends State<WardMap> {
 
     // Add new source and lineLayer
   }
+
+  _onMapCreated(MapboxMapController controller) async {
+    this.controller = controller;
+  }
+
   _onStyleLoadedCallback() async {}
 
   @override
   Widget build(BuildContext context) {
-    _onMapCreated(MapboxMapController controller) async {
-      this.controller = controller;
-    }
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Garbage Map'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Garbage Map'),
+      // ),
       body: SafeArea(
         child: Center(
             child: Stack(
           children: [
+            Text("Hi"),
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.8,
+              height: MediaQuery.of(context).size.height*0.8,
               child: MapboxMap(
-                accessToken: 'pk.eyJ1Ijoia3VyaXNpb24iLCJhIjoiY2xiZnRnZGJpMDhjdzNvbXU4bzFhb2Q1MyJ9.vJzZeGHtxsyHMst4Kic9Uw',
-                initialCameraPosition: _initialCameraPosition,
+                accessToken:'pk.eyJ1Ijoia3VyaXNpb24iLCJhIjoiY2xiZnRnZGJpMDhjdzNvbXU4bzFhb2Q1MyJ9.vJzZeGHtxsyHMst4Kic9Uw',
+                initialCameraPosition: _inittialCameraPosition,
                 onMapCreated: _onMapCreated,
                 onStyleLoadedCallback: _onStyleLoadedCallback,
                 myLocationEnabled: true,
                 myLocationTrackingMode: MyLocationTrackingMode.TrackingGPS,
-                minMaxZoomPreference: const MinMaxZoomPreference(13, 19),
+                minMaxZoomPreference: const MinMaxZoomPreference(14, 17),
               ),
             )
           ],
@@ -73,7 +76,7 @@ class _WardMapState extends State<WardMap> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           controller.animateCamera(
-            CameraUpdate.newCameraPosition(_initialCameraPosition),
+            CameraUpdate.newCameraPosition(_inittialCameraPosition),
           );
           // Add your onPressed code here!
         },
