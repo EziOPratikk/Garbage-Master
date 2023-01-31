@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => WardMap(),
+                          builder: (context) => const WardMap(),
                         ),
                       );
                     },
