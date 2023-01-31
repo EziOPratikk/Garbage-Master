@@ -37,6 +37,7 @@ dependencies:
   flutter_dotenv: ^5.0.2
   location: ^4.4.0
   shared_preferences: ^2.0.17
+  http: ^0.13.5
 
 
 

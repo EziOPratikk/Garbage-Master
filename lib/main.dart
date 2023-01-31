@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.green)
             .copyWith(secondary: const Color(0xffFFD261)),
       ),
-      home: const WardMap(),
+      home: const SplashScreen(),
     );
   }
 }
