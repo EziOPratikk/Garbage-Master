@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../models/api.services.dart';
 import '../../homepage/widgets/main_screen.dart';
 import './register_page.dart';
 import './forgot_password.dart';
 
 class LoginPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -71,6 +74,7 @@ class LoginPage extends StatelessWidget {
 
               return null;
             },
+            controller: _emailController,
           ),
           const SizedBox(height: 20),
           TextFormField(
@@ -94,6 +98,7 @@ class LoginPage extends StatelessWidget {
 
               return null;
             },
+            controller: _passwordController,
           ),
           const SizedBox(height: 5),
           Row(
@@ -123,11 +128,15 @@ class LoginPage extends StatelessWidget {
                     behavior: SnackBarBehavior.floating,
                     margin: const EdgeInsets.all(15),
                     elevation: 5,
-                    content: const Text('Logging in please wait....'),
+                    content: const Text('Log in successfull'),
                     backgroundColor:
                         Theme.of(context).snackBarTheme.backgroundColor,
                   ),
                 );
+                APIServices.loginUser({
+                  "email": _emailController.text.trim(),
+                  "password": _passwordController.text.trim(),
+                });
                 Navigator.push(
                     context,
                     MaterialPageRoute(

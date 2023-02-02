@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import './login_page.dart';
+import '../../../models/api.services.dart';
+import '../../../models/user.dart';
 import './terms_&_condtions.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -11,41 +14,44 @@ class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isChecked = false;
   final List<String> dropDownList = [
-    'Ward 1',
-    'Ward 2',
-    'Ward 3',
-    'Ward 4',
-    'Ward 5',
-    'Ward 6',
-    'Ward 7',
-    'Ward 8',
-    'Ward 9',
-    'Ward 10',
-    'Ward 11',
-    'Ward 12',
-    'Ward 13',
-    'Ward 14',
-    'Ward 15',
-    'Ward 16',
-    'Ward 17',
-    'Ward 18',
-    'Ward 19',
-    'Ward 20',
-    'Ward 21',
-    'Ward 22',
-    'Ward 23',
-    'Ward 24',
-    'Ward 25',
-    'Ward 26',
-    'Ward 27',
-    'Ward 28',
-    'Ward 29',
-    'Ward 30',
-    'Ward 31',
-    'Ward 32',
+    'Ward 1 Naksal',
+    'Ward 2 Lazimpat',
+    'Ward 3 Maharajgunj',
+    'Ward 4 Baluwatar',
+    'Ward 5 Hadigaun',
+    'Ward 6 Bouddha',
+    'Ward 7 Mitrapark',
+    'Ward 8 Jayabageshwori',
+    'Ward 9 Gaushala',
+    'Ward 10 Baneshwor',
+    'Ward 11 Tripureshwor',
+    'Ward 12 Teku',
+    'Ward 13 Kalimati',
+    'Ward 14 Kalanki',
+    'Ward 15 Dallu',
+    'Ward 16 Sorakhuttey',
+    'Ward 17 Chhetrapti',
+    'Ward 18 Nardevi',
+    'Ward 19 Damatol',
+    'Ward 20 Bhimsensthan',
+    'Ward 21 Jawalakhel',
+    'Ward 22 Tewanhal',
+    'Ward 23 Ombahal',
+    'Ward 24 Makhan',
+    'Ward 25 Masangali',
+    'Ward 26 Lainchaur',
+    'Ward 27 Mahabouddha',
+    'Ward 28 Old Buspark',
+    'Ward 29 Dillibazar Pipal',
+    'Ward 30 Gyaneshowr',
+    'Ward 31 Bhimsengola',
+    'Ward 32 Koteshwor',
   ];
   String? dropDownValue;
 
+  final _userNameController = TextEditingController();
+  final _mobileNumberController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
@@ -129,6 +135,7 @@ class _RegisterPageState extends State<RegisterPage> {
               return null;
             },
             maxLength: 20,
+            controller: _userNameController,
           ),
           const SizedBox(height: 20),
           TextFormField(
@@ -152,6 +159,7 @@ class _RegisterPageState extends State<RegisterPage> {
               return null;
             },
             maxLength: 10,
+            controller: _mobileNumberController,
           ),
           const SizedBox(height: 20),
           DropdownButtonFormField(
@@ -201,6 +209,7 @@ class _RegisterPageState extends State<RegisterPage> {
               }
               return null;
             },
+            controller: _emailController,
           ),
           const SizedBox(height: 20),
           TextFormField(
@@ -214,7 +223,6 @@ class _RegisterPageState extends State<RegisterPage> {
               prefixIcon: const Icon(Icons.password_rounded),
             ),
             obscureText: true,
-            controller: _passwordController,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Required';
@@ -226,6 +234,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
               return null;
             },
+            controller: _passwordController,
           ),
           const SizedBox(height: 20),
           TextFormField(
@@ -239,7 +248,6 @@ class _RegisterPageState extends State<RegisterPage> {
               prefixIcon: const Icon(Icons.password_rounded),
             ),
             obscureText: true,
-            controller: _confirmPasswordController,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Required';
@@ -255,6 +263,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
               return null;
             },
+            controller: _confirmPasswordController,
           ),
           const SizedBox(height: 10),
         ],
@@ -268,13 +277,6 @@ class _RegisterPageState extends State<RegisterPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // CheckboxListTile(
-          //   activeColor: Theme.of(context).primaryColor,
-          //   title: Text("I agree to the Terms & Conditions"),
-          //   value: false,
-          //   onChanged: null,
-          //   controlAffinity: ListTileControlAffinity.leading,
-          // ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -323,9 +325,18 @@ class _RegisterPageState extends State<RegisterPage> {
                           behavior: SnackBarBehavior.floating,
                           margin: const EdgeInsets.all(15),
                           elevation: 5,
-                          content: const Text('Registering in please wait....'),
+                          content: const Text('Register Successfull'),
                           backgroundColor:
                               Theme.of(context).snackBarTheme.backgroundColor));
+                      APIServices.registerUser({
+                        "username": _userNameController.text.trim(),
+                        "mobilenumber": _mobileNumberController.text.trim(),
+                        "ward": dropDownValue,
+                        "email": _emailController.text.trim(),
+                        "password": _passwordController.text.trim(),
+                      });
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
                     }
                   },
                   style: ButtonStyle(
