@@ -49,6 +49,9 @@ class _RegisterPageState extends State<RegisterPage> {
   ];
   String? dropDownValue;
 
+  final _firstNameController = TextEditingController();
+  final _middleNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   final _userNameController = TextEditingController();
   final _mobileNumberController = TextEditingController();
   final _emailController = TextEditingController();
@@ -116,6 +119,63 @@ class _RegisterPageState extends State<RegisterPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          TextFormField(
+            decoration: InputDecoration(
+              counterText: "",
+              hintText: 'First Name',
+              border: outlineInputBorder,
+              fillColor: textFieldFillColor,
+              filled: true,
+              prefixIcon: const Icon(Icons.person),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Required';
+              }
+              if (!RegExp(r'^[a-zA-Z]').hasMatch(value)) {
+                return 'Invalid Username';
+              }
+              return null;
+            },
+            maxLength: 20,
+            controller: _firstNameController,
+          ),
+          const SizedBox(height: 20),
+          TextFormField(
+            decoration: InputDecoration(
+              counterText: "",
+              hintText: 'Middle Name',
+              border: outlineInputBorder,
+              fillColor: textFieldFillColor,
+              filled: true,
+              prefixIcon: const Icon(Icons.person),
+            ),
+            maxLength: 20,
+            controller: _middleNameController,
+          ),
+          const SizedBox(height: 20),
+          TextFormField(
+            decoration: InputDecoration(
+              counterText: "",
+              hintText: 'Last Name',
+              border: outlineInputBorder,
+              fillColor: textFieldFillColor,
+              filled: true,
+              prefixIcon: const Icon(Icons.person),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Required';
+              }
+              if (!RegExp(r'^[a-zA-Z]').hasMatch(value)) {
+                return 'Invalid Username';
+              }
+              return null;
+            },
+            maxLength: 20,
+            controller: _lastNameController,
+          ),
+          const SizedBox(height: 20),
           TextFormField(
             decoration: InputDecoration(
               counterText: "",
@@ -321,6 +381,16 @@ class _RegisterPageState extends State<RegisterPage> {
               ? ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      APIServices.registerUser({
+                        "firstname": _firstNameController.text.trim(),
+                        "middlename": _middleNameController.text.trim(),
+                        "lastname": _lastNameController.text.trim(),
+                        "username": _userNameController.text.trim(),
+                        "mobilenumber": _mobileNumberController.text.trim(),
+                        "ward": dropDownValue,
+                        "email": _emailController.text.trim(),
+                        "password": _passwordController.text.trim(),
+                      });
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           behavior: SnackBarBehavior.floating,
                           margin: const EdgeInsets.all(15),
@@ -328,13 +398,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           content: const Text('Register Successfull'),
                           backgroundColor:
                               Theme.of(context).snackBarTheme.backgroundColor));
-                      APIServices.registerUser({
-                        "username": _userNameController.text.trim(),
-                        "mobilenumber": _mobileNumberController.text.trim(),
-                        "ward": dropDownValue,
-                        "email": _emailController.text.trim(),
-                        "password": _passwordController.text.trim(),
-                      });
+
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => LoginPage()));
                     }
