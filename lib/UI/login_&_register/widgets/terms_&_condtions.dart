@@ -83,10 +83,12 @@ class TermsConditions extends StatelessWidget {
             ),
             const SizedBox(height: 15),
             const Text(
-                '4. Any changes or additions to the Specified Service or certain Conditions must be agreed in writing by the Company and the Client.'),
+              '4. Any changes or additions to the Specified Service or certain Conditions must be agreed in writing by the Company and the Client.',
+            ),
             const SizedBox(height: 15),
             const Text(
-                '5. Garbage Master will use its best endeavours to provide the Specified Service on the date and time that has been scheduled but accepts no liability or loss resulting from late or delayed arrival to the desired location.'),
+              '5. Garbage Master will use its best endeavours to provide the Specified Service on the date and time that has been scheduled but accepts no liability or loss resulting from late or delayed arrival to the desired location.',
+            ),
           ],
         ),
       ),

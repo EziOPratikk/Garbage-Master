@@ -13,7 +13,7 @@ class ContactPage extends StatelessWidget {
           child: ListView(
             children: [
               _header(context),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               _body(context),
               Divider(
                 color: Theme.of(context).primaryColor,
@@ -32,7 +32,7 @@ class ContactPage extends StatelessWidget {
 
 _header(context) {
   return Padding(
-    padding: const EdgeInsets.only(top: 20),
+    padding: const EdgeInsets.only(top: 30),
     child: Column(
       children: [
         const Text(
@@ -125,7 +125,7 @@ _body(context) {
             ),
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 15),
       ],
     ),
   );

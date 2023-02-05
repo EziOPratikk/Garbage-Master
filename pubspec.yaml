@@ -35,13 +35,13 @@ dependencies:
   location: ^4.4.0
   shared_preferences: ^2.0.17
   http: ^0.13.5
-  geojson_vi: ^2.0.7
   mapbox_gl: ^0.16.0
   syncfusion_flutter_core: ^20.4.48
   syncfusion_flutter_maps: ^20.4.48
   firebase_auth: ^4.2.5
   cloud_firestore: ^4.3.1
   firebase_core: ^2.4.1
+  image_picker: ^0.8.6+1
 
 
 

@@ -40,7 +40,7 @@ class DataInputPage extends StatelessWidget {
                 const Text('Thank you for participating in our program'),
                 const Text(
                     'By following us you too are contributing for this society'),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 InputCard(
                   Image.asset(
                     'assets/images/plastic.png',
@@ -55,6 +55,7 @@ class DataInputPage extends StatelessWidget {
                     decoration: textInputDecoration,
                   ),
                 ),
+                const SizedBox(height: 15),
                 InputCard(
                   Image.asset(
                     'assets/images/bigbag.png',
@@ -69,6 +70,7 @@ class DataInputPage extends StatelessWidget {
                     decoration: textInputDecoration,
                   ),
                 ),
+                const SizedBox(height: 15),
                 InputCard(
                   Image.asset(
                     'assets/images/bin.png',
@@ -83,6 +85,7 @@ class DataInputPage extends StatelessWidget {
                     decoration: textInputDecoration,
                   ),
                 ),
+                const SizedBox(height: 15),
                 InputCard(
                   Image.asset(
                     'assets/images/sack.png',

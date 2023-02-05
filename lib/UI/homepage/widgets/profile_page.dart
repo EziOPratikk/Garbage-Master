@@ -1,7 +1,22 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:garbage_master/UI/login_&_register/widgets/splash_screen.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../login_&_register/widgets/login_page.dart';
+import '../../progress_indicator_widget.dart';
+
+class ProfilePage extends StatefulWidget {
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  XFile? _imgFile;
+  final ImagePicker _imgPicker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -10,21 +25,87 @@ class ProfilePage extends StatelessWidget {
       borderSide: BorderSide.none,
     );
     final textFieldFillColor = Theme.of(context).primaryColor.withOpacity(0.2);
+
+    void progressIndicator() {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const ProgressIndicatorWidget();
+        },
+      );
+    }
+
+    Future pickImage(ImageSource src) async {
+      XFile? pickedFile = await _imgPicker.pickImage(source: src);
+
+      setState(() {
+        _imgFile = pickedFile!;
+      });
+    }
+
     return SafeArea(
       child: Scaffold(
         body: Container(
           margin: const EdgeInsets.all(10),
           child: ListView(
             children: [
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(top: 20),
-                child: Text(
-                  'Profile',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  children: [
+                    const Spacer(flex: 2),
+                    const Expanded(
+                      child: Text(
+                        'Profile',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    const Spacer(flex: 1),
+                    TextButton(
+                      onPressed: () async {
+                        try {
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          await prefs.remove('email');
+                        } on Exception catch (e) {
+                          // TODO
+                          print(e);
+                        }
+                        FirebaseAuth.instance.signOut();
+                        progressIndicator();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              behavior: SnackBarBehavior.floating,
+                              margin: const EdgeInsets.all(15),
+                              elevation: 5,
+                              content: const Text('Logged out'),
+                              backgroundColor: Theme.of(context)
+                                  .snackBarTheme
+                                  .backgroundColor),
+                        );
+                        Navigator.pop(context);
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (_) {
+                          return LoginPage();
+                        }));
+                      },
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all(
+                            Theme.of(context).colorScheme.secondary),
+                      ),
+                      child: const Text(
+                        'Logout',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 20),
@@ -38,7 +119,7 @@ class ProfilePage extends StatelessWidget {
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            spreadRadius: 3,
+                            spreadRadius: 2,
                             blurRadius: 10,
                             color: Colors.black.withOpacity(0.1),
                           ),
@@ -49,8 +130,9 @@ class ProfilePage extends StatelessWidget {
                         radius: 60,
                         backgroundColor:
                             Theme.of(context).primaryColor.withOpacity(0.2),
-                        foregroundImage:
-                            const AssetImage('assets/images/user_profile.png'),
+                        foregroundImage: _imgFile == null
+                            ? const AssetImage('assets/images/user_profile.png')
+                            : FileImage(File(_imgFile!.path)) as ImageProvider,
                       ),
                     ),
                     IconButton(
@@ -59,7 +141,9 @@ class ProfilePage extends StatelessWidget {
                         size: 26,
                       ),
                       color: Theme.of(context).primaryColor,
-                      onPressed: () {},
+                      onPressed: () {
+                        pickImage(ImageSource.gallery);
+                      },
                     ),
                   ],
                 ),
@@ -167,7 +251,6 @@ class ProfilePage extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               TextFormField(
-                enabled: false,
                 decoration: InputDecoration(
                   hintText: '10',
                   hintStyle: const TextStyle(

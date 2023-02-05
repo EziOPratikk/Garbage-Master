@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import './data_input_page.dart';
+import './waste_segregation.dart';
+import './recent_data.dart';
 import '../../../map/screens/WardMap.dart';
 
 class HomePage extends StatefulWidget {
@@ -108,12 +110,26 @@ class _HomePageState extends State<HomePage> {
                   HomepageItemWidget(
                     imgSrc: "assets/images/waste.png",
                     title: "Waste Segregation Guideline",
-                    tapFunc: () {},
+                    tapFunc: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => WasteSegregation(),
+                        ),
+                      );
+                    },
                   ),
                   HomepageItemWidget(
                     imgSrc: "assets/images/wastedata.png",
                     title: "Recent Data",
-                    tapFunc: () {},
+                    tapFunc: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RecentData(),
+                        ),
+                      );
+                    },
                   ),
                   HomepageItemWidget(
                     imgSrc: "assets/images/map.png",

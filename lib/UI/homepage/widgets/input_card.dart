@@ -13,7 +13,7 @@ class InputCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 6,
+      elevation: 4,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -51,6 +51,9 @@ class _RegisterPageState extends State<RegisterPage> {
   ];
   String? dropDownValue;
 
+  final _firstNameController = TextEditingController();
+  final _middleNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   final _userNameController = TextEditingController();
   final _mobileNumberController = TextEditingController();
   final _emailController = TextEditingController();
@@ -95,7 +98,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   _header(context) {
     return Column(
-      children: const [
+      children: [
         Text(
           'Registration',
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -119,6 +122,63 @@ class _RegisterPageState extends State<RegisterPage> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           // Username
+          TextFormField(
+            decoration: InputDecoration(
+              counterText: "",
+              hintText: 'First Name',
+              border: outlineInputBorder,
+              fillColor: textFieldFillColor,
+              filled: true,
+              prefixIcon: const Icon(Icons.person),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Required';
+              }
+              if (!RegExp(r'^[a-zA-Z]').hasMatch(value)) {
+                return 'Invalid Username';
+              }
+              return null;
+            },
+            maxLength: 20,
+            controller: _firstNameController,
+          ),
+          const SizedBox(height: 20),
+          TextFormField(
+            decoration: InputDecoration(
+              counterText: "",
+              hintText: 'Middle Name',
+              border: outlineInputBorder,
+              fillColor: textFieldFillColor,
+              filled: true,
+              prefixIcon: const Icon(Icons.person),
+            ),
+            maxLength: 20,
+            controller: _middleNameController,
+          ),
+          const SizedBox(height: 20),
+          TextFormField(
+            decoration: InputDecoration(
+              counterText: "",
+              hintText: 'Last Name',
+              border: outlineInputBorder,
+              fillColor: textFieldFillColor,
+              filled: true,
+              prefixIcon: const Icon(Icons.person),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Required';
+              }
+              if (!RegExp(r'^[a-zA-Z]').hasMatch(value)) {
+                return 'Invalid Username';
+              }
+              return null;
+            },
+            maxLength: 20,
+            controller: _lastNameController,
+          ),
+          const SizedBox(height: 20),
           TextFormField(
             decoration: InputDecoration(
               counterText: "",
@@ -330,12 +390,23 @@ class _RegisterPageState extends State<RegisterPage> {
               ? ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      // APIServices.registerUser({
+                      //   "firstname": _firstNameController.text.trim(),
+                      //   "middlename": _middleNameController.text.trim(),
+                      //   "lastname": _lastNameController.text.trim(),
+                      //   "username": _userNameController.text.trim(),
+                      //   "mobilenumber": _mobileNumberController.text.trim(),
+                      //   "ward": dropDownValue,
+                      //   "email": _emailController.text.trim(),
+                      //   "password": _passwordController.text.trim(),
+                      // });
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           behavior: SnackBarBehavior.floating,
                           margin: const EdgeInsets.all(15),
                           elevation: 5,
                           content: const Text('Register Successfully'),
-                          backgroundColor: Theme.of(context).snackBarTheme.backgroundColor));
+                          backgroundColor:
+                              Theme.of(context).snackBarTheme.backgroundColor));
                       // APIServices.registerUser({
                       //   "username": _userNameController.text.trim(),
                       //   "mobilenumber": _mobileNumberController.text.trim(),
@@ -343,7 +414,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       //   "email": _emailController.text.trim(),
                       //   "password": _passwordController.text.trim(),
                       // });
-                      FirebaseAuth.instance.createUserWithEmailAndPassword(
+                      FirebaseAuth.instance
+                          .createUserWithEmailAndPassword(
                               email: _emailController.text.trim(),
                               password: _passwordController.text.trim())
                           .then((value) {

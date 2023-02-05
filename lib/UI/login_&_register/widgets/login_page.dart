@@ -15,6 +15,7 @@ class LoginPage extends StatelessWidget {
     _emailController.dispose();
     _passwordController.dispose();
   }
+
   LoginPage({super.key});
   @override
   Widget build(BuildContext context) {
@@ -127,36 +128,38 @@ class LoginPage extends StatelessWidget {
           ElevatedButton(
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
-
                 // APIServices.loginUser({
                 //   "email": _emailController.text.trim(),
                 //   "password": _passwordController.text.trim(),
                 // });
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 prefs.setString('email', _emailController.text.trim());
-                FirebaseAuth.instance.signInWithEmailAndPassword(
-                    email: _emailController.text.trim(),
-                    password: _passwordController.text.trim())
-                    .then((value) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          behavior: SnackBarBehavior.floating,
-                          margin: const EdgeInsets.all(15),
-                          elevation: 5,
-                          content: const Text('Log in successfully'),
-                          backgroundColor: Theme.of(context).snackBarTheme.backgroundColor));
-                            Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => const MainScreen()));
-                }).onError((error,stackTrace){
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          behavior: SnackBarBehavior.floating,
-                          margin: const EdgeInsets.all(15),
-                          elevation: 5,
-                          content: Text(error.toString()),
-                          backgroundColor: Theme.of(context).snackBarTheme.backgroundColor));
-                });
+                try {
+                  await FirebaseAuth.instance.signInWithEmailAndPassword(
+                      email: _emailController.text.trim(),
+                      password: _passwordController.text.trim());
 
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      margin: const EdgeInsets.all(15),
+                      elevation: 5,
+                      content: const Text('Log in successfully'),
+                      backgroundColor:
+                          Theme.of(context).snackBarTheme.backgroundColor));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MainScreen()));
+                } on FirebaseAuthException catch (e) {
+                  // TODO
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      margin: const EdgeInsets.all(15),
+                      elevation: 5,
+                      content: Text(e.message!),
+                      backgroundColor:
+                          Theme.of(context).snackBarTheme.backgroundColor));
+                }
               }
             },
             style: ButtonStyle(
