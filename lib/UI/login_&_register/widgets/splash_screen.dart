@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:garbage_master/wrapper/wrapper.dart';
 import 'package:location/location.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 import '../../../main.dart';
 import 'login_page.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -30,13 +31,12 @@ class _SplashScreenState extends State<SplashScreen> {
       permissionGranted = await location.requestPermission();
     }
     LocationData locationData = await location.getLocation();
-    LatLng currentLatLng =
-        LatLng(locationData.latitude!, locationData.longitude!);
+    LatLng currentLatLng = LatLng(locationData.latitude!, locationData.longitude!);
     sharedPreferences.setDouble('latitude', locationData.latitude!);
     sharedPreferences.setDouble('longitude', locationData.longitude!);
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        return LoginPage();
+        return const Wrapper();
       }));
     });
   }

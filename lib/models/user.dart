@@ -6,7 +6,7 @@ class User {
   late String _email;
   late String _password;
 
-  User(this._id, this._userName, this._mobileNumber, this._ward, this_email,
+  User(this._id, this._userName, this._mobileNumber, this._ward, this._email,
       this._password);
 
   int get id => _id;

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import './register_page.dart';
 
 class TermsConditions extends StatelessWidget {
+  const TermsConditions({super.key});
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

@@ -1,11 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import './login_page.dart';
 import '../../../models/api.services.dart';
 import '../../../models/user.dart';
 import './terms_&_condtions.dart';
 
 class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
@@ -116,6 +118,7 @@ class _RegisterPageState extends State<RegisterPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // Username
           TextFormField(
             decoration: InputDecoration(
               counterText: "",
@@ -138,6 +141,7 @@ class _RegisterPageState extends State<RegisterPage> {
             controller: _userNameController,
           ),
           const SizedBox(height: 20),
+          //Phone Number
           TextFormField(
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
@@ -162,6 +166,7 @@ class _RegisterPageState extends State<RegisterPage> {
             controller: _mobileNumberController,
           ),
           const SizedBox(height: 20),
+          //Ward input
           DropdownButtonFormField(
             decoration: InputDecoration(
               hintText: 'Kathmandu Metro Ward',
@@ -173,8 +178,8 @@ class _RegisterPageState extends State<RegisterPage> {
             menuMaxHeight: 200,
             items: dropDownList.map((String item) {
               return DropdownMenuItem(
-                child: Text(item),
                 value: item,
+                child: Text(item),
               );
             }).toList(),
             onChanged: (String? val) {
@@ -190,6 +195,8 @@ class _RegisterPageState extends State<RegisterPage> {
             },
           ),
           const SizedBox(height: 20),
+
+          //Email
           TextFormField(
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
@@ -201,7 +208,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Requred';
+                return 'Required';
               }
               if (!RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
                   .hasMatch(value)) {
@@ -212,6 +219,8 @@ class _RegisterPageState extends State<RegisterPage> {
             controller: _emailController,
           ),
           const SizedBox(height: 20),
+
+          //Password
           TextFormField(
             keyboardType: TextInputType.visiblePassword,
             decoration: InputDecoration(
@@ -227,16 +236,16 @@ class _RegisterPageState extends State<RegisterPage> {
               if (value == null || value.isEmpty) {
                 return 'Required';
               }
-
               if (value.length < 8) {
-                return 'Password should be atleast of 8 characters';
+                return 'Password should be at least of 8 characters';
               }
-
               return null;
             },
             controller: _passwordController,
           ),
           const SizedBox(height: 20),
+
+          //Confirm Password
           TextFormField(
             keyboardType: TextInputType.visiblePassword,
             decoration: InputDecoration(
@@ -254,7 +263,7 @@ class _RegisterPageState extends State<RegisterPage> {
               }
 
               if (value.length < 8) {
-                return 'Password should be atleast of 8 characters';
+                return 'Password should be at least of 8 characters';
               }
 
               if (_passwordController.text != _confirmPasswordController.text) {
@@ -294,7 +303,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => TermsConditions()));
+                          builder: (context) => const TermsConditions()));
                 },
                 child: Text.rich(
                   TextSpan(
@@ -325,15 +334,22 @@ class _RegisterPageState extends State<RegisterPage> {
                           behavior: SnackBarBehavior.floating,
                           margin: const EdgeInsets.all(15),
                           elevation: 5,
-                          content: const Text('Register Successfull'),
-                          backgroundColor:
-                              Theme.of(context).snackBarTheme.backgroundColor));
-                      APIServices.registerUser({
-                        "username": _userNameController.text.trim(),
-                        "mobilenumber": _mobileNumberController.text.trim(),
-                        "ward": dropDownValue,
-                        "email": _emailController.text.trim(),
-                        "password": _passwordController.text.trim(),
+                          content: const Text('Register Successfully'),
+                          backgroundColor: Theme.of(context).snackBarTheme.backgroundColor));
+                      // APIServices.registerUser({
+                      //   "username": _userNameController.text.trim(),
+                      //   "mobilenumber": _mobileNumberController.text.trim(),
+                      //   "ward": dropDownValue,
+                      //   "email": _emailController.text.trim(),
+                      //   "password": _passwordController.text.trim(),
+                      // });
+                      FirebaseAuth.instance.createUserWithEmailAndPassword(
+                              email: _emailController.text.trim(),
+                              password: _passwordController.text.trim())
+                          .then((value) {
+                        print(value.user!.email);
+                      }).catchError((e) {
+                        print(e);
                       });
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => LoginPage()));

@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:garbage_master/UI/homepage/widgets/home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../models/api.services.dart';
 import '../../homepage/widgets/main_screen.dart';
 import './register_page.dart';
@@ -7,9 +9,13 @@ import './forgot_password.dart';
 
 class LoginPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
-
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+  LoginPage({super.key});
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -54,6 +60,7 @@ class LoginPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          //Email Text Field
           TextFormField(
             decoration: InputDecoration(
               hintText: "Email",
@@ -66,17 +73,16 @@ class LoginPage extends StatelessWidget {
               if (value == null || value.isEmpty) {
                 return 'Required';
               }
-
               if (!RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
                   .hasMatch(value)) {
                 return 'Invalid Email Address';
               }
-
               return null;
             },
             controller: _emailController,
           ),
           const SizedBox(height: 20),
+          //Password Text Field
           TextFormField(
             decoration: InputDecoration(
               counterText: "",
@@ -91,11 +97,9 @@ class LoginPage extends StatelessWidget {
               if (value == null || value.isEmpty) {
                 return 'Required';
               }
-
               if (value.length < 8) {
-                return 'Password should be atleast of 8 characters';
+                return 'Password should be at least of 8 characters';
               }
-
               return null;
             },
             controller: _passwordController,
@@ -121,26 +125,38 @@ class LoginPage extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    behavior: SnackBarBehavior.floating,
-                    margin: const EdgeInsets.all(15),
-                    elevation: 5,
-                    content: const Text('Log in successfull'),
-                    backgroundColor:
-                        Theme.of(context).snackBarTheme.backgroundColor,
-                  ),
-                );
-                APIServices.loginUser({
-                  "email": _emailController.text.trim(),
-                  "password": _passwordController.text.trim(),
+
+                // APIServices.loginUser({
+                //   "email": _emailController.text.trim(),
+                //   "password": _passwordController.text.trim(),
+                // });
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                prefs.setString('email', _emailController.text.trim());
+                FirebaseAuth.instance.signInWithEmailAndPassword(
+                    email: _emailController.text.trim(),
+                    password: _passwordController.text.trim())
+                    .then((value) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          margin: const EdgeInsets.all(15),
+                          elevation: 5,
+                          content: const Text('Log in successfully'),
+                          backgroundColor: Theme.of(context).snackBarTheme.backgroundColor));
+                            Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => const MainScreen()));
+                }).onError((error,stackTrace){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          margin: const EdgeInsets.all(15),
+                          elevation: 5,
+                          content: Text(error.toString()),
+                          backgroundColor: Theme.of(context).snackBarTheme.backgroundColor));
                 });
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MainScreen()));
+
               }
             },
             style: ButtonStyle(
