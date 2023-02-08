@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 import './login_page.dart';
 import '../../../models/api.services.dart';
-import '../../../models/user.dart';
+import '../../../models/register.dart';
 import './terms_&_condtions.dart';
 
 class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
@@ -13,6 +15,16 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isChecked = false;
+
+  final firstNameController = TextEditingController();
+  final middleNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final userNameController = TextEditingController();
+  final passwordController = TextEditingController();
+  // final _mobileNumberController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
   final List<String> dropDownList = [
     'Ward 1 Naksal',
     'Ward 2 Lazimpat',
@@ -47,16 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
     'Ward 31 Bhimsengola',
     'Ward 32 Koteshwor',
   ];
-  String? dropDownValue;
-
-  final _firstNameController = TextEditingController();
-  final _middleNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
-  final _userNameController = TextEditingController();
-  final _mobileNumberController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
+  late String dropDownValue;
 
   @override
   Widget build(BuildContext context) {
@@ -138,7 +141,7 @@ class _RegisterPageState extends State<RegisterPage> {
               return null;
             },
             maxLength: 20,
-            controller: _firstNameController,
+            controller: firstNameController,
           ),
           const SizedBox(height: 20),
           TextFormField(
@@ -151,7 +154,7 @@ class _RegisterPageState extends State<RegisterPage> {
               prefixIcon: const Icon(Icons.person),
             ),
             maxLength: 20,
-            controller: _middleNameController,
+            controller: middleNameController,
           ),
           const SizedBox(height: 20),
           TextFormField(
@@ -173,7 +176,7 @@ class _RegisterPageState extends State<RegisterPage> {
               return null;
             },
             maxLength: 20,
-            controller: _lastNameController,
+            controller: lastNameController,
           ),
           const SizedBox(height: 20),
           TextFormField(
@@ -195,32 +198,32 @@ class _RegisterPageState extends State<RegisterPage> {
               return null;
             },
             maxLength: 20,
-            controller: _userNameController,
+            controller: userNameController,
           ),
-          const SizedBox(height: 20),
-          TextFormField(
-            keyboardType: TextInputType.phone,
-            decoration: InputDecoration(
-              counterText: "",
-              hintText: 'Mobile Number',
-              border: outlineInputBorder,
-              fillColor: textFieldFillColor,
-              filled: true,
-              prefixIcon: const Icon(Icons.phone_android_rounded),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Requred';
-              }
-              if (!RegExp(r'^[9][8][0-9]').hasMatch(value) ||
-                  value.length < 10) {
-                return 'Invalid Mobile Number';
-              }
-              return null;
-            },
-            maxLength: 10,
-            controller: _mobileNumberController,
-          ),
+          // const SizedBox(height: 20),
+          // TextFormField(
+          //   keyboardType: TextInputType.phone,
+          //   decoration: InputDecoration(
+          //     counterText: "",
+          //     hintText: 'Mobile Number',
+          //     border: outlineInputBorder,
+          //     fillColor: textFieldFillColor,
+          //     filled: true,
+          //     prefixIcon: const Icon(Icons.phone_android_rounded),
+          //   ),
+          //   validator: (value) {
+          //     if (value == null || value.isEmpty) {
+          //       return 'Requred';
+          //     }
+          //     if (!RegExp(r'^[9][8][0-9]').hasMatch(value) ||
+          //         value.length < 10) {
+          //       return 'Invalid Mobile Number';
+          //     }
+          //     return null;
+          //   },
+          //   maxLength: 10,
+          //   controller: _mobileNumberController,
+          // ),
           const SizedBox(height: 20),
           DropdownButtonFormField(
             decoration: InputDecoration(
@@ -233,8 +236,8 @@ class _RegisterPageState extends State<RegisterPage> {
             menuMaxHeight: 200,
             items: dropDownList.map((String item) {
               return DropdownMenuItem(
-                child: Text(item),
                 value: item,
+                child: Text(item),
               );
             }).toList(),
             onChanged: (String? val) {
@@ -269,7 +272,7 @@ class _RegisterPageState extends State<RegisterPage> {
               }
               return null;
             },
-            controller: _emailController,
+            controller: emailController,
           ),
           const SizedBox(height: 20),
           TextFormField(
@@ -294,7 +297,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
               return null;
             },
-            controller: _passwordController,
+            controller: passwordController,
           ),
           const SizedBox(height: 20),
           TextFormField(
@@ -317,13 +320,13 @@ class _RegisterPageState extends State<RegisterPage> {
                 return 'Password should be atleast of 8 characters';
               }
 
-              if (_passwordController.text != _confirmPasswordController.text) {
+              if (passwordController.text != confirmPasswordController.text) {
                 return 'Password and Confirm Password doesn\'t match';
               }
 
               return null;
             },
-            controller: _confirmPasswordController,
+            controller: confirmPasswordController,
           ),
           const SizedBox(height: 10),
         ],
@@ -382,15 +385,16 @@ class _RegisterPageState extends State<RegisterPage> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       APIServices.registerUser({
-                        "firstname": _firstNameController.text.trim(),
-                        "middlename": _middleNameController.text.trim(),
-                        "lastname": _lastNameController.text.trim(),
-                        "username": _userNameController.text.trim(),
-                        "mobilenumber": _mobileNumberController.text.trim(),
-                        "ward": dropDownValue,
-                        "email": _emailController.text.trim(),
-                        "password": _passwordController.text.trim(),
+                        "FName": firstNameController.text.trim(),
+                        "MName": middleNameController.text.trim(),
+                        "LName": lastNameController.text.trim(),
+                        "Email": emailController.text.trim(),
+                        "Username": userNameController.text.trim(),
+                        "Password": passwordController.text.trim(),
+                        "Ward": dropDownValue.trim(),
+                        // "mobilenumber": _mobileNumberController.text.trim(),
                       });
+
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           behavior: SnackBarBehavior.floating,
                           margin: const EdgeInsets.all(15),

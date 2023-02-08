@@ -8,8 +8,9 @@ import './forgot_password.dart';
 class LoginPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  // final emailController = TextEditingController();
+  final userNameController = TextEditingController();
+  final passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -54,27 +55,47 @@ class LoginPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // TextFormField(
+          //   decoration: InputDecoration(
+          //     hintText: "Email",
+          //     border: outlineInputBorder,
+          //     fillColor: textFieldFillColor,
+          //     filled: true,
+          //     prefixIcon: const Icon(Icons.email_rounded),
+          //   ),
+          //   validator: (value) {
+          //     if (value == null || value.isEmpty) {
+          //       return 'Required';
+          //     }
+
+          //     if (!RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
+          //         .hasMatch(value)) {
+          //       return 'Invalid Email Address';
+          //     }
+
+          //     return null;
+          //   },
+          //   controller: _emailController,
+          // ),
           TextFormField(
             decoration: InputDecoration(
-              hintText: "Email",
+              counterText: "",
+              hintText: 'Username',
               border: outlineInputBorder,
               fillColor: textFieldFillColor,
               filled: true,
-              prefixIcon: const Icon(Icons.email_rounded),
+              prefixIcon: const Icon(Icons.person),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Required';
               }
-
-              if (!RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
-                  .hasMatch(value)) {
-                return 'Invalid Email Address';
+              if (!RegExp(r'^[a-zA-Z]').hasMatch(value)) {
+                return 'Invalid Username';
               }
-
               return null;
             },
-            controller: _emailController,
+            controller: userNameController,
           ),
           const SizedBox(height: 20),
           TextFormField(
@@ -98,7 +119,7 @@ class LoginPage extends StatelessWidget {
 
               return null;
             },
-            controller: _passwordController,
+            controller: passwordController,
           ),
           const SizedBox(height: 5),
           Row(
@@ -133,10 +154,7 @@ class LoginPage extends StatelessWidget {
                         Theme.of(context).snackBarTheme.backgroundColor,
                   ),
                 );
-                APIServices.loginUser({
-                  "email": _emailController.text.trim(),
-                  "password": _passwordController.text.trim(),
-                });
+
                 Navigator.push(
                     context,
                     MaterialPageRoute(

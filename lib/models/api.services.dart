@@ -9,7 +9,7 @@ class APIServices {
     return await http.post(Uri.parse(registerUserUrl), body: map);
   }
 
-  static Future loginUser(Map<String, dynamic> map) async {
-    return await http.post(Uri.parse(loginUserUrl), body: map);
-  }
+  // static Future loginUser(Map<String, dynamic> map) async {
+  //   return await http.post(Uri.parse(loginUserUrl), body: map);
+  // }
 }
