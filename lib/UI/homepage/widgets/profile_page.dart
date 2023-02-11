@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:garbage_master/UI/login_&_register/widgets/splash_screen.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../login_&_register/widgets/login_page.dart';
 import '../../progress_indicator_widget.dart';
@@ -63,27 +66,32 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     const Spacer(flex: 1),
                     TextButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        try {
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          await prefs.remove('email');
+                        } on Exception catch (e) {
+                          // TODO
+                          print(e);
+                        }
+                        FirebaseAuth.instance.signOut();
                         progressIndicator();
-                        Future.delayed(
-                          const Duration(seconds: 2),
-                          () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  behavior: SnackBarBehavior.floating,
-                                  margin: const EdgeInsets.all(15),
-                                  elevation: 5,
-                                  content: const Text('Logged out'),
-                                  backgroundColor: Theme.of(context)
-                                      .snackBarTheme
-                                      .backgroundColor),
-                            );
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => LoginPage()));
-                          },
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              behavior: SnackBarBehavior.floating,
+                              margin: const EdgeInsets.all(15),
+                              elevation: 5,
+                              content: const Text('Logged out'),
+                              backgroundColor: Theme.of(context)
+                                  .snackBarTheme
+                                  .backgroundColor),
                         );
+                        Navigator.pop(context);
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (_) {
+                          return LoginPage();
+                        }));
                       },
                       style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all(
