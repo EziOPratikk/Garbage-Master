@@ -45,28 +45,27 @@ class Users {
   // set ward(int newWard) {
   //   Ward = newWard;
   // }
-
   // Map to Object for Deserialization
   Users.fromMap(Map<String, dynamic> map) {
-    this.FName = map["FName"];
-    this.MName = map["MName"];
-    this.LName = map["LName"];
-    this.Email = map["Email"];
-    this.Username = map["Username"];
-    this.Password = map["Password"];
-    this.Ward = map["Ward"];
+    FName = map["fName"];
+    MName = map["mName"];
+    LName = map["lName"];
+    Email = map["email"];
+    Username = map["username"];
+    Password = map["password"];
+    Ward = map["ward"];
   }
 
   // Object to Map for Serialization
   Map<String, dynamic> toMap() {
     return {
-      "FName": this.FName,
-      "MName": this.MName,
-      "LName": this.LName,
-      "Email": this.Email,
-      "Username": this.Username,
-      "Password": this.Password,
-      "Ward": this.Ward,
+      "fName": FName,
+      "mName": MName,
+      "lName": LName,
+      "email": Email,
+      "username": Username,
+      "password": Password,
+      "ward": Ward,
     };
   }
 }

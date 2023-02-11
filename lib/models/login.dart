@@ -5,14 +5,14 @@ class Login {
   Login(this.Username, this.Password);
 
   Login.fromMap(Map<String, dynamic> map) {
-    this.Username = map["Username"];
-    this.Password = map["Password"];
+    this.Username = map["username"];
+    this.Password = map["password"];
   }
 
   Map<String, dynamic> toMap() {
     return {
-      "Username": this.Username,
-      "Password": this.Password,
+      "username": this.Username,
+      "password": this.Password,
     };
   }
 }

@@ -12,25 +12,25 @@ class Register {
 
   // Map to Object for Deserialization
   Register.fromMap(Map<String, dynamic> map) {
-    FName = map["FName"];
-    MName = map["MName"];
-    LName = map["LName"];
-    Email = map["Email"];
-    Username = map["Username"];
-    Password = map["Password"];
-    Ward = map["Ward"];
+    FName = map["fName"];
+    MName = map["mName"];
+    LName = map["lName"];
+    Email = map["email"];
+    Username = map["username"];
+    Password = map["password"];
+    Ward = map["ward"];
   }
 
   // Object to Map for Serialization
   Map<String, dynamic> toMap() {
     return {
-      "FName": FName,
-      "MName": MName,
-      "LName": LName,
-      "Email": Email,
-      "Username": Username,
-      "Password": Password,
-      "Ward": Ward,
+      "fName": FName,
+      "mName": MName,
+      "lName": LName,
+      "email": Email,
+      "username": Username,
+      "password": Password,
+      "ward": Ward,
     };
   }
 }

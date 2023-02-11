@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:garbage_master/UI/homepage/widgets/main_screen.dart';
+import 'package:garbage_master/UI/login_&_register/widgets/register_page.dart';
 import 'package:garbage_master/map/screens/WardMap.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './UI/login_&_register/widgets/splash_screen.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.green)
             .copyWith(secondary: const Color(0xffFFD261)),
       ),
-      home: const MainScreen(),
+      home: RegisterPage(),
     );
   }
 }

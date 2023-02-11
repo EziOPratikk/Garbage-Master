@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../models/ward.dart';
 import './login_page.dart';
 import '../../../models/api.services.dart';
-import '../../../models/register.dart';
 import './terms_&_condtions.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -22,44 +22,44 @@ class _RegisterPageState extends State<RegisterPage> {
   final emailController = TextEditingController();
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
-  // final _mobileNumberController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  final List<String> dropDownList = [
-    'Ward 1 Naksal',
-    'Ward 2 Lazimpat',
-    'Ward 3 Maharajgunj',
-    'Ward 4 Baluwatar',
-    'Ward 5 Hadigaun',
-    'Ward 6 Bouddha',
-    'Ward 7 Mitrapark',
-    'Ward 8 Jayabageshwori',
-    'Ward 9 Gaushala',
-    'Ward 10 Baneshwor',
-    'Ward 11 Tripureshwor',
-    'Ward 12 Teku',
-    'Ward 13 Kalimati',
-    'Ward 14 Kalanki',
-    'Ward 15 Dallu',
-    'Ward 16 Sorakhuttey',
-    'Ward 17 Chhetrapti',
-    'Ward 18 Nardevi',
-    'Ward 19 Damatol',
-    'Ward 20 Bhimsensthan',
-    'Ward 21 Jawalakhel',
-    'Ward 22 Tewanhal',
-    'Ward 23 Ombahal',
-    'Ward 24 Makhan',
-    'Ward 25 Masangali',
-    'Ward 26 Lainchaur',
-    'Ward 27 Mahabouddha',
-    'Ward 28 Old Buspark',
-    'Ward 29 Dillibazar Pipal',
-    'Ward 30 Gyaneshowr',
-    'Ward 31 Bhimsengola',
-    'Ward 32 Koteshwor',
+  final List<Ward> dropDownWardList = [
+    Ward(id: 1, title: 'Ward 1 Naksal'),
+    Ward(id: 2, title: 'Ward 2 Lazimpat'),
+    Ward(id: 3, title: 'Ward 3 Maharajgunj'),
+    Ward(id: 4, title: 'Ward 4 Baluwatar'),
+    Ward(id: 5, title: 'Ward 5 Hadigaun'),
+    Ward(id: 6, title: 'Ward 6 Bouddha'),
+    Ward(id: 7, title: 'Ward 7 Mitrapark'),
+    Ward(id: 8, title: 'Ward 9 Gaushala'),
+    Ward(id: 9, title: 'Ward 9 Gaushala'),
+    Ward(id: 10, title: 'Ward 10 Baneshwor'),
+    Ward(id: 11, title: 'Ward 11 Tripureshwor'),
+    Ward(id: 12, title: 'Ward 12 Teku'),
+    Ward(id: 13, title: 'Ward 13 Kalimati'),
+    Ward(id: 14, title: 'Ward 14 Kalanki'),
+    Ward(id: 15, title: 'Ward 15 Dallu'),
+    Ward(id: 16, title: 'Ward 16 Sorakhuttey'),
+    Ward(id: 17, title: 'Ward 17 Chhetrapti'),
+    Ward(id: 18, title: 'Ward 18 Nardevi'),
+    Ward(id: 19, title: 'Ward 19 Damatol'),
+    Ward(id: 20, title: 'Ward 20 Bhimsensthan'),
+    Ward(id: 21, title: 'Ward 21 Jawalakhel'),
+    Ward(id: 22, title: 'Ward 22 Tewanhal'),
+    Ward(id: 23, title: 'Ward 23 Ombahal'),
+    Ward(id: 24, title: 'Ward 24 Makhan'),
+    Ward(id: 25, title: 'Ward 25 Masangali'),
+    Ward(id: 26, title: 'Ward 26 Lainchaur'),
+    Ward(id: 27, title: 'Ward 27 Mahabouddha'),
+    Ward(id: 28, title: 'Ward 28 Old Buspark'),
+    Ward(id: 29, title: 'Ward 29 Dillibazar Pipal'),
+    Ward(id: 30, title: 'Ward 30 Gyaneshowr'),
+    Ward(id: 31, title: 'Ward 31 Bhimsengola'),
+    Ward(id: 32, title: 'Ward 32 Koteshwor'),
   ];
-  late String dropDownValue;
+
+  late int dropDownWardValue;
 
   @override
   Widget build(BuildContext context) {
@@ -200,30 +200,6 @@ class _RegisterPageState extends State<RegisterPage> {
             maxLength: 20,
             controller: userNameController,
           ),
-          // const SizedBox(height: 20),
-          // TextFormField(
-          //   keyboardType: TextInputType.phone,
-          //   decoration: InputDecoration(
-          //     counterText: "",
-          //     hintText: 'Mobile Number',
-          //     border: outlineInputBorder,
-          //     fillColor: textFieldFillColor,
-          //     filled: true,
-          //     prefixIcon: const Icon(Icons.phone_android_rounded),
-          //   ),
-          //   validator: (value) {
-          //     if (value == null || value.isEmpty) {
-          //       return 'Requred';
-          //     }
-          //     if (!RegExp(r'^[9][8][0-9]').hasMatch(value) ||
-          //         value.length < 10) {
-          //       return 'Invalid Mobile Number';
-          //     }
-          //     return null;
-          //   },
-          //   maxLength: 10,
-          //   controller: _mobileNumberController,
-          // ),
           const SizedBox(height: 20),
           DropdownButtonFormField(
             decoration: InputDecoration(
@@ -234,19 +210,19 @@ class _RegisterPageState extends State<RegisterPage> {
               prefixIcon: const Icon(Icons.location_on_rounded),
             ),
             menuMaxHeight: 200,
-            items: dropDownList.map((String item) {
+            items: dropDownWardList.map((Ward item) {
               return DropdownMenuItem(
-                value: item,
-                child: Text(item),
+                value: item.id,
+                child: Text(item.title),
               );
             }).toList(),
-            onChanged: (String? val) {
+            onChanged: (int? val) {
               setState(() {
-                dropDownValue = val!;
+                dropDownWardValue = val!;
               });
             },
             validator: (value) {
-              if (value == null || value.isEmpty) {
+              if (value == null) {
                 return 'Required';
               }
               return null;
@@ -385,14 +361,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       APIServices.registerUser({
-                        "FName": firstNameController.text.trim(),
-                        "MName": middleNameController.text.trim(),
-                        "LName": lastNameController.text.trim(),
-                        "Email": emailController.text.trim(),
-                        "Username": userNameController.text.trim(),
-                        "Password": passwordController.text.trim(),
-                        "Ward": dropDownValue.trim(),
-                        // "mobilenumber": _mobileNumberController.text.trim(),
+                        "fName": firstNameController.text.trim(),
+                        "mName": middleNameController.text.trim(),
+                        "lName": lastNameController.text.trim(),
+                        "email": emailController.text.trim(),
+                        "username": userNameController.text.trim(),
+                        "password": passwordController.text.trim(),
+                        "ward": dropDownWardValue,
                       });
 
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

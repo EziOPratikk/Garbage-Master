@@ -142,6 +142,9 @@ class LoginPage extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           ElevatedButton(
+            // onPressed: () {
+            //   // APIServices.getCurses();
+            // },
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -161,6 +164,7 @@ class LoginPage extends StatelessWidget {
                         builder: (context) => const MainScreen()));
               }
             },
+
             style: ButtonStyle(
               backgroundColor:
                   MaterialStateProperty.all(Theme.of(context).primaryColor),
