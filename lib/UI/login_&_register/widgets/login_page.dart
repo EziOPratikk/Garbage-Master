@@ -1,11 +1,18 @@
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../homepage/widgets/main_screen.dart';
+import './/UI/homepage/widgets/main_screen.dart';
+import '../../../models/api.services.dart';
 import './register_page.dart';
 import './forgot_password.dart';
 
 class LoginPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+
+  // final emailController = TextEditingController();
+  final userNameController = TextEditingController();
+  final passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -50,28 +57,50 @@ class LoginPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // TextFormField(
+          //   decoration: InputDecoration(
+          //     hintText: "Email",
+          //     border: outlineInputBorder,
+          //     fillColor: textFieldFillColor,
+          //     filled: true,
+          //     prefixIcon: const Icon(Icons.email_rounded),
+          //   ),
+          //   validator: (value) {
+          //     if (value == null || value.isEmpty) {
+          //       return 'Required';
+          //     }
+
+          //     if (!RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
+          //         .hasMatch(value)) {
+          //       return 'Invalid Email Address';
+          //     }
+
+          //     return null;
+          //   },
+          //   controller: _emailController,
+          // ),
           TextFormField(
             decoration: InputDecoration(
-              hintText: "Email",
+              counterText: "",
+              hintText: 'Username',
               border: outlineInputBorder,
               fillColor: textFieldFillColor,
               filled: true,
-              prefixIcon: const Icon(Icons.email_rounded),
+              prefixIcon: const Icon(Icons.person),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Required';
               }
-
-              if (!RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
-                  .hasMatch(value)) {
-                return 'Invalid Email Address';
+              if (!RegExp(r'^[a-zA-Z]').hasMatch(value)) {
+                return 'Invalid Username';
               }
-
               return null;
             },
+            controller: userNameController,
           ),
           const SizedBox(height: 20),
+          //Password Text Field
           TextFormField(
             decoration: InputDecoration(
               counterText: "",
@@ -86,13 +115,12 @@ class LoginPage extends StatelessWidget {
               if (value == null || value.isEmpty) {
                 return 'Required';
               }
-
               if (value.length < 8) {
-                return 'Password should be atleast of 8 characters';
+                return 'Password should be at least of 8 characters';
               }
-
               return null;
             },
+            controller: passwordController,
           ),
           const SizedBox(height: 5),
           Row(
@@ -115,24 +143,57 @@ class LoginPage extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           ElevatedButton(
+            // onPressed: () {
+            //   // APIServices.getCurses();
+            // },
             onPressed: () {
               if (_formKey.currentState!.validate()) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
+                // APIServices.loginUser({
+                //   "email": _emailController.text.trim(),
+                //   "password": _passwordController.text.trim(),
+                // });
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     behavior: SnackBarBehavior.floating,
                     margin: const EdgeInsets.all(15),
                     elevation: 5,
-                    content: const Text('Logging in please wait....'),
+                    content: const Text('Log in successfull'),
                     backgroundColor:
-                        Theme.of(context).snackBarTheme.backgroundColor,
-                  ),
-                );
+                        Theme.of(context).snackBarTheme.backgroundColor));
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => const MainScreen()));
+                //   SharedPreferences prefs = await SharedPreferences.getInstance();
+                //   prefs.setString('email', _emailController.text.trim());
+                //   try {
+                //     await FirebaseAuth.instance.signInWithEmailAndPassword(
+                //         email: _emailController.text.trim(),
+                //         password: _passwordController.text.trim());
+
+                //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                //         behavior: SnackBarBehavior.floating,
+                //         margin: const EdgeInsets.all(15),
+                //         elevation: 5,
+                //         content: const Text('Log in successfully'),
+                //         backgroundColor:
+                //             Theme.of(context).snackBarTheme.backgroundColor));
+                //     Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //             builder: (context) => const MainScreen()));
+                //   } on FirebaseAuthException catch (e) {
+                //     // TODO
+                //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                //         behavior: SnackBarBehavior.floating,
+                //         margin: const EdgeInsets.all(15),
+                //         elevation: 5,
+                //         content: Text(e.message!),
+                //         backgroundColor:
+                //             Theme.of(context).snackBarTheme.backgroundColor));
+                //   }
               }
             },
+
             style: ButtonStyle(
               backgroundColor:
                   MaterialStateProperty.all(Theme.of(context).primaryColor),

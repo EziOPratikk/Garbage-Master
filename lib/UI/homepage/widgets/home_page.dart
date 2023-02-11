@@ -1,7 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import './data_input_page.dart';
+import './waste_segregation.dart';
+import './recent_data.dart';
+import '../../../map/screens/WardMap.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,6 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -79,6 +84,7 @@ class _HomePageState extends State<HomePage> {
         margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
         child: Column(
           children: [
+            const SizedBox(height: 10),
             const Text(
               'Home',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -103,37 +109,44 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                   HomepageItemWidget(
-                    imgSrc: "assets/images/event.png",
-                    title: "Events",
-                    tapFunc: () {},
+                    imgSrc: "assets/images/waste.png",
+                    title: "Waste Segregation Guideline",
+                    tapFunc: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const WasteSegregation(),
+                        ),
+                      );
+                    },
                   ),
                   HomepageItemWidget(
                     imgSrc: "assets/images/wastedata.png",
                     title: "Recent Data",
-                    tapFunc: () {},
+                    tapFunc: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RecentData(),
+                        ),
+                      );
+                    },
                   ),
                   HomepageItemWidget(
                     imgSrc: "assets/images/map.png",
                     title: "View Map",
-                    tapFunc: () {},
+                    tapFunc: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const GarbageMap(),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
             ),
-            //   Card(
-            //     child: Container(
-            //       width: MediaQuery.of(context).size.height * 0.15,
-            //       child: Column(
-            //         children: [
-            //           Image.asset(
-            //             'assets/images/waste.png',
-            //             fit: BoxFit.cover,
-            //           ),
-            //           Text('Waste'),
-            //         ],
-            //       ),
-            //     ),
-            //   ),
           ],
         ),
       ),
@@ -186,6 +199,7 @@ class HomepageItemWidget extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   fontSize: 15,
                 ),
+                textAlign: TextAlign.center,
               ),
             ],
           ),

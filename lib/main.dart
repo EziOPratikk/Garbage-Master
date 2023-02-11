@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:garbage_master/UI/login_&_register/widgets/register_page.dart';
+import 'package:garbage_master/map/screens/WardMap.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import './UI/login_&_register/widgets/splash_screen.dart';
-import './UI/login_&_register/widgets/login_page.dart';
-import './UI/login_&_register/widgets/register_page.dart';
-import './UI/login_&_register/widgets/forgot_password.dart';
-import './UI/login_&_register/widgets/terms_&_condtions.dart';
-import './UI/homepage/widgets/home_page.dart';
-import './UI/homepage/widgets/data_input_page.dart';
-import './UI/homepage/widgets/profile_page.dart';
-import 'UI/homepage/widgets/main_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+late SharedPreferences sharedPreferences;
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  sharedPreferences = await SharedPreferences.getInstance();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,7 +30,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
         primaryColor: const Color(0xff5C964A),
-        accentColor: const Color(0xffFFD261),
         snackBarTheme: const SnackBarThemeData(
           backgroundColor: Color(0xffFFD261),
         ),
@@ -39,8 +39,10 @@ class MyApp extends StatelessWidget {
             fontSize: 22,
           ),
         ),
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.green)
+            .copyWith(secondary: const Color(0xffFFD261)),
       ),
-      home: const SplashScreen(),
+      home: RegisterPage(),
     );
   }
 }

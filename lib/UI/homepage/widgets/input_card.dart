@@ -8,12 +8,13 @@ class InputCard extends StatelessWidget {
   final TextField textField;
 
   const InputCard(
-      this.icon, this.title, this.subTitle, this.description, this.textField);
+      this.icon, this.title, this.subTitle, this.description, this.textField,
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 6,
+      elevation: 4,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

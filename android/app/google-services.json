@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "530217684601",
+    "project_id": "garbage-master",
+    "storage_bucket": "garbage-master.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530217684601:android:c5bc28f5e2e3ece09b0ea8",
+        "android_client_info": {
+          "package_name": "com.kurision.garbage_master"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "530217684601-ubtv0uu1sq28p1d8eci2shbml6pb7ouq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB33hiB_i5Inao6r-dNPPTqTbySnEetN2k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "530217684601-ubtv0uu1sq28p1d8eci2shbml6pb7ouq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

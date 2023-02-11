@@ -1,8 +1,14 @@
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../../models/ward.dart';
+import './login_page.dart';
+import '../../../models/api.services.dart';
 import './terms_&_condtions.dart';
 
 class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
@@ -10,44 +16,51 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isChecked = false;
-  final List<String> dropDownList = [
-    'Ward 1',
-    'Ward 2',
-    'Ward 3',
-    'Ward 4',
-    'Ward 5',
-    'Ward 6',
-    'Ward 7',
-    'Ward 8',
-    'Ward 9',
-    'Ward 10',
-    'Ward 11',
-    'Ward 12',
-    'Ward 13',
-    'Ward 14',
-    'Ward 15',
-    'Ward 16',
-    'Ward 17',
-    'Ward 18',
-    'Ward 19',
-    'Ward 20',
-    'Ward 21',
-    'Ward 22',
-    'Ward 23',
-    'Ward 24',
-    'Ward 25',
-    'Ward 26',
-    'Ward 27',
-    'Ward 28',
-    'Ward 29',
-    'Ward 30',
-    'Ward 31',
-    'Ward 32',
-  ];
-  String? dropDownValue;
 
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final middleNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final userNameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
+  final List<Ward> dropDownWardList = [
+    Ward(id: 1, title: 'Ward 1 Naksal'),
+    Ward(id: 2, title: 'Ward 2 Lazimpat'),
+    Ward(id: 3, title: 'Ward 3 Maharajgunj'),
+    Ward(id: 4, title: 'Ward 4 Baluwatar'),
+    Ward(id: 5, title: 'Ward 5 Hadigaun'),
+    Ward(id: 6, title: 'Ward 6 Bouddha'),
+    Ward(id: 7, title: 'Ward 7 Mitrapark'),
+    Ward(id: 8, title: 'Ward 9 Gaushala'),
+    Ward(id: 9, title: 'Ward 9 Gaushala'),
+    Ward(id: 10, title: 'Ward 10 Baneshwor'),
+    Ward(id: 11, title: 'Ward 11 Tripureshwor'),
+    Ward(id: 12, title: 'Ward 12 Teku'),
+    Ward(id: 13, title: 'Ward 13 Kalimati'),
+    Ward(id: 14, title: 'Ward 14 Kalanki'),
+    Ward(id: 15, title: 'Ward 15 Dallu'),
+    Ward(id: 16, title: 'Ward 16 Sorakhuttey'),
+    Ward(id: 17, title: 'Ward 17 Chhetrapti'),
+    Ward(id: 18, title: 'Ward 18 Nardevi'),
+    Ward(id: 19, title: 'Ward 19 Damatol'),
+    Ward(id: 20, title: 'Ward 20 Bhimsensthan'),
+    Ward(id: 21, title: 'Ward 21 Jawalakhel'),
+    Ward(id: 22, title: 'Ward 22 Tewanhal'),
+    Ward(id: 23, title: 'Ward 23 Ombahal'),
+    Ward(id: 24, title: 'Ward 24 Makhan'),
+    Ward(id: 25, title: 'Ward 25 Masangali'),
+    Ward(id: 26, title: 'Ward 26 Lainchaur'),
+    Ward(id: 27, title: 'Ward 27 Mahabouddha'),
+    Ward(id: 28, title: 'Ward 28 Old Buspark'),
+    Ward(id: 29, title: 'Ward 29 Dillibazar Pipal'),
+    Ward(id: 30, title: 'Ward 30 Gyaneshowr'),
+    Ward(id: 31, title: 'Ward 31 Bhimsengola'),
+    Ward(id: 32, title: 'Ward 32 Koteshwor'),
+  ];
+
+  late int dropDownWardValue;
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +123,64 @@ class _RegisterPageState extends State<RegisterPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          // Username
+          TextFormField(
+            decoration: InputDecoration(
+              counterText: "",
+              hintText: 'First Name',
+              border: outlineInputBorder,
+              fillColor: textFieldFillColor,
+              filled: true,
+              prefixIcon: const Icon(Icons.person),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Required';
+              }
+              if (!RegExp(r'^[a-zA-Z]').hasMatch(value)) {
+                return 'Invalid Username';
+              }
+              return null;
+            },
+            maxLength: 20,
+            controller: firstNameController,
+          ),
+          const SizedBox(height: 20),
+          TextFormField(
+            decoration: InputDecoration(
+              counterText: "",
+              hintText: 'Middle Name',
+              border: outlineInputBorder,
+              fillColor: textFieldFillColor,
+              filled: true,
+              prefixIcon: const Icon(Icons.person),
+            ),
+            maxLength: 20,
+            controller: middleNameController,
+          ),
+          const SizedBox(height: 20),
+          TextFormField(
+            decoration: InputDecoration(
+              counterText: "",
+              hintText: 'Last Name',
+              border: outlineInputBorder,
+              fillColor: textFieldFillColor,
+              filled: true,
+              prefixIcon: const Icon(Icons.person),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Required';
+              }
+              if (!RegExp(r'^[a-zA-Z]').hasMatch(value)) {
+                return 'Invalid Username';
+              }
+              return null;
+            },
+            maxLength: 20,
+            controller: lastNameController,
+          ),
+          const SizedBox(height: 20),
           TextFormField(
             decoration: InputDecoration(
               counterText: "",
@@ -129,31 +200,10 @@ class _RegisterPageState extends State<RegisterPage> {
               return null;
             },
             maxLength: 20,
+            controller: userNameController,
           ),
           const SizedBox(height: 20),
-          TextFormField(
-            keyboardType: TextInputType.phone,
-            decoration: InputDecoration(
-              counterText: "",
-              hintText: 'Mobile Number',
-              border: outlineInputBorder,
-              fillColor: textFieldFillColor,
-              filled: true,
-              prefixIcon: const Icon(Icons.phone_android_rounded),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Requred';
-              }
-              if (!RegExp(r'^[9][8][0-9]').hasMatch(value) ||
-                  value.length < 10) {
-                return 'Invalid Mobile Number';
-              }
-              return null;
-            },
-            maxLength: 10,
-          ),
-          const SizedBox(height: 20),
+          //Ward input
           DropdownButtonFormField(
             decoration: InputDecoration(
               hintText: 'Kathmandu Metro Ward',
@@ -163,25 +213,27 @@ class _RegisterPageState extends State<RegisterPage> {
               prefixIcon: const Icon(Icons.location_on_rounded),
             ),
             menuMaxHeight: 200,
-            items: dropDownList.map((String item) {
+            items: dropDownWardList.map((Ward item) {
               return DropdownMenuItem(
-                child: Text(item),
-                value: item,
+                value: item.id,
+                child: Text(item.title),
               );
             }).toList(),
-            onChanged: (String? val) {
+            onChanged: (int? val) {
               setState(() {
-                dropDownValue = val!;
+                dropDownWardValue = val!;
               });
             },
             validator: (value) {
-              if (value == null || value.isEmpty) {
+              if (value == null) {
                 return 'Required';
               }
               return null;
             },
           ),
           const SizedBox(height: 20),
+
+          //Email
           TextFormField(
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
@@ -193,7 +245,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Requred';
+                return 'Required';
               }
               if (!RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
                   .hasMatch(value)) {
@@ -201,8 +253,11 @@ class _RegisterPageState extends State<RegisterPage> {
               }
               return null;
             },
+            controller: emailController,
           ),
           const SizedBox(height: 20),
+
+          //Password
           TextFormField(
             keyboardType: TextInputType.visiblePassword,
             decoration: InputDecoration(
@@ -214,20 +269,20 @@ class _RegisterPageState extends State<RegisterPage> {
               prefixIcon: const Icon(Icons.password_rounded),
             ),
             obscureText: true,
-            controller: _passwordController,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Required';
               }
-
               if (value.length < 8) {
-                return 'Password should be atleast of 8 characters';
+                return 'Password should be at least of 8 characters';
               }
-
               return null;
             },
+            controller: passwordController,
           ),
           const SizedBox(height: 20),
+
+          //Confirm Password
           TextFormField(
             keyboardType: TextInputType.visiblePassword,
             decoration: InputDecoration(
@@ -239,22 +294,22 @@ class _RegisterPageState extends State<RegisterPage> {
               prefixIcon: const Icon(Icons.password_rounded),
             ),
             obscureText: true,
-            controller: _confirmPasswordController,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Required';
               }
 
               if (value.length < 8) {
-                return 'Password should be atleast of 8 characters';
+                return 'Password should be at least of 8 characters';
               }
 
-              if (_passwordController.text != _confirmPasswordController.text) {
+              if (passwordController.text != confirmPasswordController.text) {
                 return 'Password and Confirm Password doesn\'t match';
               }
 
               return null;
             },
+            controller: confirmPasswordController,
           ),
           const SizedBox(height: 10),
         ],
@@ -263,23 +318,16 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   _footer(context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // CheckboxListTile(
-          //   activeColor: Theme.of(context).primaryColor,
-          //   title: Text("I agree to the Terms & Conditions"),
-          //   value: false,
-          //   onChanged: null,
-          //   controlAffinity: ListTileControlAffinity.leading,
-          // ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Checkbox(
-                activeColor: Theme.of(context).accentColor,
+                activeColor: Theme.of(context).colorScheme.secondary,
                 value: _isChecked,
                 onChanged: (val) {
                   setState(() {
@@ -292,7 +340,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => TermsConditions()));
+                          builder: (context) => const TermsConditions()));
                 },
                 child: Text.rich(
                   TextSpan(
@@ -319,13 +367,35 @@ class _RegisterPageState extends State<RegisterPage> {
               ? ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
+                      APIServices.registerUser({
+                        "fName": firstNameController.text.trim(),
+                        "mName": middleNameController.text.trim(),
+                        "lName": lastNameController.text.trim(),
+                        "email": emailController.text.trim(),
+                        "username": userNameController.text.trim(),
+                        "password": passwordController.text.trim(),
+                        "ward": dropDownWardValue,
+                      });
+
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           behavior: SnackBarBehavior.floating,
                           margin: const EdgeInsets.all(15),
                           elevation: 5,
-                          content: const Text('Registering in please wait....'),
+                          content: const Text('Register Successfull'),
                           backgroundColor:
                               Theme.of(context).snackBarTheme.backgroundColor));
+
+                      //   FirebaseAuth.instance
+                      //       .createUserWithEmailAndPassword(
+                      //           email: _emailController.text.trim(),
+                      //           password: _passwordController.text.trim())
+                      //       .then((value) {
+                      //     print(value.user!.email);
+                      //   }).catchError((e) {
+                      //     print(e);
+                      //   });
+                      //   Navigator.push(context,
+                      //       MaterialPageRoute(builder: (context) => LoginPage()));
                     }
                   },
                   style: ButtonStyle(

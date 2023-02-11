@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 class ForgotPassword extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+
+  ForgotPassword({super.key});
   @override
   Widget build(BuildContext context) {
     return SafeArea(
