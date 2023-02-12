@@ -365,9 +365,9 @@ class _RegisterPageState extends State<RegisterPage> {
           const SizedBox(height: 10),
           _isChecked
               ? ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      APIServices.registerUser({
+                      final response = await APIServices.registerUser({
                         "fName": firstNameController.text.trim(),
                         "mName": middleNameController.text.trim(),
                         "lName": lastNameController.text.trim(),
@@ -377,13 +377,29 @@ class _RegisterPageState extends State<RegisterPage> {
                         "ward": dropDownWardValue,
                       });
 
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          behavior: SnackBarBehavior.floating,
-                          margin: const EdgeInsets.all(15),
-                          elevation: 5,
-                          content: const Text('Register Successfull'),
-                          backgroundColor:
-                              Theme.of(context).snackBarTheme.backgroundColor));
+                      if (response.statusCode == 200) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                              behavior: SnackBarBehavior.floating,
+                              margin: const EdgeInsets.all(15),
+                              elevation: 5,
+                              content: const Text('Register Successfull'),
+                              backgroundColor: Theme.of(context)
+                                  .snackBarTheme
+                                  .backgroundColor),
+                        );
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()));
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            behavior: SnackBarBehavior.floating,
+                            margin: const EdgeInsets.all(15),
+                            elevation: 5,
+                            content: const Text('Register Failed'),
+                            backgroundColor: Theme.of(context).errorColor));
+                      }
 
                       //   FirebaseAuth.instance
                       //       .createUserWithEmailAndPassword(
@@ -394,8 +410,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       //   }).catchError((e) {
                       //     print(e);
                       //   });
-                      //   Navigator.push(context,
-                      //       MaterialPageRoute(builder: (context) => LoginPage()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
                     }
                   },
                   style: ButtonStyle(

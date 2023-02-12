@@ -1,24 +1,25 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:http/http.dart' as http;
 
 import '../models/register.dart';
 
 class APIServices {
   static String registerUserUrl =
-      'https://localhost:7255/ProjectAPI/RegisterUser';
+      'https://localhost:44384/ProjectAPI/RegisterUser';
   static String loginUserUrl = '';
   // static String course = 'https://studiyproject.com/api/v1/courses';
 
-  static Future registerUser(Map<String, dynamic> map) async {
+  static Future<http.Response> registerUser(Map<String, dynamic> map) async {
     final response = await http.post(Uri.parse(registerUserUrl), body: map);
     log(response.toString());
     return response;
   }
 
-  static Future loginUser(Map<String, dynamic> map) async {
-    return await http.post(Uri.parse(loginUserUrl), body: map);
+  static Future<http.Response> loginUser(Map<String, dynamic> map) async {
+    final response = await http.post(Uri.parse(loginUserUrl), body: map);
+    log(response.toString());
+    return response;
   }
 
   // static Future getCurses() async {

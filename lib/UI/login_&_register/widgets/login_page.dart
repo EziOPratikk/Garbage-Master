@@ -10,9 +10,27 @@ import './forgot_password.dart';
 class LoginPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
-  // final emailController = TextEditingController();
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
+
+  void saveUserLogin(String userName, String password) async {
+    SharedPreferences prefsUserName = await SharedPreferences.getInstance();
+    prefsUserName.setString('username', userName);
+    SharedPreferences prefsPassword = await SharedPreferences.getInstance();
+    prefsPassword.setString('password', password);
+  }
+
+  void readUserLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? savedUserName = prefs.getString('username');
+    String? savedPassword = prefs.getString('password');
+
+    if (savedUserName != null && savedPassword != null) {
+      userNameController.text = savedUserName;
+      passwordController.text = savedPassword;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -57,28 +75,6 @@ class LoginPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // TextFormField(
-          //   decoration: InputDecoration(
-          //     hintText: "Email",
-          //     border: outlineInputBorder,
-          //     fillColor: textFieldFillColor,
-          //     filled: true,
-          //     prefixIcon: const Icon(Icons.email_rounded),
-          //   ),
-          //   validator: (value) {
-          //     if (value == null || value.isEmpty) {
-          //       return 'Required';
-          //     }
-
-          //     if (!RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
-          //         .hasMatch(value)) {
-          //       return 'Invalid Email Address';
-          //     }
-
-          //     return null;
-          //   },
-          //   controller: _emailController,
-          // ),
           TextFormField(
             decoration: InputDecoration(
               counterText: "",
@@ -146,23 +142,45 @@ class LoginPage extends StatelessWidget {
             // onPressed: () {
             //   // APIServices.getCurses();
             // },
-            onPressed: () {
+            onPressed: () async {
               if (_formKey.currentState!.validate()) {
-                // APIServices.loginUser({
-                //   "email": _emailController.text.trim(),
-                //   "password": _passwordController.text.trim(),
-                // });
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    behavior: SnackBarBehavior.floating,
-                    margin: const EdgeInsets.all(15),
-                    elevation: 5,
-                    content: const Text('Log in successfull'),
-                    backgroundColor:
-                        Theme.of(context).snackBarTheme.backgroundColor));
-                Navigator.push(
+                final response = await APIServices.loginUser({
+                  "username": userNameController.text.trim(),
+                  "password": passwordController.text.trim(),
+                });
+
+                if (response.statusCode == 200) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      margin: const EdgeInsets.all(15),
+                      elevation: 5,
+                      content: const Text('Log in successfull'),
+                      backgroundColor:
+                          Theme.of(context).snackBarTheme.backgroundColor));
+
+                  saveUserLogin(
+                    userNameController.text.trim(),
+                    passwordController.text.trim(),
+                  );
+
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const MainScreen()));
+                      builder: (context) => const MainScreen(),
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      margin: const EdgeInsets.all(15),
+                      elevation: 5,
+                      content: const Text('Log in failed'),
+                      backgroundColor: Theme.of(context).errorColor,
+                    ),
+                  );
+                }
+
                 //   SharedPreferences prefs = await SharedPreferences.getInstance();
                 //   prefs.setString('email', _emailController.text.trim());
                 //   try {
