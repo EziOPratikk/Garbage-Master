@@ -374,19 +374,19 @@ class _RegisterPageState extends State<RegisterPage> {
                         "email": emailController.text.trim(),
                         "username": userNameController.text.trim(),
                         "password": passwordController.text.trim(),
-                        "ward": dropDownWardValue,
+                        "ward": dropDownWardValue.toString(),
                       });
 
                       if (response.statusCode == 200) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                              behavior: SnackBarBehavior.floating,
-                              margin: const EdgeInsets.all(15),
-                              elevation: 5,
-                              content: const Text('Register Successfull'),
-                              backgroundColor: Theme.of(context)
-                                  .snackBarTheme
-                                  .backgroundColor),
+                            behavior: SnackBarBehavior.floating,
+                            margin: const EdgeInsets.all(15),
+                            elevation: 5,
+                            content: const Text('Register Successfull'),
+                            backgroundColor:
+                                Theme.of(context).snackBarTheme.backgroundColor,
+                          ),
                         );
                         Navigator.push(
                             context,
@@ -410,8 +410,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       //   }).catchError((e) {
                       //     print(e);
                       //   });
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => LoginPage()));
+
                     }
                   },
                   style: ButtonStyle(

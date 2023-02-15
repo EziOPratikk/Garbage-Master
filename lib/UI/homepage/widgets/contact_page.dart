@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
+import '../../../models/api.services.dart';
+
 class ContactPage extends StatelessWidget {
-  const ContactPage({super.key});
+  ContactPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +63,10 @@ _header(context) {
 }
 
 _body(context) {
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final subjectController = TextEditingController();
+  final messageController = TextEditingController();
   final outlineInputBorder = OutlineInputBorder(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide.none,
@@ -74,6 +82,7 @@ _body(context) {
             fillColor: textFieldFillColor,
             filled: true,
           ),
+          controller: nameController,
         ),
         const SizedBox(height: 20),
         TextFormField(
@@ -84,6 +93,7 @@ _body(context) {
             fillColor: textFieldFillColor,
             filled: true,
           ),
+          controller: emailController,
         ),
         const SizedBox(height: 20),
         TextFormField(
@@ -93,6 +103,7 @@ _body(context) {
             fillColor: textFieldFillColor,
             filled: true,
           ),
+          controller: subjectController,
         ),
         const SizedBox(height: 20),
         TextFormField(
@@ -106,6 +117,7 @@ _body(context) {
             fillColor: textFieldFillColor,
             filled: true,
           ),
+          controller: messageController,
         ),
         const SizedBox(height: 20),
         Align(
@@ -118,7 +130,44 @@ _body(context) {
               padding: MaterialStateProperty.all(
                   const EdgeInsets.symmetric(vertical: 15, horizontal: 30)),
             ),
-            onPressed: () {},
+            onPressed: () async {
+              final response = await APIServices.contactUs({
+                "name": nameController.text.trim(),
+                "email": emailController.text.trim(),
+                "subject": subjectController.text.trim(),
+                "message": messageController.text.trim()
+              });
+
+              if ((jsonDecode(response.body)["result"]).toString() ==
+                  'Submitted') {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    margin: const EdgeInsets.all(15),
+                    elevation: 5,
+                    content: const Text('Submitted'),
+                    backgroundColor:
+                        Theme.of(context).snackBarTheme.backgroundColor));
+                nameController.text = '';
+                emailController.text = '';
+                subjectController.text = '';
+                messageController.text = '';
+              } else if ((jsonDecode(response.body)["result"]).toString() ==
+                  'Not Submitted') {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    margin: const EdgeInsets.all(15),
+                    elevation: 5,
+                    content: const Text('Not Submitted'),
+                    backgroundColor: Theme.of(context).errorColor));
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.floating,
+                    margin: const EdgeInsets.all(15),
+                    elevation: 5,
+                    content: const Text('Connection error'),
+                    backgroundColor: Theme.of(context).errorColor));
+              }
+            },
             child: const Text(
               'Send',
               style: TextStyle(fontSize: 16),

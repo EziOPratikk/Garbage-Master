@@ -1,4 +1,6 @@
 // import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,6 +14,8 @@ class LoginPage extends StatelessWidget {
 
   final userNameController = TextEditingController();
   final passwordController = TextEditingController();
+
+  LoginPage({super.key});
 
   void saveUserLogin(String userName, String password) async {
     SharedPreferences prefsUserName = await SharedPreferences.getInstance();
@@ -149,7 +153,8 @@ class LoginPage extends StatelessWidget {
                   "password": passwordController.text.trim(),
                 });
 
-                if (response.statusCode == 200) {
+                if ((jsonDecode(response.body)["result"]).toString() ==
+                    'ValidUser') {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       behavior: SnackBarBehavior.floating,
                       margin: const EdgeInsets.all(15),
