@@ -1,4 +1,5 @@
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import '../../../models/ward.dart';
@@ -378,39 +379,58 @@ class _RegisterPageState extends State<RegisterPage> {
                       });
 
                       if (response.statusCode == 200) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                        if ((jsonDecode(response.body)["result"]).toString() ==
+                            'UserRegistered') {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              behavior: SnackBarBehavior.floating,
+                              margin: const EdgeInsets.all(15),
+                              elevation: 5,
+                              content: const Text('Register Successfull'),
+                              backgroundColor: Theme.of(context)
+                                  .snackBarTheme
+                                  .backgroundColor,
+                            ),
+                          );
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()));
+                        } else if ((jsonDecode(response.body)["result"])
+                                .toString() ==
+                            'UsernameExists') {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              behavior: SnackBarBehavior.floating,
+                              margin: const EdgeInsets.all(15),
+                              elevation: 5,
+                              content: const Text('Username is already taken'),
+                              backgroundColor: Theme.of(context).errorColor));
+                        } else if ((jsonDecode(response.body)["result"])
+                                .toString() ==
+                            'EmailExists') {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             behavior: SnackBarBehavior.floating,
                             margin: const EdgeInsets.all(15),
                             elevation: 5,
-                            content: const Text('Register Successfull'),
-                            backgroundColor:
-                                Theme.of(context).snackBarTheme.backgroundColor,
-                          ),
-                        );
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage()));
+                            content: const Text("Email is already registered"),
+                            backgroundColor: Theme.of(context).errorColor,
+                          ));
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              behavior: SnackBarBehavior.floating,
+                              margin: const EdgeInsets.all(15),
+                              elevation: 5,
+                              content: const Text('Register Failed'),
+                              backgroundColor: Theme.of(context).errorColor));
+                        }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             behavior: SnackBarBehavior.floating,
                             margin: const EdgeInsets.all(15),
                             elevation: 5,
-                            content: const Text('Register Failed'),
+                            content: const Text('Connection error'),
                             backgroundColor: Theme.of(context).errorColor));
                       }
-
-                      //   FirebaseAuth.instance
-                      //       .createUserWithEmailAndPassword(
-                      //           email: _emailController.text.trim(),
-                      //           password: _passwordController.text.trim())
-                      //       .then((value) {
-                      //     print(value.user!.email);
-                      //   }).catchError((e) {
-                      //     print(e);
-                      //   });
-
                     }
                   },
                   style: ButtonStyle(

@@ -1,4 +1,3 @@
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -8,6 +7,8 @@ import './/UI/homepage/widgets/main_screen.dart';
 import '../../../models/api.services.dart';
 import './register_page.dart';
 import './forgot_password.dart';
+import '../../progress_indicator_widget.dart';
+import '../../snackbar_widget.dart';
 
 class LoginPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -74,6 +75,16 @@ class LoginPage extends StatelessWidget {
       borderSide: BorderSide.none,
     );
     final textFieldFillColor = Theme.of(context).primaryColor.withOpacity(0.2);
+
+    void progressIndicator() {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const ProgressIndicatorWidget();
+        },
+      );
+    }
+
     return Form(
       key: _formKey,
       child: Column(
@@ -148,72 +159,76 @@ class LoginPage extends StatelessWidget {
             // },
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
+                progressIndicator();
                 final response = await APIServices.loginUser({
                   "username": userNameController.text.trim(),
                   "password": passwordController.text.trim(),
                 });
 
-                if ((jsonDecode(response.body)["result"]).toString() ==
-                    'ValidUser') {
+                if (response.statusCode == 200) {
+                  Navigator.of(context).pop();
+                  if ((jsonDecode(response.body)["result"]).toString() ==
+                      'ValidUser') {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        margin: const EdgeInsets.all(15),
+                        elevation: 5,
+                        content: const Text('Log in successfull'),
+                        backgroundColor:
+                            Theme.of(context).snackBarTheme.backgroundColor));
+
+                    saveUserLogin(
+                      userNameController.text.trim(),
+                      passwordController.text.trim(),
+                    );
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MainScreen(),
+                      ),
+                    );
+                  } else if ((jsonDecode(response.body)["result"]).toString() ==
+                      'UsernameNotFound') {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        margin: const EdgeInsets.all(15),
+                        elevation: 5,
+                        content: const Text('Username doesn\'t exist'),
+                        backgroundColor: Theme.of(context).errorColor,
+                      ),
+                    );
+                  } else if ((jsonDecode(response.body)["result"]).toString() ==
+                      'PasswordIncorrect') {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        margin: const EdgeInsets.all(15),
+                        elevation: 5,
+                        content: const Text('Invalid Password'),
+                        backgroundColor: Theme.of(context).errorColor,
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        behavior: SnackBarBehavior.floating,
+                        margin: const EdgeInsets.all(15),
+                        elevation: 5,
+                        content: const Text('Log in failed'),
+                        backgroundColor: Theme.of(context).errorColor,
+                      ),
+                    );
+                  }
+                } else {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       behavior: SnackBarBehavior.floating,
                       margin: const EdgeInsets.all(15),
                       elevation: 5,
-                      content: const Text('Log in successfull'),
-                      backgroundColor:
-                          Theme.of(context).snackBarTheme.backgroundColor));
-
-                  saveUserLogin(
-                    userNameController.text.trim(),
-                    passwordController.text.trim(),
-                  );
-
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainScreen(),
-                    ),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      behavior: SnackBarBehavior.floating,
-                      margin: const EdgeInsets.all(15),
-                      elevation: 5,
-                      content: const Text('Log in failed'),
-                      backgroundColor: Theme.of(context).errorColor,
-                    ),
-                  );
+                      content: const Text('Connection error'),
+                      backgroundColor: Theme.of(context).errorColor));
                 }
-
-                //   SharedPreferences prefs = await SharedPreferences.getInstance();
-                //   prefs.setString('email', _emailController.text.trim());
-                //   try {
-                //     await FirebaseAuth.instance.signInWithEmailAndPassword(
-                //         email: _emailController.text.trim(),
-                //         password: _passwordController.text.trim());
-
-                //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                //         behavior: SnackBarBehavior.floating,
-                //         margin: const EdgeInsets.all(15),
-                //         elevation: 5,
-                //         content: const Text('Log in successfully'),
-                //         backgroundColor:
-                //             Theme.of(context).snackBarTheme.backgroundColor));
-                //     Navigator.push(
-                //         context,
-                //         MaterialPageRoute(
-                //             builder: (context) => const MainScreen()));
-                //   } on FirebaseAuthException catch (e) {
-                //     // TODO
-                //     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                //         behavior: SnackBarBehavior.floating,
-                //         margin: const EdgeInsets.all(15),
-                //         elevation: 5,
-                //         content: Text(e.message!),
-                //         backgroundColor:
-                //             Theme.of(context).snackBarTheme.backgroundColor));
-                //   }
               }
             },
 

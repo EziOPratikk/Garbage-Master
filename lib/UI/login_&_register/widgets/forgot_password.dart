@@ -1,11 +1,30 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+
+import '../../../models/api.services.dart';
+import './password_verification.dart';
+import '../../progress_indicator_widget.dart';
+import '../../snackbar_widget.dart';
 
 class ForgotPassword extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
 
+  final emailController = TextEditingController();
+
   ForgotPassword({super.key});
+
   @override
   Widget build(BuildContext context) {
+    void progressIndicator() {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const ProgressIndicatorWidget();
+        },
+      );
+    }
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -24,26 +43,27 @@ class ForgotPassword extends StatelessWidget {
                     ),
                   ],
                 ),
-                Container(
-                  height: 200,
-                  child: Image.asset('assets/images/forgot password.png',
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.20,
+                  child: Image.asset('assets/images/password.png',
                       fit: BoxFit.cover),
                 ),
+                const SizedBox(height: 25),
                 const Text(
                   'Forgot Password ?',
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 const Text(
                   'Don\'t worry!. Just enter the email address associated with your account then you\'re good to go.',
                   style: TextStyle(
                     fontSize: 15,
                     color: Color(0xff767676),
                   ),
-                  textAlign: TextAlign.justify,
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 30),
                 Form(
@@ -76,28 +96,58 @@ class ForgotPassword extends StatelessWidget {
 
                           return null;
                         },
+                        controller: emailController,
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 30),
                 Row(
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                behavior: SnackBarBehavior.floating,
-                                margin: const EdgeInsets.all(15),
-                                elevation: 5,
-                                content: const Text('Loading please wait....'),
-                                backgroundColor: Theme.of(context)
-                                    .snackBarTheme
-                                    .backgroundColor,
-                              ),
-                            );
+                            progressIndicator();
+                            final responseCheckEmail =
+                                await APIServices.checkEmail({
+                              "Email": emailController.text.trim(),
+                            });
+
+                            final responseSendEmail =
+                                await APIServices.sendEmail({
+                              "Email": emailController.text.trim(),
+                            });
+
+                            if (responseCheckEmail.statusCode == 200 &&
+                                responseSendEmail.statusCode == 200) {
+                              if ((jsonDecode(
+                                          responseCheckEmail.body)["result"])
+                                      .toString() ==
+                                  'None') {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    behavior: SnackBarBehavior.floating,
+                                    margin: const EdgeInsets.all(15),
+                                    elevation: 5,
+                                    content: const Text('Email not found'),
+                                    backgroundColor:
+                                        Theme.of(context).errorColor,
+                                  ),
+                                );
+
+                                Navigator.of(context).pop();
+                              } else {
+                                progressIndicator();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        PasswordVerification(),
+                                  ),
+                                );
+                              }
+                            }
                           }
                         },
                         style: ButtonStyle(
