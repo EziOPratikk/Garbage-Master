@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../login_&_register/widgets/login_page.dart';
 import '../../progress_indicator_widget.dart';
+import '../../snackbar_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -113,14 +114,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           const Duration(seconds: 2),
                           () {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  behavior: SnackBarBehavior.floating,
-                                  margin: const EdgeInsets.all(15),
-                                  elevation: 5,
-                                  content: const Text('Logged out'),
-                                  backgroundColor: Theme.of(context)
-                                      .snackBarTheme
-                                      .backgroundColor),
+                              showSnackBarWidget(
+                                'Logged out',
+                                Theme.of(context).snackBarTheme.backgroundColor,
+                              ),
                             );
                             Navigator.push(
                                 context,

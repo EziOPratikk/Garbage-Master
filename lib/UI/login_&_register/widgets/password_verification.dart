@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '../../snackbar_widget.dart';
+import './reset_password.dart';
+
 class PasswordVerification extends StatelessWidget {
+  final String sixDigitCode;
+  final String checkedEmailAddress;
+
+  PasswordVerification(this.sixDigitCode, this.checkedEmailAddress,
+      {super.key});
+
   final _formKey = GlobalKey<FormState>();
 
-  PasswordVerification({super.key});
+  final sixDigitCodeController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -13,18 +22,8 @@ class PasswordVerification extends StatelessWidget {
           margin: const EdgeInsets.all(20),
           child: ListView(
             children: [
-              Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    color: Theme.of(context).primaryColor,
-                  ),
-                ],
-              ),
-              SizedBox(
+              Container(
+                margin: const EdgeInsets.only(top: 50),
                 height: MediaQuery.of(context).size.height * 0.20,
                 child: Image.asset(
                   'assets/images/smartphone.png',
@@ -67,10 +66,11 @@ class PasswordVerification extends StatelessWidget {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter the provided code';
+                      return 'Please enter the pin provided in your email';
                     }
                     return null;
                   },
+                  controller: sixDigitCodeController,
                 ),
               ),
               const SizedBox(height: 30),
@@ -87,8 +87,27 @@ class PasswordVerification extends StatelessWidget {
                     ),
                   ),
                 ),
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {}
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    final response = sixDigitCode;
+
+                    if (response == sixDigitCodeController.text.toString()) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ResetPassword(checkedEmailAddress),
+                        ),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        showSnackBarWidget(
+                          'Invalid Pin',
+                          Theme.of(context).errorColor,
+                        ),
+                      );
+                    }
+                  }
                 },
                 child: const Text(
                   'Submit',

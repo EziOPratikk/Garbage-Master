@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
         primaryColor: const Color(0xff5C964A),
         snackBarTheme: const SnackBarThemeData(
-          backgroundColor: Color(0xffFFD261),
+          backgroundColor: Colors.green,
         ),
         textTheme: const TextTheme(
           headline6: TextStyle(

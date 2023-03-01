@@ -6,18 +6,21 @@ import '../models/register.dart';
 
 class APIServices {
   static String registerUserUrl =
-      'http://192.168.101.7:8989/ProjectAPI/RegisterUser';
+      'http://192.168.101.6:8989/ProjectAPI/RegisterUser';
 
-  static String loginUserUrl = 'http://192.168.101.7:8989/ProjectAPI/LoginUser';
+  static String loginUserUrl = 'http://192.168.101.6:8989/ProjectAPI/LoginUser';
 
   // static String course = 'https://studiyproject.com/api/v1/courses';
   static String contactUsUrl =
-      'http://192.168.101.7:8989/ProjectAPI/insertmessage';
+      'http://192.168.101.6:8989/ProjectAPI/insertmessage';
 
-  static String sendEmailUrl = 'http://192.168.101.7:8989/ProjectAPI/SendEmail';
+  static String sendEmailUrl = 'http://192.168.101.6:8989/ProjectAPI/SendEmail';
 
   static String checkEmailUrl =
-      'http://192.168.101.7:8989/ProjectAPI/CheckEmail';
+      'http://192.168.101.6:8989/ProjectAPI/CheckEmail';
+
+  static String resetPasswordUrl =
+      'http://192.168.101.6:8989/ProjectAPI/ResetPassword';
 
   static Future<http.Response> registerUser(Map<String, dynamic> map) async {
     final response = await http.post(
@@ -63,12 +66,27 @@ class APIServices {
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
 
+    log(response.body);
+    log(response.body.toString());
+
     return response;
   }
 
   static Future<http.Response> checkEmail(Map<String, dynamic> map) async {
     final response = await http.post(
       Uri.parse(checkEmailUrl),
+      body: jsonEncode(map),
+      headers: {'Content-Type': 'application/json', "accept": "*/*"},
+    );
+
+    log(response.body);
+    log(response.body.toString());
+    return response;
+  }
+
+  static Future<http.Response> resetPassword(Map<String, dynamic> map) async {
+    final response = await http.post(
+      Uri.parse(resetPasswordUrl),
       body: jsonEncode(map),
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
