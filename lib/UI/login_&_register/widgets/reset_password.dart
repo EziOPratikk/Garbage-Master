@@ -153,13 +153,20 @@ class ResetPassword extends StatelessWidget {
                               Theme.of(context).snackBarTheme.backgroundColor,
                             ),
                           );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginPage(),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            showSnackBarWidget(
+                              'Password reset failed',
+                              Theme.of(context).errorColor,
+                            ),
+                          );
                         }
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginPage(),
-                          ),
-                        );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           showSnackBarWidget(
