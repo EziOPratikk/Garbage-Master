@@ -149,6 +149,13 @@ class ForgotPassword extends StatelessWidget {
                                   ),
                                 );
                               }
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                showSnackBarWidget(
+                                  'Connection error',
+                                  Theme.of(context).errorColor,
+                                ),
+                              );
                             }
                           }
                         },

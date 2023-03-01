@@ -401,9 +401,11 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           );
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginPage()));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginPage(),
+                            ),
+                          );
                         } else if ((jsonDecode(response.body)["result"])
                                 .toString() ==
                             'UsernameExists') {

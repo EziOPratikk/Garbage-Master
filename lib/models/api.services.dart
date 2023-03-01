@@ -28,8 +28,7 @@ class APIServices {
       body: jsonEncode(map),
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
-    log(map.toString());
-    log(response.toString());
+
     return response;
   }
 
@@ -39,10 +38,10 @@ class APIServices {
       body: jsonEncode(map),
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
-    log(map.toString());
-    log(response.toString());
-    log(response.body);
-    log(response.body.toString());
+    // log(map.toString());
+    // log(response.toString());
+    // log(response.body);
+    // log(response.body.toString());
     return response;
   }
 
@@ -52,10 +51,7 @@ class APIServices {
       body: jsonEncode(map),
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
-    log(map.toString());
-    log(response.toString());
-    log(response.body);
-    log(response.body.toString());
+
     return response;
   }
 
@@ -65,9 +61,6 @@ class APIServices {
       body: jsonEncode(map),
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
-
-    log(response.body);
-    log(response.body.toString());
 
     return response;
   }
@@ -79,8 +72,6 @@ class APIServices {
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
 
-    log(response.body);
-    log(response.body.toString());
     return response;
   }
 
@@ -91,8 +82,6 @@ class APIServices {
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
 
-    log(response.body);
-    log(response.body.toString());
     return response;
   }
 
