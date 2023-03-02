@@ -119,6 +119,10 @@ class ForgotPassword extends StatelessWidget {
                               "Email": emailController.text.trim(),
                             });
 
+                            final String sixDigitCode =
+                                (jsonDecode(responseSendEmail.body)["result"])
+                                    .toString();
+
                             if (responseCheckEmail.statusCode == 200 &&
                                 responseSendEmail.statusCode == 200) {
                               if ((jsonDecode(
@@ -126,13 +130,9 @@ class ForgotPassword extends StatelessWidget {
                                       .toString() ==
                                   'None') {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    behavior: SnackBarBehavior.floating,
-                                    margin: const EdgeInsets.all(15),
-                                    elevation: 5,
-                                    content: const Text('Email not found'),
-                                    backgroundColor:
-                                        Theme.of(context).errorColor,
+                                  showSnackBarWidget(
+                                    'Email not found',
+                                    Theme.of(context).errorColor,
                                   ),
                                 );
 
@@ -142,11 +142,20 @@ class ForgotPassword extends StatelessWidget {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        PasswordVerification(),
+                                    builder: (context) => PasswordVerification(
+                                      sixDigitCode,
+                                      emailController.text.trim(),
+                                    ),
                                   ),
                                 );
                               }
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                showSnackBarWidget(
+                                  'Connection error',
+                                  Theme.of(context).errorColor,
+                                ),
+                              );
                             }
                           }
                         },

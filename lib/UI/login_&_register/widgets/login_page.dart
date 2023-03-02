@@ -169,13 +169,12 @@ class LoginPage extends StatelessWidget {
                   Navigator.of(context).pop();
                   if ((jsonDecode(response.body)["result"]).toString() ==
                       'ValidUser') {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        behavior: SnackBarBehavior.floating,
-                        margin: const EdgeInsets.all(15),
-                        elevation: 5,
-                        content: const Text('Log in successfull'),
-                        backgroundColor:
-                            Theme.of(context).snackBarTheme.backgroundColor));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      showSnackBarWidget(
+                        'Log in successfull',
+                        Theme.of(context).snackBarTheme.backgroundColor,
+                      ),
+                    );
 
                     saveUserLogin(
                       userNameController.text.trim(),
@@ -191,43 +190,35 @@ class LoginPage extends StatelessWidget {
                   } else if ((jsonDecode(response.body)["result"]).toString() ==
                       'UsernameNotFound') {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        behavior: SnackBarBehavior.floating,
-                        margin: const EdgeInsets.all(15),
-                        elevation: 5,
-                        content: const Text('Username doesn\'t exist'),
-                        backgroundColor: Theme.of(context).errorColor,
+                      showSnackBarWidget(
+                        'Username doesn\'t exist',
+                        Theme.of(context).errorColor,
                       ),
                     );
                   } else if ((jsonDecode(response.body)["result"]).toString() ==
                       'PasswordIncorrect') {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        behavior: SnackBarBehavior.floating,
-                        margin: const EdgeInsets.all(15),
-                        elevation: 5,
-                        content: const Text('Invalid Password'),
-                        backgroundColor: Theme.of(context).errorColor,
+                      showSnackBarWidget(
+                        'Invalid Password',
+                        Theme.of(context).errorColor,
                       ),
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        behavior: SnackBarBehavior.floating,
-                        margin: const EdgeInsets.all(15),
-                        elevation: 5,
-                        content: const Text('Log in failed'),
-                        backgroundColor: Theme.of(context).errorColor,
+                      showSnackBarWidget(
+                        'Log in failed',
+                        Theme.of(context).errorColor,
                       ),
                     );
                   }
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      behavior: SnackBarBehavior.floating,
-                      margin: const EdgeInsets.all(15),
-                      elevation: 5,
-                      content: const Text('Connection error'),
-                      backgroundColor: Theme.of(context).errorColor));
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    showSnackBarWidget(
+                      'Connection error',
+                      Theme.of(context).errorColor,
+                    ),
+                  );
                 }
               }
             },

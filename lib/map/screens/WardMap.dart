@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:garbage_master/map/helpers/shared_prefs.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
-import'package:syncfusion_flutter_maps/maps.dart';
+import 'package:syncfusion_flutter_maps/maps.dart';
 
 class GarbageMap extends StatefulWidget {
   const GarbageMap({Key? key}) : super(key: key);
@@ -11,13 +11,19 @@ class GarbageMap extends StatefulWidget {
 }
 
 class _GarbageMapState extends State<GarbageMap> {
-  LatLng latlng= getLatLngFromSharedPrefs();
+  LatLng latlng = getLatLngFromSharedPrefs();
   late List<Model> data;
   late MapShapeSource dataSource;
   // late CameraPosition _initialCameraPosition;
   late MapboxMapController controller;
   late MapZoomPanBehavior _zoomPanBehavior;
+  final MapShapeLayerController _layerController = MapShapeLayerController();
 
+  @override
+  void dispose() {
+    _layerController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -54,7 +60,6 @@ class _GarbageMapState extends State<GarbageMap> {
       const Model('Ward30', 25),
       const Model('Ward31', 35),
       const Model('Ward32', 32),
-
     ];
 
     dataSource = MapShapeSource.asset(
@@ -64,66 +69,81 @@ class _GarbageMapState extends State<GarbageMap> {
       primaryValueMapper: (int index) => data[index].ward,
       shapeColorValueMapper: (int index) => data[index].count,
       shapeColorMappers: [
-        const MapColorMapper(from: 0, to: 9, color: Color(0xff10974c),minOpacity: 0.7,maxOpacity: 0.7),
-        const MapColorMapper(from: 10, to: 19, color: Color(0xffdab600),minOpacity: 0.7,maxOpacity: 0.7),
-        const MapColorMapper(from: 20, to: 50, color: Color(0xffe53935),minOpacity: 0.7,maxOpacity: 0.7),
+        const MapColorMapper(
+            from: 0,
+            to: 9,
+            color: Color(0xff10974c),
+            minOpacity: 0.7,
+            maxOpacity: 0.7),
+        const MapColorMapper(
+            from: 10,
+            to: 19,
+            color: Color(0xffdab600),
+            minOpacity: 0.7,
+            maxOpacity: 0.7),
+        const MapColorMapper(
+            from: 20,
+            to: 50,
+            color: Color(0xffe53935),
+            minOpacity: 0.7,
+            maxOpacity: 0.7),
       ],
     );
     super.initState();
     _zoomPanBehavior = MapZoomPanBehavior(
       focalLatLng: MapLatLng(latlng.latitude, latlng.longitude),
-      zoomLevel: 5,
+      zoomLevel: 0.5,
       minZoomLevel: 13,
       maxZoomLevel: 15,
-
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    // _onMapCreated(MapboxMapController controller) async {
-    //   this.controller = controller;
-    // }
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(left: 15, right: 15),
+        padding: const EdgeInsets.all(8.0),
         child: SfMaps(
           layers: [
-          //   MapShapeLayer(source: dataSource),
-          // ],
             MapTileLayer(
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
               initialFocalLatLng: MapLatLng(latlng.latitude, latlng.longitude),
               initialZoomLevel: 15,
               zoomPanBehavior: _zoomPanBehavior,
-              sublayers: [MapShapeSublayer(source: dataSource,
-              strokeColor: Colors.white,
-              strokeWidth: 2,
-              //stoke style
-
-
-              ),],
+              sublayers: [
+                MapShapeSublayer(
+                  controller: _layerController,
+                  source: dataSource,
+                  strokeColor: Colors.white,
+                  strokeWidth: 2,
+                  markerBuilder: (BuildContext context, int index) {
+                    return MapMarker(
+                      latitude: latlng.latitude,
+                      longitude: latlng.longitude,
+                      child: Icon(
+                        Icons.location_on,
+                        color: Colors.black,
+                        size: 30,
+                      ),
+                    );
+                  },
+                  //stoke style
                 ),
+              ],
+            ),
           ],
-
+        ),
       ),
-    ),
       floatingActionButton: FloatingActionButton(
-         onPressed: () {
-         _zoomPanBehavior = MapZoomPanBehavior(
-           focalLatLng: MapLatLng(latlng.latitude, latlng.longitude),
-         );
-
-    // Add your onPressed code here!
-    },
-
-        child: const Icon(Icons.my_location),
+        onPressed: () {
+          _layerController.insertMarker(0);
+        },
+        child: Icon(Icons.location_on),
       ),
     );
   }
-
-
 }
+
 class Model {
   const Model(this.ward, this.count);
   final String ward;

@@ -4,6 +4,10 @@
         android:label="garbage_master"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="AIzaSyD53jdXs8iCQWNLKJ5O9D1TL_w6Oc2pll4"
+                />
         <activity
             android:name=".MainActivity"
             android:exported="true"

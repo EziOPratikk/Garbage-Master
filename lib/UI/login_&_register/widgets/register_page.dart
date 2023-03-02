@@ -6,6 +6,8 @@ import '../../../models/ward.dart';
 import './login_page.dart';
 import '../../../models/api.services.dart';
 import './terms_&_condtions.dart';
+import '../../progress_indicator_widget.dart';
+import '../../snackbar_widget.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -62,6 +64,15 @@ class _RegisterPageState extends State<RegisterPage> {
   ];
 
   late int dropDownWardValue;
+
+  void progressIndicator() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const ProgressIndicatorWidget();
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -368,6 +379,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ? ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
+                      progressIndicator();
                       final response = await APIServices.registerUser({
                         "fName": firstNameController.text.trim(),
                         "mName": middleNameController.text.trim(),
@@ -379,57 +391,54 @@ class _RegisterPageState extends State<RegisterPage> {
                       });
 
                       if (response.statusCode == 200) {
+                        Navigator.of(context).pop();
                         if ((jsonDecode(response.body)["result"]).toString() ==
                             'UserRegistered') {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              behavior: SnackBarBehavior.floating,
-                              margin: const EdgeInsets.all(15),
-                              elevation: 5,
-                              content: const Text('Register Successfull'),
-                              backgroundColor: Theme.of(context)
-                                  .snackBarTheme
-                                  .backgroundColor,
+                            showSnackBarWidget(
+                              'Register Successfull',
+                              Theme.of(context).snackBarTheme.backgroundColor,
                             ),
                           );
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginPage()));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginPage(),
+                            ),
+                          );
                         } else if ((jsonDecode(response.body)["result"])
                                 .toString() ==
                             'UsernameExists') {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              behavior: SnackBarBehavior.floating,
-                              margin: const EdgeInsets.all(15),
-                              elevation: 5,
-                              content: const Text('Username is already taken'),
-                              backgroundColor: Theme.of(context).errorColor));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            showSnackBarWidget(
+                              'Username is already taken',
+                              Theme.of(context).errorColor,
+                            ),
+                          );
                         } else if ((jsonDecode(response.body)["result"])
                                 .toString() ==
                             'EmailExists') {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            behavior: SnackBarBehavior.floating,
-                            margin: const EdgeInsets.all(15),
-                            elevation: 5,
-                            content: const Text("Email is already registered"),
-                            backgroundColor: Theme.of(context).errorColor,
-                          ));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            showSnackBarWidget(
+                              'Email is already registered',
+                              Theme.of(context).errorColor,
+                            ),
+                          );
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                              behavior: SnackBarBehavior.floating,
-                              margin: const EdgeInsets.all(15),
-                              elevation: 5,
-                              content: const Text('Register Failed'),
-                              backgroundColor: Theme.of(context).errorColor));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            showSnackBarWidget(
+                              'Register Failed',
+                              Theme.of(context).errorColor,
+                            ),
+                          );
                         }
                       } else {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            behavior: SnackBarBehavior.floating,
-                            margin: const EdgeInsets.all(15),
-                            elevation: 5,
-                            content: const Text('Connection error'),
-                            backgroundColor: Theme.of(context).errorColor));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          showSnackBarWidget(
+                            'Connection error',
+                            Theme.of(context).errorColor,
+                          ),
+                        );
                       }
                     }
                   },

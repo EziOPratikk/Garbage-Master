@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:garbage_master/map/screens/trucktracking.dart';
 import 'package:intl/intl.dart';
 
 import './data_input_page.dart';
@@ -140,6 +141,18 @@ class _HomePageState extends State<HomePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => const GarbageMap(),
+                        ),
+                      );
+                    },
+                  ),
+                  HomepageItemWidget(
+                    imgSrc: "assets/images/map.png",
+                    title: "Track Garbage Truck",
+                    tapFunc: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const Tracktruck(),
                         ),
                       );
                     },

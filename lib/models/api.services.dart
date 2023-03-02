@@ -10,7 +10,6 @@ class APIServices {
 
   static String loginUserUrl = 'http://192.168.1.70:83/ProjectAPI/LoginUser';
 
-  // static String course = 'https://studiyproject.com/api/v1/courses';
   static String contactUsUrl =
       'http://192.168.1.70:83/ProjectAPI/insertmessage';
 
@@ -18,14 +17,19 @@ class APIServices {
 
   static String checkEmailUrl = 'http://192.168.1.70:83/ProjectAPI/CheckEmail';
 
+  static String resetPasswordUrl =
+      'http://192.168.1.70:83/ProjectAPI/ResetPassword';
+
+  static String currentUserUrl =
+      'http://192.168.1.70:83/ProjectAPI/GetSpecificUser';
+
   static Future<http.Response> registerUser(Map<String, dynamic> map) async {
     final response = await http.post(
       Uri.parse(registerUserUrl),
       body: jsonEncode(map),
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
-    log(map.toString());
-    log(response.toString());
+
     return response;
   }
 
@@ -35,10 +39,10 @@ class APIServices {
       body: jsonEncode(map),
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
-    log(map.toString());
-    log(response.toString());
-    log(response.body);
-    log(response.body.toString());
+    // log(map.toString());
+    // log(response.toString());
+    // log(response.body);
+    // log(response.body.toString());
     return response;
   }
 
@@ -48,10 +52,7 @@ class APIServices {
       body: jsonEncode(map),
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
-    log(map.toString());
-    log(response.toString());
-    log(response.body);
-    log(response.body.toString());
+
     return response;
   }
 
@@ -72,8 +73,16 @@ class APIServices {
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
 
-    log(response.body);
-    log(response.body.toString());
+    return response;
+  }
+
+  static Future<http.Response> resetPassword(Map<String, dynamic> map) async {
+    final response = await http.post(
+      Uri.parse(resetPasswordUrl),
+      body: jsonEncode(map),
+      headers: {'Content-Type': 'application/json', "accept": "*/*"},
+    );
+
     return response;
   }
 
@@ -88,4 +97,16 @@ class APIServices {
   //   log((jsonDecode(response.body)["data"]).toString());
   //   return response;
   // }
+  Future<Map<String, dynamic>> getUserData(String username) async {
+    final response =
+        await http.get(Uri.parse('$currentUserUrl?username=$username'));
+
+    if (response.statusCode == 200) {
+      // The response body is a JSON-encoded string, so we need to decode it
+      return json.decode(response.body);
+    } else {
+      // Handle any errors here
+      throw Exception('Failed to get user data');
+    }
+  }
 }
