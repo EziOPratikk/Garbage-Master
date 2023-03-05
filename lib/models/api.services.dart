@@ -27,6 +27,8 @@ class APIServices {
   static String updateGarbageDataUrl =
       'http://192.168.1.70:83/ProjectAPI/UpdateGarbageData';
 
+  static String getAvgUrl = 'http://192.168.1.70:83/ProjectAPI/getAverage';
+
   static Future<http.Response> registerUser(Map<String, dynamic> map) async {
     final response = await http.post(
       Uri.parse(registerUserUrl),
@@ -122,5 +124,15 @@ class APIServices {
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
     return response;
+  }
+
+  //get method
+  static Future<http.Response> getAverage() async {
+    final response = await http.get(Uri.parse(getAvgUrl));
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      throw Exception('Failed to load average');
+    }
   }
 }

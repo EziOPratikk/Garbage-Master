@@ -10,6 +10,20 @@ import '../../progress_indicator_widget.dart';
 import '../../snackbar_widget.dart';
 import '../../../models/users.dart';
 
+Future<Users> getProfileData() async {
+  var puser = await SharedPreferences.getInstance();
+  puser.getString('username');
+  final currentUser = await APIServices.currentUser({
+    'username': await SharedPreferences.getInstance()
+        .then((value) => value.getString('username') ?? 'no username found'),
+  });
+  var decode = jsonDecode(currentUser.body);
+  Map<String, dynamic> userMap = decode;
+  Users profileUser = Users.fromMap(userMap);
+
+  return profileUser;
+}
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({
     super.key,
@@ -32,20 +46,6 @@ class _ProfilePageState extends State<ProfilePage> {
     getProfileData().then((value) {
       user = value;
     });
-  }
-
-  Future<Users> getProfileData() async {
-    var puser = await SharedPreferences.getInstance();
-    puser.getString('username');
-    final currentUser = await APIServices.currentUser({
-      'username': await SharedPreferences.getInstance()
-          .then((value) => value.getString('username') ?? 'no username found'),
-    });
-    var decode = jsonDecode(currentUser.body);
-    Map<String, dynamic> userMap = decode;
-    Users profileUser = Users.fromMap(userMap);
-
-    return profileUser;
   }
 
   @override
