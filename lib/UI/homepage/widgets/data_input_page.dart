@@ -1,8 +1,21 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import './input_card.dart';
+import '../../../models/api.services.dart';
+import '../../snackbar_widget.dart';
 
 class DataInputPage extends StatelessWidget {
+  DataInputPage({super.key});
+
+  final smallPlasticController = TextEditingController();
+  final bigPlasticController = TextEditingController();
+  final dustBinController = TextEditingController();
+  final sackController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final textInputDecoration = InputDecoration(
@@ -13,6 +26,22 @@ class DataInputPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
       ),
     );
+
+    void fieldsEmptyUpdate() {
+      if (smallPlasticController.text.isEmpty &&
+          bigPlasticController.text.isEmpty &&
+          dustBinController.text.isEmpty &&
+          sackController.text.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          showSnackBarWidget(
+            'All fields cannot be empty',
+            Theme.of(context).errorColor,
+          ),
+        );
+        return;
+      }
+    }
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -50,9 +79,16 @@ class DataInputPage extends StatelessWidget {
                   'Number of filled plastics',
                   'Small plastics refers to bags that contains very small amount of wastes. We advise you not to count without filling the entire bag. The filled bag allows us to measure the data more efficiently.',
                   TextField(
-                    keyboardType: TextInputType.number,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: false,
+                      signed: true,
+                    ),
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
                     style: const TextStyle(fontSize: 15),
                     decoration: textInputDecoration,
+                    controller: smallPlasticController,
                   ),
                 ),
                 const SizedBox(height: 15),
@@ -65,9 +101,16 @@ class DataInputPage extends StatelessWidget {
                   'Number of filled plastics',
                   'Big bag refers to bags that contains large amount of wastes. We advise you not to count without filling the entire bag. The filled bag allows us to measure the data more efficiently.',
                   TextField(
-                    keyboardType: TextInputType.number,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: false,
+                      signed: true,
+                    ),
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     style: const TextStyle(fontSize: 15),
                     decoration: textInputDecoration,
+                    controller: bigPlasticController,
                   ),
                 ),
                 const SizedBox(height: 15),
@@ -80,9 +123,16 @@ class DataInputPage extends StatelessWidget {
                   'Number of filled Dustbin',
                   'Dust bin refers to storage that contain large amount of wastes. If the dustbin is very small, please count it in plastic zone. We advise you not to count without filling the entire bin to make it more efficient',
                   TextField(
-                    keyboardType: TextInputType.number,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: false,
+                      signed: true,
+                    ),
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     style: const TextStyle(fontSize: 15),
                     decoration: textInputDecoration,
+                    controller: dustBinController,
                   ),
                 ),
                 const SizedBox(height: 15),
@@ -95,9 +145,16 @@ class DataInputPage extends StatelessWidget {
                   'Number of filled sack bags',
                   'Sack bag refers to bags that contains very large amount of wastes. We advise you not to count without filling the entire bag. The filled bag allows us to measure the data more efficiently.',
                   TextField(
-                    keyboardType: TextInputType.number,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: false,
+                      signed: true,
+                    ),
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly,
+                    ],
                     style: const TextStyle(fontSize: 15),
                     decoration: textInputDecoration,
+                    controller: sackController,
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -111,7 +168,47 @@ class DataInputPage extends StatelessWidget {
                         const EdgeInsets.symmetric(
                             vertical: 15, horizontal: 30)),
                   ),
-                  onPressed: () {},
+                  onPressed: () async {
+                    fieldsEmptyUpdate();
+                    var puser = await SharedPreferences.getInstance();
+                    String? user = puser.getString('username');
+
+                    final response = await APIServices.updateGarbageData({
+                      "sp": sackController.text.trim(),
+                      "bp": bigPlasticController.text.trim(),
+                      "db": dustBinController.text.trim(),
+                      "sack": sackController.text.trim(),
+                      "uname": user,
+                    });
+
+                    if (response.statusCode == 200) {
+                      if ((jsonDecode(response.body)['result']).toString() ==
+                          "Updated") {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          showSnackBarWidget(
+                            'Updated successfully',
+                            Theme.of(context).snackBarTheme.backgroundColor,
+                          ),
+                        );
+                      }
+                      if ((jsonDecode(response.body)['result']).toString() ==
+                          "spam") {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          showSnackBarWidget(
+                            'Spam data recorded. Please enter valid data only',
+                            Theme.of(context).colorScheme.secondary,
+                          ),
+                        );
+                      }
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        showSnackBarWidget(
+                          'Connection Error',
+                          Theme.of(context).errorColor,
+                        ),
+                      );
+                    }
+                  },
                   child: const Text(
                     'Update',
                     style: TextStyle(fontSize: 16),

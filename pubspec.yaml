@@ -38,7 +38,6 @@ dependencies:
   mapbox_gl: ^0.16.0
   syncfusion_flutter_core: ^20.4.48
   syncfusion_flutter_maps: ^20.4.48
-  firebase_auth: ^4.2.5
   image_picker: ^0.8.6+1
   flutter_polyline_points: ^1.0.0
   google_maps_flutter: ^2.2.4

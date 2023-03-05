@@ -1,24 +1,52 @@
+import 'dart:convert';
 import 'dart:io';
-
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../models/api.services.dart';
 import '../../login_&_register/widgets/login_page.dart';
 import '../../progress_indicator_widget.dart';
 import '../../snackbar_widget.dart';
+import '../../../models/users.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({
+    super.key,
+  });
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  late Users? user;
+  bool isLoading = false;
   XFile? _imgFile;
   final ImagePicker _imgPicker = ImagePicker();
+
+  @override
+  void initState() {
+    super.initState();
+
+    getProfileData().then((value) {
+      user = value;
+    });
+  }
+
+  Future<Users> getProfileData() async {
+    var puser = await SharedPreferences.getInstance();
+    puser.getString('username');
+    final currentUser = await APIServices.currentUser({
+      'username': await SharedPreferences.getInstance()
+          .then((value) => value.getString('username') ?? 'no username found'),
+    });
+    var decode = jsonDecode(currentUser.body);
+    Map<String, dynamic> userMap = decode;
+    Users profileUser = Users.fromMap(userMap);
+
+    return profileUser;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +55,14 @@ class _ProfilePageState extends State<ProfilePage> {
       borderSide: BorderSide.none,
     );
     final textFieldFillColor = Theme.of(context).primaryColor.withOpacity(0.2);
+
+    Future pickImage(ImageSource src) async {
+      XFile? pickedFile = await _imgPicker.pickImage(source: src);
+
+      setState(() {
+        _imgFile = pickedFile!;
+      });
+    }
 
     void progressIndicator() {
       showDialog(
@@ -37,14 +73,6 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     }
 
-    Future pickImage(ImageSource src) async {
-      XFile? pickedFile = await _imgPicker.pickImage(source: src);
-
-      setState(() {
-        _imgFile = pickedFile!;
-      });
-    }
-
     return SafeArea(
       child: Scaffold(
         body: Container(
@@ -52,7 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
           child: ListView(
             children: [
               Padding(
-                padding: EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(top: 20),
                 child: Row(
                   children: [
                     const Spacer(flex: 2),
@@ -67,48 +95,11 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     const Spacer(flex: 1),
-                    // TextButton(
-                    //   onPressed: () async {
-                    //     try {
-                    //       SharedPreferences prefs =
-                    //           await SharedPreferences.getInstance();
-                    //       await prefs.remove('email');
-                    //     } on Exception catch (e) {
-                    //       // TODO
-                    //       print(e);
-                    //     }
-                    //     FirebaseAuth.instance.signOut();
-                    //     progressIndicator();
-                    //     ScaffoldMessenger.of(context).showSnackBar(
-                    //       SnackBar(
-                    //           behavior: SnackBarBehavior.floating,
-                    //           margin: const EdgeInsets.all(15),
-                    //           elevation: 5,
-                    //           content: const Text('Logged out'),
-                    //           backgroundColor: Theme.of(context)
-                    //               .snackBarTheme
-                    //               .backgroundColor),
-                    //     );
-                    //     Navigator.pop(context);
-                    //     Navigator.pushReplacement(context,
-                    //         MaterialPageRoute(builder: (_) {
-                    //       return LoginPage();
-                    //     }));
-                    //   },
-                    //   style: ButtonStyle(
-                    //     foregroundColor: MaterialStateProperty.all(
-                    //         Theme.of(context).colorScheme.secondary),
-                    //   ),
-                    //   child: const Text(
-                    //     'Logout',
-                    //     style: TextStyle(
-                    //       fontSize: 17,
-                    //       fontWeight: FontWeight.w600,
-                    //     ),
-                    //   ),
-                    // ),
                     TextButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        await prefs.remove('username');
                         progressIndicator();
                         Future.delayed(
                           const Duration(seconds: 2),
@@ -119,7 +110,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Theme.of(context).snackBarTheme.backgroundColor,
                               ),
                             );
-                            Navigator.push(
+                            Navigator.pop(context, true);
+                            Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => LoginPage()));
@@ -188,8 +180,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 10),
               TextFormField(
+                initialValue: user?.Username.toString(),
                 decoration: InputDecoration(
-                  hintText: 'User',
                   hintStyle: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -206,9 +198,9 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 10),
               TextFormField(
+                initialValue: user?.Email.toString(),
                 enabled: false,
                 decoration: InputDecoration(
-                  hintText: 'user@gamil.com',
                   hintStyle: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -225,11 +217,11 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 10),
               TextFormField(
+                initialValue: '9841******',
                 keyboardType: TextInputType.number,
                 maxLength: 10,
                 decoration: InputDecoration(
                   counterText: '',
-                  hintText: '9812312312',
                   hintStyle: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -246,9 +238,9 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 10),
               TextFormField(
+                initialValue: 'Bagmati',
                 enabled: false,
                 decoration: InputDecoration(
-                  hintText: 'Bagmati',
                   hintStyle: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -265,9 +257,9 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 10),
               TextFormField(
+                initialValue: 'Kathmandu',
                 enabled: false,
                 decoration: InputDecoration(
-                  hintText: 'Kathmandu',
                   hintStyle: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
@@ -284,8 +276,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 10),
               TextFormField(
+                initialValue: user?.Ward.toString(),
                 decoration: InputDecoration(
-                  hintText: '10',
                   hintStyle: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,

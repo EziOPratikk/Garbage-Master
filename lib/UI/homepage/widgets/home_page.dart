@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:garbage_master/map/screens/trucktracking.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import './data_input_page.dart';
 import './waste_segregation.dart';
@@ -16,7 +16,22 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final user = FirebaseAuth.instance.currentUser;
+  late String username = '';
+  @override
+  void initState() {
+    super.initState();
+    getuser();
+  }
+
+  String getuser() {
+    SharedPreferences.getInstance().then((prefs) {
+      setState(() {
+        username = prefs.getString('username')!;
+      });
+    });
+    return username;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -49,8 +64,8 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Hi User !',
+                Text(
+                  'Hi $username',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 25,

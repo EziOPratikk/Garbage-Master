@@ -5,7 +5,9 @@ import 'contact_page.dart';
 import './profile_page.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  MainScreen({
+    super.key,
+  });
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -13,13 +15,14 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   int _bottomNavBarCurrentIndex = 0;
-  final bottomNavBarPages = [
-    HomePage(),
-    ContactPage(),
-    ProfilePage(),
-  ];
+
   @override
   Widget build(BuildContext context) {
+    final bottomNavBarPages = [
+      HomePage(),
+      ContactPage(),
+      ProfilePage(),
+    ];
     return SafeArea(
       child: Scaffold(
         body: bottomNavBarPages[_bottomNavBarCurrentIndex],

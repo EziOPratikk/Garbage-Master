@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 
 import '../models/register.dart';
+import '../models/users.dart';
 
 class APIServices {
   static String registerUserUrl =
@@ -22,6 +23,9 @@ class APIServices {
 
   static String currentUserUrl =
       'http://192.168.1.70:83/ProjectAPI/GetSpecificUser';
+
+  static String updateGarbageDataUrl =
+      'http://192.168.1.70:83/ProjectAPI/UpdateGarbageData';
 
   static Future<http.Response> registerUser(Map<String, dynamic> map) async {
     final response = await http.post(
@@ -86,6 +90,20 @@ class APIServices {
     return response;
   }
 
+  static Future<http.Response> updateGarbageData(
+      Map<String, dynamic> map) async {
+    final response = await http.post(
+      Uri.parse(updateGarbageDataUrl),
+      body: jsonEncode(map),
+      headers: {'Content-Type': 'application/json', "accept": "*/*"},
+    );
+
+    log(response.body);
+    log(response.body.toString());
+
+    return response;
+  }
+
   // static Future getCurses() async {
   //   final response = await http.get(Uri.parse(course), headers: {
   //     "X-Api-Key":
@@ -97,16 +115,12 @@ class APIServices {
   //   log((jsonDecode(response.body)["data"]).toString());
   //   return response;
   // }
-  Future<Map<String, dynamic>> getUserData(String username) async {
-    final response =
-        await http.get(Uri.parse('$currentUserUrl?username=$username'));
-
-    if (response.statusCode == 200) {
-      // The response body is a JSON-encoded string, so we need to decode it
-      return json.decode(response.body);
-    } else {
-      // Handle any errors here
-      throw Exception('Failed to get user data');
-    }
+  static Future<http.Response> currentUser(Map<String, dynamic> map) async {
+    final response = await http.post(
+      Uri.parse(currentUserUrl),
+      body: jsonEncode(map),
+      headers: {'Content-Type': 'application/json', "accept": "*/*"},
+    );
+    return response;
   }
 }

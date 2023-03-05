@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import './/UI/homepage/widgets/main_screen.dart';
 import '../../../models/api.services.dart';
 import './register_page.dart';
@@ -154,9 +153,6 @@ class LoginPage extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           ElevatedButton(
-            // onPressed: () {
-            //   // APIServices.getCurses();
-            // },
             onPressed: () async {
               if (_formKey.currentState!.validate()) {
                 progressIndicator();
@@ -164,8 +160,11 @@ class LoginPage extends StatelessWidget {
                   "username": userNameController.text.trim(),
                   "password": passwordController.text.trim(),
                 });
-
                 if (response.statusCode == 200) {
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  prefs.setString('username', userNameController.text.trim());
+
                   Navigator.of(context).pop();
                   if ((jsonDecode(response.body)["result"]).toString() ==
                       'ValidUser') {
@@ -181,10 +180,10 @@ class LoginPage extends StatelessWidget {
                       passwordController.text.trim(),
                     );
 
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const MainScreen(),
+                        builder: (context) => MainScreen(),
                       ),
                     );
                   } else if ((jsonDecode(response.body)["result"]).toString() ==
@@ -222,7 +221,6 @@ class LoginPage extends StatelessWidget {
                 }
               }
             },
-
             style: ButtonStyle(
               backgroundColor:
                   MaterialStateProperty.all(Theme.of(context).primaryColor),
@@ -248,7 +246,7 @@ class LoginPage extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => RegisterPage()));
+                            builder: (context) => const RegisterPage()));
                   },
                   child: const Text('Register')),
             ],

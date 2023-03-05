@@ -4,7 +4,7 @@ class Users {
   late String LName;
   late String Email;
   late String Username;
-  late String Password;
+  late String? Password;
   late int Ward;
 
   Users(this.FName, this.MName, this.LName, this.Email, this.Username,

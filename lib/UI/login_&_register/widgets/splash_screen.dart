@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:garbage_master/wrapper/wrapper.dart';
+import 'package:garbage_master/UI/homepage/widgets/main_screen.dart';
 import 'package:location/location.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../main.dart';
 import 'login_page.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
@@ -19,6 +20,9 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void initializedLocationAndSave() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString('username');
+
     Location location = Location();
     bool? serviceEnabled;
     PermissionStatus? permissionGranted;
@@ -37,7 +41,11 @@ class _SplashScreenState extends State<SplashScreen> {
     sharedPreferences.setDouble('longitude', locationData.longitude!);
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-        return const Wrapper();
+        if (username != null) {
+          return MainScreen();
+        } else {
+          return LoginPage();
+        }
       }));
     });
   }
