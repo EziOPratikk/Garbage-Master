@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,7 +22,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late Users? user;
-  bool isLoading = false;
+
   XFile? _imgFile;
   final ImagePicker _imgPicker = ImagePicker();
 
@@ -47,6 +48,16 @@ class _ProfilePageState extends State<ProfilePage> {
 
     return profileUser;
   }
+
+  final firstNameController = TextEditingController();
+  final middleNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final phoneNumberController = TextEditingController();
+  final wardController = TextEditingController();
+
+  bool isReadOnly = true;
+
+  bool isDisabled = true;
 
   @override
   Widget build(BuildContext context) {
@@ -82,8 +93,27 @@ class _ProfilePageState extends State<ProfilePage> {
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const Spacer(flex: 2),
+                    TextButton(
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all(
+                            Theme.of(context).colorScheme.secondary),
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isReadOnly = !isReadOnly;
+                          isDisabled = !isDisabled;
+                        });
+                      },
+                      child: const Text(
+                        'Edit',
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
                     const Expanded(
                       child: Text(
                         'Profile',
@@ -94,7 +124,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                     ),
-                    const Spacer(flex: 1),
                     TextButton(
                       onPressed: () async {
                         SharedPreferences prefs =
@@ -152,38 +181,105 @@ class _ProfilePageState extends State<ProfilePage> {
                         shape: BoxShape.circle,
                       ),
                       child: CircleAvatar(
-                        radius: 60,
-                        backgroundColor:
-                            Theme.of(context).primaryColor.withOpacity(0.2),
+                        radius: 70,
                         foregroundImage: _imgFile == null
-                            ? const AssetImage('assets/images/user_profile.png')
+                            ? const AssetImage(
+                                'assets/images/profile-image.png')
                             : FileImage(File(_imgFile!.path)) as ImageProvider,
                       ),
                     ),
-                    IconButton(
-                      icon: const Icon(
-                        Icons.edit,
-                        size: 26,
-                      ),
-                      color: Theme.of(context).primaryColor,
-                      onPressed: () {
-                        pickImage(ImageSource.gallery);
-                      },
-                    ),
+                    isDisabled == false
+                        ? IconButton(
+                            icon: const Icon(
+                              Icons.edit,
+                              size: 26,
+                            ),
+                            color: Theme.of(context).primaryColor,
+                            onPressed: () {
+                              pickImage(ImageSource.gallery);
+                            },
+                          )
+                        : SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.12,
+                          ),
                   ],
                 ),
               ),
               const SizedBox(height: 30),
+              const Text(
+                'First Name',
+                style: TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                readOnly: isReadOnly,
+                // initialValue: user?.FName.toString(),
+                decoration: InputDecoration(
+                  hintText: user?.FName.toString(),
+                  hintStyle: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  border: outlineInputBorder,
+                  fillColor: textFieldFillColor,
+                  filled: true,
+                ),
+                controller: firstNameController,
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Middle Name',
+                style: TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                readOnly: isReadOnly,
+                // initialValue: user?.MName.toString(),
+                decoration: InputDecoration(
+                  hintText: user?.MName.toString(),
+                  hintStyle: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  border: outlineInputBorder,
+                  fillColor: textFieldFillColor,
+                  filled: true,
+                ),
+                controller: middleNameController,
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Last Name',
+                style: TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                readOnly: isReadOnly,
+                // initialValue: user?.LName.toString(),
+                decoration: InputDecoration(
+                  hintText: user?.LName.toString(),
+                  hintStyle: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  border: outlineInputBorder,
+                  fillColor: textFieldFillColor,
+                  filled: true,
+                ),
+                controller: lastNameController,
+              ),
+              const SizedBox(height: 20),
               const Text(
                 'Username',
                 style: TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 10),
               TextFormField(
-                initialValue: user?.Username.toString(),
+                enabled: false,
                 decoration: InputDecoration(
+                  hintText: user?.Username.toString(),
                   hintStyle: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                   border: outlineInputBorder,
@@ -198,17 +294,27 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 10),
               TextFormField(
-                initialValue: user?.Email.toString(),
                 enabled: false,
                 decoration: InputDecoration(
+                  hintText: user?.Email.toString(),
                   hintStyle: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                   border: outlineInputBorder,
                   fillColor: textFieldFillColor,
                   filled: true,
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Required';
+                  }
+                  if (!RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
+                      .hasMatch(value)) {
+                    return 'Invalid Email Address';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 20),
               const Text(
@@ -217,19 +323,20 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 10),
               TextFormField(
-                initialValue: '9841******',
+                readOnly: isReadOnly,
                 keyboardType: TextInputType.number,
                 maxLength: 10,
                 decoration: InputDecoration(
                   counterText: '',
                   hintStyle: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                   border: outlineInputBorder,
                   fillColor: textFieldFillColor,
                   filled: true,
                 ),
+                controller: phoneNumberController,
               ),
               const SizedBox(height: 20),
               const Text(
@@ -238,11 +345,11 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 10),
               TextFormField(
-                initialValue: 'Bagmati',
                 enabled: false,
                 decoration: InputDecoration(
+                  hintText: 'Bagmati',
                   hintStyle: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                   border: outlineInputBorder,
@@ -257,11 +364,11 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 10),
               TextFormField(
-                initialValue: 'Kathmandu',
                 enabled: false,
                 decoration: InputDecoration(
+                  hintText: 'Kathmandu',
                   hintStyle: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                   border: outlineInputBorder,
@@ -276,37 +383,99 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               const SizedBox(height: 10),
               TextFormField(
-                initialValue: user?.Ward.toString(),
+                readOnly: isReadOnly,
+                // initialValue: user?.Ward.toString(),
                 decoration: InputDecoration(
+                  hintText: user?.Ward.toString(),
                   hintStyle: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
                   border: outlineInputBorder,
                   fillColor: textFieldFillColor,
                   filled: true,
                 ),
+                controller: wardController,
               ),
               const SizedBox(height: 20),
-              Align(
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Theme.of(context).primaryColor),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10))),
-                    padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 30)),
-                  ),
-                  onPressed: () {},
-                  child: const Text(
-                    'Save',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 15),
+              isDisabled == false
+                  ? Align(
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
+                              Theme.of(context).primaryColor),
+                          shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          padding: MaterialStateProperty.all(
+                              const EdgeInsets.symmetric(
+                                  vertical: 15, horizontal: 30)),
+                        ),
+                        onPressed: () async {
+                          if (firstNameController.text.isEmpty ||
+                              lastNameController.text.isEmpty ||
+                              wardController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              showSnackBarWidget(
+                                'Required fields cannot be empty',
+                                Theme.of(context).errorColor,
+                              ),
+                            );
+                            return;
+                          }
+                          progressIndicator();
+                          final String userName =
+                              await SharedPreferences.getInstance().then(
+                                  (value) =>
+                                      value.getString('username') ??
+                                      'no username found');
+                          final response = await APIServices.updateProfile({
+                            "fName": firstNameController.text.trim(),
+                            "mName": middleNameController.text.trim(),
+                            "lName": lastNameController.text.trim(),
+                            "phone": phoneNumberController.text.trim(),
+                            "ward": wardController.text.trim(),
+                            "username": userName.trim(),
+                          });
+
+                          if (response.statusCode == 200) {
+                            if ((jsonDecode(response.body)["result"])
+                                    .toString() ==
+                                'Table Updated') {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                showSnackBarWidget(
+                                  'Profile Updated',
+                                  Theme.of(context)
+                                      .snackBarTheme
+                                      .backgroundColor,
+                                ),
+                              );
+                              // Navigator.pushReplacement(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => const ProfilePage(),
+                              //   ),
+                              // );
+                            }
+                            if ((jsonDecode(response.body)["result"])
+                                    .toString() ==
+                                'Field cannot be empty') {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                showSnackBarWidget(
+                                  'Please provide the required field',
+                                  Theme.of(context).errorColor,
+                                ),
+                              );
+                            }
+                          }
+                        },
+                        child: const Text(
+                          'Save',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    )
+                  : Container(),
             ],
           ),
         ),

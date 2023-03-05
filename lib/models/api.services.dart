@@ -2,30 +2,31 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 
-import '../models/register.dart';
-import '../models/users.dart';
-
 class APIServices {
   static String registerUserUrl =
-      'http://192.168.1.70:83/ProjectAPI/RegisterUser';
+      'http://192.168.101.3:8484/ProjectAPI/RegisterUser';
 
-  static String loginUserUrl = 'http://192.168.1.70:83/ProjectAPI/LoginUser';
+  static String loginUserUrl = 'http://192.168.101.3:8484/ProjectAPI/LoginUser';
 
   static String contactUsUrl =
-      'http://192.168.1.70:83/ProjectAPI/insertmessage';
+      'http://192.168.101.3:8484/ProjectAPI/InsertMessage';
 
-  static String sendEmailUrl = 'http://192.168.1.70:83/ProjectAPI/SendEmail';
+  static String sendEmailUrl = 'http://192.168.101.3:8484/ProjectAPI/SendEmail';
 
-  static String checkEmailUrl = 'http://192.168.1.70:83/ProjectAPI/CheckEmail';
+  static String checkEmailUrl =
+      'http://192.168.101.3:8484/ProjectAPI/CheckEmail';
 
   static String resetPasswordUrl =
-      'http://192.168.1.70:83/ProjectAPI/ResetPassword';
+      'http://192.168.101.3:8484/ProjectAPI/ResetPassword';
 
   static String currentUserUrl =
-      'http://192.168.1.70:83/ProjectAPI/GetSpecificUser';
+      'http://192.168.101.3:8484/ProjectAPI/GetSpecificUser';
 
   static String updateGarbageDataUrl =
-      'http://192.168.1.70:83/ProjectAPI/UpdateGarbageData';
+      'http://192.168.101.3:8484/ProjectAPI/UpdateGarbageData';
+
+  static String updateProfileUrl =
+      'http://192.168.101.3:8484/ProjectAPI/UpdateProfile';
 
   static Future<http.Response> registerUser(Map<String, dynamic> map) async {
     final response = await http.post(
@@ -98,9 +99,6 @@ class APIServices {
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
 
-    log(response.body);
-    log(response.body.toString());
-
     return response;
   }
 
@@ -121,6 +119,16 @@ class APIServices {
       body: jsonEncode(map),
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
+    return response;
+  }
+
+  static Future<http.Response> updateProfile(Map<String, dynamic> map) async {
+    final response = await http.post(
+      Uri.parse(updateProfileUrl),
+      body: jsonEncode(map),
+      headers: {'Content-Type': 'application/json', "accept": "*/*"},
+    );
+
     return response;
   }
 }
