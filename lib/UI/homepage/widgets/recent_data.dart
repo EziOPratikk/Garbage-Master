@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../models/history_table.dart';
 import '../../../models/api.services.dart';
+import './table_data_source.dart';
 import '../../progress_indicator_widget.dart';
 
 class RecentData extends StatelessWidget {
@@ -29,6 +30,8 @@ class RecentData extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          title: const Text('Waste Details'),
+          centerTitle: true,
           backgroundColor: Theme.of(context).primaryColor,
           leading: IconButton(
             icon: const Icon(
@@ -56,7 +59,7 @@ class RecentData extends StatelessWidget {
                     ),
                     columnSpacing: MediaQuery.of(context).size.width * 0.1,
                     rowsPerPage: 10,
-                    source: TableData(),
+                    source: TableDataSource(),
                     arrowHeadColor: Theme.of(context).primaryColor,
                     columns: const [
                       DataColumn(label: Center(child: Text('Username'))),
@@ -92,35 +95,4 @@ class RecentData extends StatelessWidget {
       ),
     );
   }
-}
-
-class TableData extends DataTableSource {
-  final List<Map<String, dynamic>> _data = List.generate(
-      RecentData.historyTable.length,
-      (index) => {
-            "username": RecentData.historyTable[index].username,
-            "waste": RecentData.historyTable[index].waste,
-            "ward": RecentData.historyTable[index].ward,
-            "date": RecentData.historyTable[index].date,
-          });
-  @override
-  DataRow? getRow(int index) {
-    return DataRow(cells: [
-      DataCell(Text(_data[index]['username'].toString())),
-      DataCell(Text(_data[index]['waste'].toString())),
-      DataCell(Text(_data[index]['ward'].toString())),
-      DataCell(Text(
-        _data[index]['date'].toString().substring(1, 11),
-      )),
-    ]);
-  }
-
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  int get rowCount => _data.length;
-
-  @override
-  int get selectedRowCount => 0;
 }
