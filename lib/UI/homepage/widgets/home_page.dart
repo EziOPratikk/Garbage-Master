@@ -66,7 +66,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 Text(
                   'Hi $username !',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
@@ -167,7 +167,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Tracktruck(),
+                          builder: (context) => const TrackTruck(),
                         ),
                       );
                     },

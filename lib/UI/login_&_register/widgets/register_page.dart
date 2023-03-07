@@ -400,7 +400,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               Theme.of(context).snackBarTheme.backgroundColor,
                             ),
                           );
-                          Navigator.push(
+                          Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                               builder: (context) => LoginPage(),

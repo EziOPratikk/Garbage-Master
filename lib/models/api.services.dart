@@ -2,31 +2,38 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 
+import './history_table.dart';
+import '../UI/homepage/widgets/recent_data.dart';
+
 class APIServices {
   static String registerUserUrl =
-      'http://192.168.101.3:8484/ProjectAPI/RegisterUser';
+      'http://192.168.101.7:8484/ProjectAPI/RegisterUser';
 
-  static String loginUserUrl = 'http://192.168.101.3:8484/ProjectAPI/LoginUser';
+  static String loginUserUrl = 'http://192.168.101.7:8484/ProjectAPI/LoginUser';
 
   static String contactUsUrl =
-      'http://192.168.101.3:8484/ProjectAPI/InsertMessage';
+      'http://192.168.101.7:8484/ProjectAPI/InsertMessage';
 
-  static String sendEmailUrl = 'http://192.168.101.3:8484/ProjectAPI/SendEmail';
+  static String sendEmailUrl = 'http://192.168.101.7:8484/ProjectAPI/SendEmail';
 
-  static String checkEmailUrl =
-      'http://192.168.101.3:8484/ProjectAPI/CheckEmail';
+  static String checkEmailUrl = 'http://192.168.1.70:83/ProjectAPI/CheckEmail';
 
   static String resetPasswordUrl =
-      'http://192.168.101.3:8484/ProjectAPI/ResetPassword';
+      'http://192.168.101.7:8484/ProjectAPI/ResetPassword';
 
   static String currentUserUrl =
-      'http://192.168.101.3:8484/ProjectAPI/GetSpecificUser';
+      'http://192.168.101.7:8484/ProjectAPI/GetSpecificUser';
 
   static String updateGarbageDataUrl =
-      'http://192.168.101.3:8484/ProjectAPI/UpdateGarbageData';
+      'http://192.168.101.7:8484/ProjectAPI/UpdateGarbageData';
 
   static String updateProfileUrl =
-      'http://192.168.101.3:8484/ProjectAPI/UpdateProfile';
+      'http://192.168.101.7:8484/ProjectAPI/UpdateProfile';
+
+  static String getAvgUrl = 'http://192.168.101.7:8484/ProjectAPI/getAverage';
+
+  static String historyTableUrl =
+      'http://192.168.101.7:8484/ProjectAPI/HistoryTable';
 
   static Future<http.Response> registerUser(Map<String, dynamic> map) async {
     final response = await http.post(
@@ -122,6 +129,16 @@ class APIServices {
     return response;
   }
 
+  //get method
+  static Future<http.Response> getAverage() async {
+    final response = await http.get(Uri.parse(getAvgUrl));
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      throw Exception('Failed to load average');
+    }
+  }
+
   static Future<http.Response> updateProfile(Map<String, dynamic> map) async {
     final response = await http.post(
       Uri.parse(updateProfileUrl),
@@ -130,5 +147,24 @@ class APIServices {
     );
 
     return response;
+  }
+
+  static Future<List<HistoryTable>> historyTable(
+      Map<String, dynamic> map) async {
+    final response = await http.post(
+      Uri.parse(APIServices.historyTableUrl),
+      body: jsonEncode(map),
+      headers: {'Content-Type': 'application/json', "accept": "*/*"},
+    );
+    var data = jsonDecode(response.body.toString());
+
+    if (response.statusCode == 200) {
+      for (Map<String, dynamic> index in data) {
+        RecentData.historyTable.add(HistoryTable.fromMap(index));
+      }
+      return RecentData.historyTable;
+    } else {
+      return RecentData.historyTable;
+    }
   }
 }
