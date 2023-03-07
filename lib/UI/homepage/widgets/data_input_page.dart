@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -26,21 +27,6 @@ class DataInputPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
       ),
     );
-
-    void fieldsEmptyUpdate() {
-      if (smallPlasticController.text.isEmpty &&
-          bigPlasticController.text.isEmpty &&
-          dustBinController.text.isEmpty &&
-          sackController.text.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          showSnackBarWidget(
-            'All fields cannot be empty',
-            Theme.of(context).errorColor,
-          ),
-        );
-        return;
-      }
-    }
 
     return SafeArea(
       child: Scaffold(
@@ -169,12 +155,23 @@ class DataInputPage extends StatelessWidget {
                             vertical: 15, horizontal: 30)),
                   ),
                   onPressed: () async {
-                    fieldsEmptyUpdate();
+                    if (smallPlasticController.text.isEmpty &&
+                        bigPlasticController.text.isEmpty &&
+                        dustBinController.text.isEmpty &&
+                        sackController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        showSnackBarWidget(
+                          'All fields cannot be empty',
+                          Theme.of(context).errorColor,
+                        ),
+                      );
+                      return;
+                    }
                     var puser = await SharedPreferences.getInstance();
                     String? user = puser.getString('username');
 
                     final response = await APIServices.updateGarbageData({
-                      "sp": sackController.text.trim(),
+                      "sp": smallPlasticController.text.trim(),
                       "bp": bigPlasticController.text.trim(),
                       "db": dustBinController.text.trim(),
                       "sack": sackController.text.trim(),

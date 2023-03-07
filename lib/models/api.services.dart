@@ -2,9 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:http/http.dart' as http;
 
-import '../models/register.dart';
-import '../models/users.dart';
-
 class APIServices {
   static String registerUserUrl =
       'http://192.168.1.70:83/ProjectAPI/RegisterUser';
@@ -12,7 +9,7 @@ class APIServices {
   static String loginUserUrl = 'http://192.168.1.70:83/ProjectAPI/LoginUser';
 
   static String contactUsUrl =
-      'http://192.168.1.70:83/ProjectAPI/insertmessage';
+      'http://192.168.1.70:83/ProjectAPI/InsertMessage';
 
   static String sendEmailUrl = 'http://192.168.1.70:83/ProjectAPI/SendEmail';
 
@@ -26,6 +23,9 @@ class APIServices {
 
   static String updateGarbageDataUrl =
       'http://192.168.1.70:83/ProjectAPI/UpdateGarbageData';
+
+  static String updateProfileUrl =
+      'http://192.168.1.70:83/ProjectAPI/UpdateProfile';
 
   static String getAvgUrl = 'http://192.168.1.70:83/ProjectAPI/getAverage';
 
@@ -100,9 +100,6 @@ class APIServices {
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
 
-    log(response.body);
-    log(response.body.toString());
-
     return response;
   }
 
@@ -134,5 +131,15 @@ class APIServices {
     } else {
       throw Exception('Failed to load average');
     }
+  }
+
+  static Future<http.Response> updateProfile(Map<String, dynamic> map) async {
+    final response = await http.post(
+      Uri.parse(updateProfileUrl),
+      body: jsonEncode(map),
+      headers: {'Content-Type': 'application/json', "accept": "*/*"},
+    );
+
+    return response;
   }
 }
