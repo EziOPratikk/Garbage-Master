@@ -75,6 +75,16 @@ class _ProfilePageState extends State<ProfilePage> {
       });
     }
 
+    String? firstName = user?.FName.toString();
+    String? middleName = user?.MName.toString();
+    String? lastName = user?.LName.toString();
+    String? ward = user?.Ward.toString();
+
+    firstNameController.text = firstName!;
+    middleNameController.text = middleName!;
+    lastNameController.text = lastName!;
+    wardController.text = ward!;
+
     void progressIndicator() {
       showDialog(
         context: context,
@@ -189,18 +199,25 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     isDisabled == false
-                        ? IconButton(
-                            icon: const Icon(
-                              Icons.edit,
-                              size: 26,
-                            ),
-                            color: Theme.of(context).primaryColor,
-                            onPressed: () {
-                              pickImage(ImageSource.gallery);
-                            },
+                        ? Row(
+                            children: [
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.edit,
+                                  size: 26,
+                                ),
+                                color: Theme.of(context).primaryColor,
+                                onPressed: () {
+                                  pickImage(ImageSource.gallery);
+                                },
+                              ),
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.03,
+                              ),
+                            ],
                           )
                         : SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.12,
+                            width: MediaQuery.of(context).size.width * 0.15,
                           ),
                   ],
                 ),
@@ -213,9 +230,7 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 10),
               TextFormField(
                 readOnly: isReadOnly,
-                // initialValue: user?.FName.toString(),
                 decoration: InputDecoration(
-                  hintText: user?.FName.toString(),
                   hintStyle: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -234,9 +249,7 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 10),
               TextFormField(
                 readOnly: isReadOnly,
-                // initialValue: user?.MName.toString(),
                 decoration: InputDecoration(
-                  hintText: user?.MName.toString(),
                   hintStyle: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -255,9 +268,7 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 10),
               TextFormField(
                 readOnly: isReadOnly,
-                // initialValue: user?.LName.toString(),
                 decoration: InputDecoration(
-                  hintText: user?.LName.toString(),
                   hintStyle: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -384,9 +395,7 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 10),
               TextFormField(
                 readOnly: isReadOnly,
-                // initialValue: user?.Ward.toString(),
                 decoration: InputDecoration(
-                  hintText: user?.Ward.toString(),
                   hintStyle: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -450,12 +459,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                       .backgroundColor,
                                 ),
                               );
-                              // Navigator.pushReplacement(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => const ProfilePage(),
-                              //   ),
-                              // );
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ProfilePage(),
+                                ),
+                              );
                             }
                             if ((jsonDecode(response.body)["result"])
                                     .toString() ==
