@@ -12,7 +12,7 @@ class RecentData extends StatelessWidget {
 
   static List<HistoryTable> historyTable = [];
 
-  Future<List<HistoryTable>> gethistoryData() async {
+  Future<List<HistoryTable>> getHistoryData() async {
     final currentUser = await APIServices.historyTable({
       'username': await SharedPreferences.getInstance()
           .then((value) => value.getString('username') ?? 'no username found'),
@@ -45,7 +45,7 @@ class RecentData extends StatelessWidget {
         body: Container(
           margin: const EdgeInsets.all(10),
           child: FutureBuilder(
-            future: gethistoryData(),
+            future: getHistoryData(),
             builder: ((context, snapshot) {
               if (snapshot.hasData) {
                 return SingleChildScrollView(

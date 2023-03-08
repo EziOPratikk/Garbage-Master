@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
+
 import 'package:http/http.dart' as http;
 
 import './history_table.dart';
@@ -7,33 +7,34 @@ import '../UI/homepage/widgets/recent_data.dart';
 
 class APIServices {
   static String registerUserUrl =
-      'http://192.168.101.7:8484/ProjectAPI/RegisterUser';
+      'http://192.168.101.6:8484/ProjectAPI/RegisterUser';
 
-  static String loginUserUrl = 'http://192.168.101.7:8484/ProjectAPI/LoginUser';
+  static String loginUserUrl = 'http://192.168.101.6:8484/ProjectAPI/LoginUser';
 
   static String contactUsUrl =
-      'http://192.168.101.7:8484/ProjectAPI/InsertMessage';
+      'http://192.168.101.6:8484/ProjectAPI/InsertMessage';
 
-  static String sendEmailUrl = 'http://192.168.101.7:8484/ProjectAPI/SendEmail';
+  static String sendEmailUrl = 'http://192.168.101.6:8484/ProjectAPI/SendEmail';
 
-  static String checkEmailUrl = 'http://192.168.1.70:83/ProjectAPI/CheckEmail';
+  static String checkEmailUrl =
+      'http://192.168.101.6:8484/ProjectAPI/CheckEmail';
 
   static String resetPasswordUrl =
-      'http://192.168.101.7:8484/ProjectAPI/ResetPassword';
+      'http://192.168.101.6:8484/ProjectAPI/ResetPassword';
 
   static String currentUserUrl =
-      'http://192.168.101.7:8484/ProjectAPI/GetSpecificUser';
+      'http://192.168.101.6:8484/ProjectAPI/GetSpecificUser';
 
   static String updateGarbageDataUrl =
-      'http://192.168.101.7:8484/ProjectAPI/UpdateGarbageData';
+      'http://192.168.101.6:8484/ProjectAPI/UpdateGarbageData';
 
   static String updateProfileUrl =
-      'http://192.168.101.7:8484/ProjectAPI/UpdateProfile';
+      'http://192.168.101.6:8484/ProjectAPI/UpdateProfile';
 
-  static String getAvgUrl = 'http://192.168.101.7:8484/ProjectAPI/getAverage';
+  static String getAvgUrl = 'http://192.168.101.6:8484/ProjectAPI/getAverage';
 
   static String historyTableUrl =
-      'http://192.168.101.7:8484/ProjectAPI/HistoryTable';
+      'http://192.168.101.6:8484/ProjectAPI/HistoryTable';
 
   static Future<http.Response> registerUser(Map<String, dynamic> map) async {
     final response = await http.post(
