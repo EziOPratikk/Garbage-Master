@@ -96,15 +96,6 @@ class RecentData extends StatelessWidget {
                           ],
                         ),
                       );
-                // return ListView.builder(
-                //   itemBuilder: (context, index) {
-                //     return ListTile(
-                //       title: Text(historyTable[index].username),
-                //       leading: Text('${historyTable[index].ward}'),
-                //     );
-                //   },
-                //   itemCount: historyTable.length,
-                // );
               } else {
                 return const ProgressIndicatorWidget();
               }
