@@ -69,6 +69,15 @@ class RecentData extends StatelessWidget {
                     ],
                   ),
                 );
+                // return ListView.builder(
+                //   itemBuilder: (context, index) {
+                //     return ListTile(
+                //       title: Text(historyTable[index].username),
+                //       leading: Text('${historyTable[index].ward}'),
+                //     );
+                //   },
+                //   itemCount: historyTable.length,
+                // );
               } else {
                 return Center(
                   child: Column(
@@ -83,7 +92,7 @@ class RecentData extends StatelessWidget {
                       ),
                       const Text(
                         'No data available',
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: 16),
                       ),
                     ],
                   ),

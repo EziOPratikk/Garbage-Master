@@ -11,8 +11,12 @@ class TableDataSource extends DataTableSource {
             "ward": RecentData.historyTable[index].ward,
             "date": RecentData.historyTable[index].date,
           });
+
   @override
   DataRow? getRow(int index) {
+    if (index < 0 || index >= _data.length) {
+      return null;
+    }
     return DataRow(cells: [
       DataCell(Text(_data[index]['username'].toString())),
       DataCell(Text(_data[index]['waste'].toString())),

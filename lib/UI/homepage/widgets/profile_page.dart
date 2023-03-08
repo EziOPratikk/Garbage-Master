@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:garbage_master/UI/homepage/widgets/main_screen.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../models/api.services.dart';
 import '../../login_&_register/widgets/login_page.dart';
 import '../../progress_indicator_widget.dart';
@@ -66,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
       XFile? pickedFile = await _imgPicker.pickImage(source: src);
 
       setState(() {
-        _imgFile = pickedFile!;
+        _imgFile = pickedFile;
       });
     }
 
@@ -446,6 +448,20 @@ class _ProfilePageState extends State<ProfilePage> {
                                   "ward": wardController.text.trim(),
                                   "username": userName.trim(),
                                 });
+
+                                // final imgAsBytes = _imgFile!.readAsBytes();
+
+                                // final insertImageResponse =
+                                //     await APIServices.insertImage({
+                                //   "name": userName.trim(),
+                                //   "image": '',
+                                // });
+
+                                // if (insertImageResponse.statusCode == 200) {
+                                //   if ((jsonDecode(response.body)["result"])
+                                //           .toString() ==
+                                //       'Inserted') {}
+                                // }
 
                                 if (response.statusCode == 200) {
                                   if ((jsonDecode(response.body)["result"])

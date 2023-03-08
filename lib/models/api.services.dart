@@ -36,6 +36,9 @@ class APIServices {
   static String historyTableUrl =
       'http://192.168.101.6:8484/ProjectAPI/HistoryTable';
 
+  static String insertImageUrl =
+      'http://192.168.101.6:8484/ProjectAPI/InsertImage';
+
   static Future<http.Response> registerUser(Map<String, dynamic> map) async {
     final response = await http.post(
       Uri.parse(registerUserUrl),
@@ -167,5 +170,15 @@ class APIServices {
     } else {
       return RecentData.historyTable;
     }
+  }
+
+  static Future<http.Response> insertImage(Map<String, dynamic> map) async {
+    final response = await http.post(
+      Uri.parse(insertImageUrl),
+      body: jsonEncode(map),
+      headers: {'Content-Type': 'application/json', "accept": "*/*"},
+    );
+
+    return response;
   }
 }
