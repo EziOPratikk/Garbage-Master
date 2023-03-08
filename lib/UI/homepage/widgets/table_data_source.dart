@@ -3,26 +3,26 @@ import 'package:flutter/material.dart';
 import './recent_data.dart';
 
 class TableDataSource extends DataTableSource {
-  final List<Map<String, dynamic>> _data = List.generate(
-      RecentData.historyTable.length,
-      (index) => {
-            "username": RecentData.historyTable[index].username,
-            "waste": RecentData.historyTable[index].waste,
-            "ward": RecentData.historyTable[index].ward,
-            "date": RecentData.historyTable[index].date,
-          });
+  final List<Map<String, dynamic>> data;
+
+  TableDataSource(this.data);
+  // final List<Map<String, dynamic>> _data = List.generate(
+  //     RecentData.historyTable.length,
+  //     (index) => {
+  //           "username": RecentData.historyTable[index].username,
+  //           "waste": RecentData.historyTable[index].waste,
+  //           "ward": RecentData.historyTable[index].ward,
+  //           "date": RecentData.historyTable[index].date,
+  //         });
 
   @override
   DataRow? getRow(int index) {
-    if (index < 0 || index >= _data.length) {
-      return null;
-    }
     return DataRow(cells: [
-      DataCell(Text(_data[index]['username'].toString())),
-      DataCell(Text(_data[index]['waste'].toString())),
-      DataCell(Text(_data[index]['ward'].toString())),
+      DataCell(Text(data[index]['username'].toString())),
+      DataCell(Text(data[index]['waste'].toString())),
+      DataCell(Text(data[index]['ward'].toString())),
       DataCell(Text(
-        _data[index]['date'].toString().substring(1, 11),
+        data[index]['date'].toString().substring(1, 11),
       )),
     ]);
   }
@@ -31,7 +31,7 @@ class TableDataSource extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => _data.length;
+  int get rowCount => data.length;
 
   @override
   int get selectedRowCount => 0;

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -203,19 +204,27 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           isDisabled == false
-                              ? IconButton(
-                                  icon: const Icon(
-                                    Icons.edit,
-                                    size: 26,
-                                  ),
-                                  color: Theme.of(context).primaryColor,
-                                  onPressed: () {
-                                    pickImage(ImageSource.gallery);
-                                  },
+                              ? Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.edit,
+                                        size: 26,
+                                      ),
+                                      color: Theme.of(context).primaryColor,
+                                      onPressed: () {
+                                        pickImage(ImageSource.gallery);
+                                      },
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.025,
+                                    ),
+                                  ],
                                 )
                               : SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.12,
+                                      MediaQuery.of(context).size.width * 0.15,
                                 ),
                         ],
                       ),
@@ -448,20 +457,24 @@ class _ProfilePageState extends State<ProfilePage> {
                                   "ward": wardController.text.trim(),
                                   "username": userName.trim(),
                                 });
-
-                                // final imgAsBytes = _imgFile!.readAsBytes();
-
-                                // final insertImageResponse =
-                                //     await APIServices.insertImage({
-                                //   "name": userName.trim(),
-                                //   "image": '',
-                                // });
-
-                                // if (insertImageResponse.statusCode == 200) {
-                                //   if ((jsonDecode(response.body)["result"])
-                                //           .toString() ==
-                                //       'Inserted') {}
-                                // }
+                                if (_imgFile != null) {
+                                  final imgAsBytes =
+                                      await File(_imgFile!.path).readAsBytes();
+                                  final image = base64Encode(imgAsBytes);
+                                  log(image.toString());
+                                  final insertImageResponse =
+                                      await APIServices.insertImage({
+                                    "name": userName.trim(),
+                                    "image":
+                                        "data:image/png;base64,${base64Encode(imgAsBytes)}",
+                                  });
+                                  // log(insertImageResponse.body.toString());
+                                  if (insertImageResponse.statusCode == 200) {
+                                    if ((jsonDecode(response.body)["result"])
+                                            .toString() ==
+                                        'Inserted') {}
+                                  }
+                                }
 
                                 if (response.statusCode == 200) {
                                   if ((jsonDecode(response.body)["result"])

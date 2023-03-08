@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:http/http.dart' as http;
 
@@ -178,6 +179,8 @@ class APIServices {
       body: jsonEncode(map),
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
+
+    log(response.body.toString());
 
     return response;
   }

@@ -48,27 +48,54 @@ class RecentData extends StatelessWidget {
             future: getHistoryData(),
             builder: ((context, snapshot) {
               if (snapshot.hasData) {
-                return SingleChildScrollView(
-                  child: PaginatedDataTable(
-                    header: const Text(
-                      'Recent Waste Data',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    columnSpacing: MediaQuery.of(context).size.width * 0.1,
-                    rowsPerPage: 10,
-                    source: TableDataSource(),
-                    arrowHeadColor: Theme.of(context).primaryColor,
-                    columns: const [
-                      DataColumn(label: Center(child: Text('Username'))),
-                      DataColumn(label: Center(child: Text('Waste'))),
-                      DataColumn(label: Center(child: Text('Ward'))),
-                      DataColumn(label: Center(child: Text('Last Date'))),
-                    ],
-                  ),
-                );
+                return historyTable[0].username.isEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.4,
+                              child: Image.asset(
+                                'assets/images/recycle-bin.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            const Text(
+                              'No data available',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      )
+                    : SingleChildScrollView(
+                        child: PaginatedDataTable(
+                          header: const Text(
+                            'Recent Waste Data',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          columnSpacing:
+                              MediaQuery.of(context).size.width * 0.1,
+                          rowsPerPage: 10,
+                          source: TableDataSource(historyTable
+                              .map((e) => {
+                                    "username": e.username,
+                                    "waste": e.waste,
+                                    "ward": e.ward,
+                                    "date": e.date,
+                                  })
+                              .toList()),
+                          arrowHeadColor: Theme.of(context).primaryColor,
+                          columns: const [
+                            DataColumn(label: Center(child: Text('Username'))),
+                            DataColumn(label: Center(child: Text('Waste'))),
+                            DataColumn(label: Center(child: Text('Ward'))),
+                            DataColumn(label: Center(child: Text('Last Date'))),
+                          ],
+                        ),
+                      );
                 // return ListView.builder(
                 //   itemBuilder: (context, index) {
                 //     return ListTile(
@@ -79,24 +106,7 @@ class RecentData extends StatelessWidget {
                 //   itemCount: historyTable.length,
                 // );
               } else {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        child: Image.asset(
-                          'assets/images/recycle-bin.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      const Text(
-                        'No data available',
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ],
-                  ),
-                );
+                return const ProgressIndicatorWidget();
               }
             }),
           ),
