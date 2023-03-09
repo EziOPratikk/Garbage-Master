@@ -1,14 +1,22 @@
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:garbage_master/UI/login_&_register/widgets/login_page.dart';
+import 'package:garbage_master/services/localNotify.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './UI/login_&_register/widgets/splash_screen.dart';
 
 late SharedPreferences sharedPreferences;
+
 Future main() async {
   HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+  //print(fcmToken);
+  LocalNotificationService.initialize();
   sharedPreferences = await SharedPreferences.getInstance();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -53,3 +61,12 @@ class MyHttpOverrides extends HttpOverrides {
           (X509Certificate cert, String host, int port) => true;
   }
 }
+
+Future<void> backgroundHandler(RemoteMessage message) async {
+  print("This is from background handler");
+  // print(message.data.toString());
+  // print(message.notification!.title);
+}
+
+
+//keytool -list -v \-alias androiddebugkey -keystore C:\Users\kumal\.android\debug.keystore

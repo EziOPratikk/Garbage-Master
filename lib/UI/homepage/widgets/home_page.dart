@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:garbage_master/map/screens/trucktracking.dart';
 import 'package:intl/intl.dart';
@@ -7,6 +8,7 @@ import './data_input_page.dart';
 import './waste_segregation.dart';
 import './recent_data.dart';
 import '../../../map/screens/WardMap.dart';
+import 'notification.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,6 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late String username = '';
+
   @override
   void initState() {
     super.initState();
@@ -87,7 +90,14 @@ class _HomePageState extends State<HomePage> {
               Icons.notifications_none_rounded,
               size: 32,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const Notify(),
+                ),
+              );
+            },
           ),
         ],
       ),

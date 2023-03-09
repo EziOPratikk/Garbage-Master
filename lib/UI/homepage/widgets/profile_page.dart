@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:garbage_master/services/db_helper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../models/api.services.dart';
@@ -139,6 +140,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           .backgroundColor,
                                     ),
                                   );
+                                  DatabaseHelper().clearNotifications();
                                   Navigator.pop(context, true);
                                   Navigator.pushReplacement(
                                       context,

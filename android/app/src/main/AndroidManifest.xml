@@ -8,6 +8,16 @@
                 android:name="com.google.android.geo.API_KEY"
                 android:value="AIzaSyD53jdXs8iCQWNLKJ5O9D1TL_w6Oc2pll4"
                 />
+                <meta-data
+    android:name="firebase_messaging_auto_init_enabled"
+    android:value="false" />
+<meta-data
+    android:name="firebase_analytics_collection_enabled"
+    android:value="false" />
+    <meta-data 
+        android:name="com.google.firebase.messaging.default_notification_channel_id"
+        android:value= "pushNotifications"
+    />
         <activity
             android:name=".MainActivity"
             android:exported="true"
