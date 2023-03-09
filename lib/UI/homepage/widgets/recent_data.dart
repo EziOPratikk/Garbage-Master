@@ -30,7 +30,7 @@ class RecentData extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Waste Details'),
+          title: const Text('WASTE DETAILS'),
           centerTitle: true,
           backgroundColor: Theme.of(context).primaryColor,
           leading: IconButton(
@@ -48,54 +48,57 @@ class RecentData extends StatelessWidget {
             future: getHistoryData(),
             builder: ((context, snapshot) {
               if (snapshot.hasData) {
-                return historyTable[0].username.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.4,
-                              child: Image.asset(
-                                'assets/images/recycle-bin.png',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            const Text(
-                              'No data available',
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      )
-                    : SingleChildScrollView(
-                        child: PaginatedDataTable(
-                          header: const Text(
-                            'Recent Waste Data',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                            ),
+                if (historyTable[0].username.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.4,
+                          child: Image.asset(
+                            'assets/images/recycle-bin.png',
+                            fit: BoxFit.cover,
                           ),
-                          columnSpacing:
-                              MediaQuery.of(context).size.width * 0.1,
-                          rowsPerPage: 10,
-                          source: TableDataSource(historyTable
-                              .map((e) => {
-                                    "username": e.username,
-                                    "waste": e.waste,
-                                    "ward": e.ward,
-                                    "date": e.date,
-                                  })
-                              .toList()),
-                          arrowHeadColor: Theme.of(context).primaryColor,
-                          columns: const [
-                            DataColumn(label: Center(child: Text('Username'))),
-                            DataColumn(label: Center(child: Text('Waste'))),
-                            DataColumn(label: Center(child: Text('Ward'))),
-                            DataColumn(label: Center(child: Text('Last Date'))),
-                          ],
                         ),
-                      );
+                        const Text(
+                          'No data available',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  return SingleChildScrollView(
+                    child: PaginatedDataTable(
+                      header: const Text(
+                        'Recent Data',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      columnSpacing: MediaQuery.of(context).size.width * 0.1,
+                      rowsPerPage: 10,
+                      source: TableDataSource(
+                        historyTable
+                            .map((e) => {
+                                  "username": e.username,
+                                  "waste": e.waste,
+                                  "ward": e.ward,
+                                  "date": e.date,
+                                })
+                            .toList(),
+                      ),
+                      arrowHeadColor: Theme.of(context).primaryColor,
+                      columns: const [
+                        DataColumn(label: Center(child: Text('Username'))),
+                        DataColumn(label: Center(child: Text('Waste'))),
+                        DataColumn(label: Center(child: Text('Ward'))),
+                        DataColumn(label: Center(child: Text('Last Date'))),
+                      ],
+                    ),
+                  );
+                }
               } else {
                 return const ProgressIndicatorWidget();
               }

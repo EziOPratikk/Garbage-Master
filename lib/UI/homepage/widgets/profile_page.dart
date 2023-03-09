@@ -3,10 +3,11 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:garbage_master/UI/homepage/widgets/main_screen.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../widgets/main_screen.dart';
 import '../../../models/api.services.dart';
 import '../../login_&_register/widgets/login_page.dart';
 import '../../progress_indicator_widget.dart';
@@ -85,7 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          margin: const EdgeInsets.all(10),
+          margin: const EdgeInsets.all(15),
           child: FutureBuilder<Users>(
             future: user,
             builder: (BuildContext context, AsyncSnapshot<Users> snapshot) {
@@ -110,21 +111,32 @@ class _ProfilePageState extends State<ProfilePage> {
                           TextButton(
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.all(
-                                  Theme.of(context).colorScheme.secondary),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                isReadOnly = !isReadOnly;
-                                isDisabled = !isDisabled;
-                              });
-                            },
-                            child: const Text(
-                              'Edit',
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
+                                Theme.of(context).primaryColor,
                               ),
                             ),
+                            onPressed: () {
+                              setState(
+                                () {
+                                  isReadOnly = !isReadOnly;
+                                  isDisabled = !isDisabled;
+                                },
+                              );
+                            },
+                            child: !isDisabled
+                                ? const Text(
+                                    'Undo',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  )
+                                : const Text(
+                                    'Edit',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                           ),
                           const Expanded(
                             child: Text(
@@ -163,7 +175,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             },
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.all(
-                                  Theme.of(context).colorScheme.secondary),
+                                Colors.red,
+                              ),
                             ),
                             child: const Text(
                               'Logout',
@@ -344,7 +357,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(height: 10),
                     TextFormField(
                       readOnly: isReadOnly,
-                      keyboardType: TextInputType.number,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: false,
+                        signed: true,
+                      ),
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
                       maxLength: 10,
                       decoration: InputDecoration(
                         counterText: '',
@@ -404,6 +423,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(height: 10),
                     TextFormField(
                       readOnly: isReadOnly,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: false,
+                        signed: true,
+                      ),
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
                       decoration: InputDecoration(
                         hintStyle: const TextStyle(
                           fontSize: 16,
@@ -460,20 +486,23 @@ class _ProfilePageState extends State<ProfilePage> {
                                 if (_imgFile != null) {
                                   final imgAsBytes =
                                       await File(_imgFile!.path).readAsBytes();
-                                  final image = base64Encode(imgAsBytes);
+                                  final String image = base64Encode(imgAsBytes);
                                   log(image.toString());
                                   final insertImageResponse =
-                                      await APIServices.insertImage({
-                                    "name": userName.trim(),
-                                    "image":
-                                        "data:image/png;base64,${base64Encode(imgAsBytes)}",
-                                  });
-                                  // log(insertImageResponse.body.toString());
-                                  if (insertImageResponse.statusCode == 200) {
-                                    if ((jsonDecode(response.body)["result"])
-                                            .toString() ==
-                                        'Inserted') {}
-                                  }
+                                      await APIServices.insertImage(
+                                    {
+                                      "name": userName.trim(),
+                                      "image":
+                                          "data:image/png;base64,${base64Encode(imgAsBytes)}",
+                                    },
+                                  );
+                                  log(insertImageResponse.body.toString());
+                                  // if (insertImageResponse.statusCode == 200) {
+                                  //   if ((jsonDecode(response.body)["result"])
+                                  //           .toString() ==
+                                  //       'Inserted') {}
+                                  // }
+
                                 }
 
                                 if (response.statusCode == 200) {
