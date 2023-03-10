@@ -6,9 +6,11 @@ class Users {
   late String Username;
   late String? Password;
   late int Ward;
+  String? Phone;
+  late String Image;
 
   Users(this.FName, this.MName, this.LName, this.Email, this.Username,
-      this.Password, this.Ward);
+      this.Password, this.Ward, this.Phone, this.Image);
 
   // Map to Object for Deserialization
   Users.fromMap(Map<String, dynamic> map) {
@@ -19,6 +21,8 @@ class Users {
     Username = map["username"];
     Password = map["password"];
     Ward = map["ward"];
+    Phone = map["phone"];
+    Image = map["image"];
   }
 
   // Object to Map for Serialization
@@ -31,6 +35,8 @@ class Users {
       "username": Username,
       "password": Password,
       "ward": Ward,
+      "phone": Phone,
+      "image": Image,
     };
   }
 }
