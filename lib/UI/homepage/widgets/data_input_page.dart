@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -8,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import './input_card.dart';
 import '../../../models/api.services.dart';
 import '../../snackbar_widget.dart';
+import '../.././homepage/widgets/main_screen.dart';
 
 class DataInputPage extends StatelessWidget {
   DataInputPage({super.key});
@@ -185,6 +185,13 @@ class DataInputPage extends StatelessWidget {
                           showSnackBarWidget(
                             'Updated successfully',
                             Theme.of(context).snackBarTheme.backgroundColor,
+                          ),
+                        );
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MainScreen(),
                           ),
                         );
                       }

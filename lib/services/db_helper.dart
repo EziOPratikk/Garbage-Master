@@ -5,8 +5,6 @@ import 'package:garbage_master/models/notifications.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-import '../models/ward.dart';
-
 class DatabaseHelper {
   static DatabaseHelper? _instance;
   static late Database _database;
@@ -29,8 +27,8 @@ class DatabaseHelper {
         onCreate: (Database db, int version) async {
       await db.execute(
           'Create table notifications(id INTEGER PRIMARY KEY AUTOINCREMENT, title text, body text, date text)');
-      await db
-          .execute('create table wards(id INTEGER PRIMARY KEY, wardName text');
+      // await db
+      //     .execute('create table wards(id INTEGER PRIMARY KEY, wardName text');
     });
   }
 

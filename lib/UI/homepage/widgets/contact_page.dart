@@ -45,12 +45,25 @@ class ContactPage extends StatelessWidget {
       padding: const EdgeInsets.only(top: 30),
       child: Column(
         children: [
-          const Text(
-            'CONTACT US',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.07,
+                child: Image.asset(
+                  'assets/images/contact-us.png',
+                  fit: BoxFit.contain,
+                ),
+              ),
+              const SizedBox(width: 10),
+              const Text(
+                'CONTACT US',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 10),
           Row(
@@ -84,6 +97,7 @@ class ContactPage extends StatelessWidget {
               border: outlineInputBorder,
               fillColor: textFieldFillColor,
               filled: true,
+              prefixIcon: const Icon(Icons.person_sharp),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -104,6 +118,7 @@ class ContactPage extends StatelessWidget {
               border: outlineInputBorder,
               fillColor: textFieldFillColor,
               filled: true,
+              prefixIcon: const Icon(Icons.email_sharp),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -124,6 +139,7 @@ class ContactPage extends StatelessWidget {
               border: outlineInputBorder,
               fillColor: textFieldFillColor,
               filled: true,
+              prefixIcon: const Icon(Icons.subject_sharp),
             ),
             controller: subjectController,
           ),
@@ -138,6 +154,7 @@ class ContactPage extends StatelessWidget {
               border: outlineInputBorder,
               fillColor: textFieldFillColor,
               filled: true,
+              prefixIcon: const Icon(Icons.message_sharp),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {

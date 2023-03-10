@@ -19,7 +19,7 @@ class LocalNotificationService {
         message.notification!.body,
         const NotificationDetails(
             android: AndroidNotificationDetails(
-          "pushNotification",
+          "pushNotifications",
           "pushNotificationChannel",
           importance: Importance.max,
           priority: Priority.high,

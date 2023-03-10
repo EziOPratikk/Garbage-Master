@@ -123,8 +123,7 @@ class ForgotPassword extends StatelessWidget {
                                 (jsonDecode(responseSendEmail.body)["result"])
                                     .toString();
 
-                            if (responseCheckEmail.statusCode == 200 &&
-                                responseSendEmail.statusCode == 200) {
+                            if (responseCheckEmail.statusCode == 200) {
                               if ((jsonDecode(
                                           responseCheckEmail.body)["result"])
                                       .toString() ==
@@ -139,7 +138,7 @@ class ForgotPassword extends StatelessWidget {
                                 Navigator.of(context).pop();
                               } else {
                                 progressIndicator();
-                                Navigator.push(
+                                Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => PasswordVerification(

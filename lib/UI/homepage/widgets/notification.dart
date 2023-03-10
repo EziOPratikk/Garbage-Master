@@ -109,12 +109,12 @@ class _NotifyState extends State<Notify> {
                     return Card(
                         child: ExpansionTile(
                       title: Text(notification["title"]),
+                      subtitle: Text(
+                        DateFormat('dd-MMM-yyyy hh:mm a').format(date),
+                      ),
                       children: [
                         Text(notification["body"]),
                       ],
-                      subtitle: Text(
-                        DateFormat('dd-MM-yyyy hh:mm:ss').format(date),
-                      ),
                     ));
                   }))),
     );

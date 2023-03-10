@@ -1,9 +1,14 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:garbage_master/services/db_helper.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../widgets/main_screen.dart';
 import '../../../models/api.services.dart';
 import '../../login_&_register/widgets/login_page.dart';
 import '../../progress_indicator_widget.dart';
@@ -66,7 +71,7 @@ class _ProfilePageState extends State<ProfilePage> {
       XFile? pickedFile = await _imgPicker.pickImage(source: src);
 
       setState(() {
-        _imgFile = pickedFile!;
+        _imgFile = pickedFile;
       });
     }
 
@@ -82,11 +87,21 @@ class _ProfilePageState extends State<ProfilePage> {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          margin: const EdgeInsets.all(10),
+          margin: const EdgeInsets.all(15),
           child: FutureBuilder<Users>(
             future: user,
             builder: (BuildContext context, AsyncSnapshot<Users> snapshot) {
               if (snapshot.hasData) {
+                String? firstName = snapshot.data!.FName.toString();
+                String? middleName = snapshot.data!.MName.toString();
+                String? lastName = snapshot.data!.LName.toString();
+                String? ward = snapshot.data!.Ward.toString();
+
+                firstNameController.text = firstName;
+                middleNameController.text = middleName;
+                lastNameController.text = lastName;
+                wardController.text = ward;
+
                 return ListView(
                   children: [
                     Padding(
@@ -97,21 +112,32 @@ class _ProfilePageState extends State<ProfilePage> {
                           TextButton(
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.all(
-                                  Theme.of(context).colorScheme.secondary),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                isReadOnly = !isReadOnly;
-                                isDisabled = !isDisabled;
-                              });
-                            },
-                            child: const Text(
-                              'Edit',
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
+                                Theme.of(context).primaryColor,
                               ),
                             ),
+                            onPressed: () {
+                              setState(
+                                () {
+                                  isReadOnly = !isReadOnly;
+                                  isDisabled = !isDisabled;
+                                },
+                              );
+                            },
+                            child: !isDisabled
+                                ? const Text(
+                                    'Undo',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  )
+                                : const Text(
+                                    'Edit',
+                                    style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                           ),
                           const Expanded(
                             child: Text(
@@ -151,7 +177,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             },
                             style: ButtonStyle(
                               foregroundColor: MaterialStateProperty.all(
-                                  Theme.of(context).colorScheme.secondary),
+                                Colors.red,
+                              ),
                             ),
                             child: const Text(
                               'Logout',
@@ -192,19 +219,27 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                           ),
                           isDisabled == false
-                              ? IconButton(
-                                  icon: const Icon(
-                                    Icons.edit,
-                                    size: 26,
-                                  ),
-                                  color: Theme.of(context).primaryColor,
-                                  onPressed: () {
-                                    pickImage(ImageSource.gallery);
-                                  },
+                              ? Row(
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(
+                                        Icons.edit,
+                                        size: 26,
+                                      ),
+                                      color: Theme.of(context).primaryColor,
+                                      onPressed: () {
+                                        pickImage(ImageSource.gallery);
+                                      },
+                                    ),
+                                    SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.025,
+                                    ),
+                                  ],
                                 )
                               : SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.12,
+                                      MediaQuery.of(context).size.width * 0.15,
                                 ),
                         ],
                       ),
@@ -217,9 +252,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(height: 10),
                     TextFormField(
                       readOnly: isReadOnly,
-                      // initialValue: user?.FName.toString(),
                       decoration: InputDecoration(
-                        hintText: snapshot.data!.FName.toString(),
+                        // hintText: snapshot.data!.FName.toString(),
                         hintStyle: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -238,9 +272,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(height: 10),
                     TextFormField(
                       readOnly: isReadOnly,
-                      // initialValue: user?.MName.toString(),
                       decoration: InputDecoration(
-                        hintText: snapshot.data!.MName.toString(),
                         hintStyle: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -259,9 +291,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(height: 10),
                     TextFormField(
                       readOnly: isReadOnly,
-                      // initialValue: user?.LName.toString(),
                       decoration: InputDecoration(
-                        hintText: snapshot.data!.LName.toString(),
                         hintStyle: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -329,7 +359,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(height: 10),
                     TextFormField(
                       readOnly: isReadOnly,
-                      keyboardType: TextInputType.number,
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: false,
+                        signed: true,
+                      ),
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
                       maxLength: 10,
                       decoration: InputDecoration(
                         counterText: '',
@@ -389,9 +425,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     const SizedBox(height: 10),
                     TextFormField(
                       readOnly: isReadOnly,
-                      // initialValue: user?.Ward.toString(),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: false,
+                        signed: true,
+                      ),
+                      inputFormatters: <TextInputFormatter>[
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
                       decoration: InputDecoration(
-                        hintText: snapshot.data!.Ward.toString(),
                         hintStyle: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -444,6 +485,27 @@ class _ProfilePageState extends State<ProfilePage> {
                                   "ward": wardController.text.trim(),
                                   "username": userName.trim(),
                                 });
+                                if (_imgFile != null) {
+                                  final imgAsBytes =
+                                      await File(_imgFile!.path).readAsBytes();
+                                  final String image = base64Encode(imgAsBytes);
+                                  log(image.toString());
+                                  final insertImageResponse =
+                                      await APIServices.insertImage(
+                                    {
+                                      "name": userName.trim(),
+                                      "image":
+                                          "data:image/png;base64,${base64Encode(imgAsBytes)}",
+                                    },
+                                  );
+                                  log(insertImageResponse.body.toString());
+                                  // if (insertImageResponse.statusCode == 200) {
+                                  //   if ((jsonDecode(response.body)["result"])
+                                  //           .toString() ==
+                                  //       'Inserted') {}
+                                  // }
+
+                                }
 
                                 if (response.statusCode == 200) {
                                   if ((jsonDecode(response.body)["result"])
@@ -464,8 +526,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ProfilePage(),
+                                        builder: (context) => MainScreen(),
                                       ),
                                     );
                                   }

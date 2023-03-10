@@ -14,7 +14,7 @@ class InputCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 4,
+      elevation: 7,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -42,12 +42,12 @@ class InputCard extends StatelessWidget {
                   style: const TextStyle(fontSize: 15),
                 ),
                 const SizedBox(height: 5),
-                Container(
+                SizedBox(
                   width: 295,
                   child: Text(description),
                 ),
                 const SizedBox(height: 10),
-                Container(
+                SizedBox(
                   width: 200,
                   child: textField,
                 ),

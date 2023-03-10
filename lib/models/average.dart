@@ -101,4 +101,41 @@ class WardAvg {
     ward31avg = map["ward31Average"];
     ward32avg = map["ward32Average"];
   }
+  //serialization
+  Map<String, dynamic> toMap() {
+    return {
+      "ward1Average": ward1avg,
+      "ward2Average": ward2avg,
+      "ward3Average": ward3avg,
+      "ward4Average": ward4avg,
+      "ward5Average": ward5avg,
+      "ward6Average": ward6avg,
+      "ward7Average": ward7avg,
+      "ward8Average": ward8avg,
+      "ward9Average": ward9avg,
+      "ward10Average": ward10avg,
+      "ward11Average": ward11avg,
+      "ward12Average": ward12avg,
+      "ward13Average": ward13avg,
+      "ward14Average": ward14avg,
+      "ward15Average": ward15avg,
+      "ward16Average": ward16avg,
+      "ward17Average": ward17avg,
+      "ward18Average": ward18avg,
+      "ward19Average": ward19avg,
+      "ward20Average": ward20avg,
+      "ward21Average": ward21avg,
+      "ward22Average": ward22avg,
+      "ward23Average": ward23avg,
+      "ward24Average": ward24avg,
+      "ward25Average": ward25avg,
+      "ward26Average": ward26avg,
+      "ward27Average": ward27avg,
+      "ward28Average": ward28avg,
+      "ward29Average": ward29avg,
+      "ward30Average": ward30avg,
+      "ward31Average": ward31avg,
+      "ward32Average": ward32avg,
+    };
+  }
 }

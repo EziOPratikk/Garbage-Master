@@ -92,7 +92,7 @@ class PasswordVerification extends StatelessWidget {
                     final response = sixDigitCode;
 
                     if (response == sixDigitCodeController.text.toString()) {
-                      Navigator.push(
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) =>

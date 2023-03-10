@@ -1,6 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
+
 import 'package:http/http.dart' as http;
+
+import './history_table.dart';
+import '../UI/homepage/widgets/recent_data.dart';
 
 class APIServices {
   static String registerUserUrl =
@@ -28,6 +32,14 @@ class APIServices {
       'http://192.168.1.70:83/ProjectAPI/UpdateProfile';
 
   static String getAvgUrl = 'http://192.168.1.70:83/ProjectAPI/getAverage';
+
+  static String historyTableUrl =
+      'http://192.168.1.70:83/ProjectAPI/HistoryTable';
+
+  static String insertImageUrl =
+      'http://192.168.1.70:83/ProjectAPI/InsertImage';
+
+  static String getImageUrl = 'http://192.168.1.70:83/ProjectAPI/GetImage';
 
   static Future<http.Response> registerUser(Map<String, dynamic> map) async {
     final response = await http.post(
@@ -136,6 +148,47 @@ class APIServices {
   static Future<http.Response> updateProfile(Map<String, dynamic> map) async {
     final response = await http.post(
       Uri.parse(updateProfileUrl),
+      body: jsonEncode(map),
+      headers: {'Content-Type': 'application/json', "accept": "*/*"},
+    );
+
+    return response;
+  }
+
+  static Future<List<HistoryTable>> historyTable(
+      Map<String, dynamic> map) async {
+    final response = await http.post(
+      Uri.parse(APIServices.historyTableUrl),
+      body: jsonEncode(map),
+      headers: {'Content-Type': 'application/json', "accept": "*/*"},
+    );
+    var data = jsonDecode(response.body.toString());
+
+    if (response.statusCode == 200) {
+      for (Map<String, dynamic> index in data) {
+        RecentData.historyTable.add(HistoryTable.fromMap(index));
+      }
+      return RecentData.historyTable;
+    } else {
+      return RecentData.historyTable;
+    }
+  }
+
+  static Future<http.Response> insertImage(Map<String, dynamic> map) async {
+    final response = await http.post(
+      Uri.parse(insertImageUrl),
+      body: jsonEncode(map),
+      headers: {'Content-Type': 'application/json', "accept": "*/*"},
+    );
+
+    log(response.body.toString());
+
+    return response;
+  }
+
+  static Future<http.Response> getImage(Map<String, dynamic> map) async {
+    final response = await http.post(
+      Uri.parse(getImageUrl),
       body: jsonEncode(map),
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
