@@ -40,8 +40,6 @@ class APIServices {
   static String insertImageUrl =
       'http://192.168.101.7:8585/ProjectAPI/InsertImage';
 
-  static String getImageUrl = 'http://192.168.101.7:8585/ProjectAPI/GetImage';
-
   static Future<http.Response> registerUser(Map<String, dynamic> map) async {
     final response = await http.post(
       Uri.parse(registerUserUrl),
@@ -183,16 +181,6 @@ class APIServices {
     );
 
     log(response.body.toString());
-
-    return response;
-  }
-
-  static Future<http.Response> getImage(Map<String, dynamic> map) async {
-    final response = await http.post(
-      Uri.parse(getImageUrl),
-      body: jsonEncode(map),
-      headers: {'Content-Type': 'application/json', "accept": "*/*"},
-    );
 
     return response;
   }

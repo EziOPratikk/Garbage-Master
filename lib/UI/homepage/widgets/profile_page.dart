@@ -58,6 +58,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   bool isDisabled = true;
 
+  bool isImageIconPressed = false;
+
   @override
   Widget build(BuildContext context) {
     final outlineInputBorder = OutlineInputBorder(
@@ -95,11 +97,25 @@ class _ProfilePageState extends State<ProfilePage> {
                 String? middleName = snapshot.data!.MName.toString();
                 String? lastName = snapshot.data!.LName.toString();
                 String? ward = snapshot.data!.Ward.toString();
+                String? phone = snapshot.data!.Phone.toString();
+                String? img = snapshot.data!.Image
+                    .substring(
+                      22,
+                    )
+                    .toString();
 
                 firstNameController.text = firstName;
                 middleNameController.text = middleName;
                 lastNameController.text = lastName;
                 wardController.text = ward;
+                phoneNumberController.text = phone;
+                final Uint8List base64Decodeimg = base64Decode(img);
+
+                // final file = File(_imgFile!.path);
+                // final image = MemoryImage(base64Decodeimg);
+                // print(image);
+
+                // file.writeAsBytes(base64Decodeimg);
 
                 return ListView(
                   children: [
@@ -167,9 +183,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                   );
                                   Navigator.pop(context, true);
                                   Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => LoginPage()));
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LoginPage(),
+                                    ),
+                                  );
                                 },
                               );
                             },
@@ -207,13 +225,29 @@ class _ProfilePageState extends State<ProfilePage> {
                               ],
                               shape: BoxShape.circle,
                             ),
-                            child: CircleAvatar(
-                              radius: 70,
-                              foregroundImage: _imgFile == null
-                                  ? const AssetImage(
-                                      'assets/images/profile-image.png')
-                                  : FileImage(File(_imgFile!.path))
-                                      as ImageProvider,
+                            child: Container(
+                              height: MediaQuery.of(context).size.width * 0.35,
+                              width: MediaQuery.of(context).size.width * 0.35,
+                              clipBehavior: Clip.hardEdge,
+                              decoration:
+                                  const BoxDecoration(shape: BoxShape.circle),
+                              child: _imgFile == null
+                                  ? Image.memory(
+                                      base64Decodeimg,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : isImageIconPressed == true
+                                      ? Image(
+                                          image:
+                                              FileImage(File(_imgFile!.path)),
+                                          fit: BoxFit.cover,
+                                        )
+                                      : const Image(
+                                          image: AssetImage(
+                                            'assets/images/profile-image.png',
+                                          ),
+                                          fit: BoxFit.cover,
+                                        ),
                             ),
                           ),
                           isDisabled == false
@@ -221,11 +255,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                   children: [
                                     IconButton(
                                       icon: const Icon(
-                                        Icons.edit,
+                                        Icons.image,
                                         size: 26,
                                       ),
                                       color: Theme.of(context).primaryColor,
                                       onPressed: () {
+                                        setState(() {
+                                          isImageIconPressed =
+                                              !isImageIconPressed;
+                                        });
                                         pickImage(ImageSource.gallery);
                                       },
                                     ),
@@ -517,10 +555,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             .backgroundColor,
                                       ),
                                     );
-                                    SharedPreferences prefs =
-                                        await SharedPreferences.getInstance();
-                                    prefs.setString('phone',
-                                        phoneNumberController.text.trim());
+
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
