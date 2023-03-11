@@ -153,6 +153,7 @@ class ResetPassword extends StatelessWidget {
                               Theme.of(context).snackBarTheme.backgroundColor,
                             ),
                           );
+                          Navigator.pop(context, true);
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(

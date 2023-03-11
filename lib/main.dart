@@ -1,8 +1,9 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:garbage_master/UI/login_&_register/widgets/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import './UI/login_&_register/widgets/splash_screen.dart';
 
 late SharedPreferences sharedPreferences;
