@@ -3,9 +3,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:garbage_master/services/db_helper.dart';
 import 'package:garbage_master/services/localNotify.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import './UI/login_&_register/widgets/splash_screen.dart';
+import 'models/notifications.dart';
 
 late SharedPreferences sharedPreferences;
 
@@ -13,10 +15,11 @@ Future main() async {
   HttpOverrides.global = MyHttpOverrides();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  final fcmToken = await FirebaseMessaging.instance.getToken();
+  // final fcmToken = await FirebaseMessaging.instance.getToken();
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
   //print(fcmToken);
   LocalNotificationService.initialize();
+  // FirebaseMessaging.instance.subscribeToTopic('ward1');
   sharedPreferences = await SharedPreferences.getInstance();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -64,6 +67,14 @@ class MyHttpOverrides extends HttpOverrides {
 
 Future<void> backgroundHandler(RemoteMessage message) async {
   print("This is from background handler");
+  final notification = NotificationModel(
+    title: message.data['title'] ?? '',
+    body: message.data['body'] ?? '',
+    date: DateTime.now(),
+  );
+  DatabaseHelper().insertNotification(notification);
+  LocalNotificationService.showNotificationOnForegrouind(message);
+
   // print(message.data.toString());
   // print(message.notification!.title);
 }

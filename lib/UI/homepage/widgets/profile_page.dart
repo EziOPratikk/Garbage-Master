@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:garbage_master/services/db_helper.dart';
 import 'package:flutter/services.dart';
@@ -25,7 +26,6 @@ Future<Users> getProfileData() async {
   var decode = jsonDecode(currentUser.body);
   Map<String, dynamic> userMap = decode;
   Users profileUser = Users.fromMap(userMap);
-
   return profileUser;
 }
 
@@ -182,6 +182,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                           .backgroundColor,
                                     ),
                                   );
+                                  FirebaseMessaging.instance
+                                      .unsubscribeFromTopic(
+                                          wardController.text);
                                   DatabaseHelper().clearNotifications();
                                   Navigator.pop(context, true);
                                   Navigator.pushReplacement(
@@ -468,7 +471,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         signed: true,
                       ),
                       inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(2),
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^(?:[1-9]|[1-2][0-9]|3[0-2])$')),
                       ],
                       decoration: InputDecoration(
                         hintStyle: const TextStyle(

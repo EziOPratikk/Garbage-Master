@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -15,8 +17,8 @@ class LocalNotificationService {
   static void showNotificationOnForegrouind(RemoteMessage message) {
     notificationsPlugin.show(
         DateTime.now().microsecond,
-        message.notification!.title,
-        message.notification!.body,
+        message.data['title'],
+        message.data['body'],
         const NotificationDetails(
             android: AndroidNotificationDetails(
           "pushNotifications",

@@ -138,7 +138,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:garbage_master/models/api.services.dart';
+import 'package:garbage_master/services/db_helper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+import '../../models/WardModel.dart';
 
 class TrackTruck extends StatefulWidget {
   const TrackTruck({super.key});
@@ -148,18 +152,33 @@ class TrackTruck extends StatefulWidget {
 }
 
 class _TrackTruckState extends State<TrackTruck> {
+  List<WardModel> wardList = [];
   final Completer<GoogleMapController> _controller = Completer();
   Set<Polygon> _polygons = {};
 
   @override
   void initState() {
+    storeWard();
     super.initState();
     loadPolygons();
+  }
+
+  Future<void> storeWard() async {
+    final db_handler = DatabaseHelper();
+    var response = await APIServices.getWards();
+    response.forEach((key, value) {
+      String wardName = key.replaceAll('Average', '');
+      int wardAverage = value;
+      WardModel ward = WardModel(wardName: wardName, average: wardAverage);
+      print(ward);
+      db_handler.insertWard(ward);
+    });
   }
 
   Future<void> loadPolygons() async {
     final data = await rootBundle.loadString('assets/ward.geojson');
     final features = jsonDecode(data)['features'];
+
     Set<Polygon> polygons = {};
     for (final feature in features) {
       final geometry = feature['geometry'];

@@ -22,7 +22,7 @@ class TableDataSource extends DataTableSource {
       DataCell(Text(data[index]['waste'].toString())),
       DataCell(Text(data[index]['ward'].toString())),
       DataCell(Text(
-        data[index]['date'].toString().substring(1, 11),
+        data[index]['date'].toString().substring(0, 10),
       )),
     ]);
   }

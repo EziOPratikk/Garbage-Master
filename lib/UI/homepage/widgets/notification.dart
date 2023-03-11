@@ -37,44 +37,6 @@ class _NotifyState extends State<Notify> {
     });
 
     //terminated state
-    FirebaseMessaging.instance.getInitialMessage().then((event) {
-      if (event != null) {
-        setState(() {
-          final notification = NotificationModel(
-            title: event.notification!.title ?? '',
-            body: event.notification!.body ?? '',
-            date: DateTime.now(),
-          );
-          DatabaseHelper().insertNotification(notification);
-        });
-      }
-    });
-    //foreground state
-    FirebaseMessaging.onMessage.listen((event) {
-      LocalNotificationService.showNotificationOnForegrouind(event);
-      if (mounted) {
-        setState(() {
-          final notification = NotificationModel(
-            title: event.notification!.title ?? '',
-            body: event.notification!.body ?? '',
-            date: DateTime.now(),
-          );
-
-          DatabaseHelper().insertNotification(notification);
-        });
-      }
-    });
-    //background state
-    FirebaseMessaging.onMessageOpenedApp.listen((event) {
-      setState(() {
-        final notification = NotificationModel(
-          title: event.notification!.title ?? '',
-          body: event.notification!.body ?? '',
-          date: DateTime.now(),
-        );
-        DatabaseHelper().insertNotification(notification);
-      });
-    });
   }
 
   @override
@@ -113,7 +75,9 @@ class _NotifyState extends State<Notify> {
                         DateFormat('dd-MMM-yyyy hh:mm a').format(date),
                       ),
                       children: [
-                        Text(notification["body"]),
+                        Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Text(notification["body"])),
                       ],
                     ));
                   }))),

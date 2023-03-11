@@ -1,9 +1,9 @@
 import 'dart:developer';
-
-import 'package:garbage_master/models/average.dart';
 import 'package:garbage_master/models/notifications.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+
+import '../models/WardModel.dart';
 
 class DatabaseHelper {
   static DatabaseHelper? _instance;
@@ -27,23 +27,23 @@ class DatabaseHelper {
         onCreate: (Database db, int version) async {
       await db.execute(
           'Create table notifications(id INTEGER PRIMARY KEY AUTOINCREMENT, title text, body text, date text)');
-      // await db
-      //     .execute('create table wards(id INTEGER PRIMARY KEY, wardName text');
+
+      await db.execute(
+          'CREATE TABLE IF NOT EXISTS wards(id INTEGER PRIMARY KEY AUTOINCREMENT, wardName TEXT, average INTEGER)');
     });
   }
 
-//ward table
-  Future<void> insertWard(WardAvg ward) async {
+  Future<void> insertWard(WardModel ward) async {
     final db = await getdb();
     await db.insert('wards', ward.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<List<WardAvg>> getWards() async {
+  Future<List<WardModel>> getWards() async {
     final db = await getdb();
     final List<Map<String, dynamic>> maps = await db.query('wards');
     return List.generate(maps.length, (i) {
-      return WardAvg.fromMap(maps[i]);
+      return WardModel.fromMap(maps[i]);
     });
   }
 

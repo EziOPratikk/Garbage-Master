@@ -39,6 +39,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color.fromRGBO(240, 236, 236, 1),
         body: Column(
           children: [
             _header(context),
@@ -120,7 +121,7 @@ class _HomePageState extends State<HomePage> {
               child: GridView.count(
                 crossAxisCount: 2,
                 crossAxisSpacing: 10,
-                mainAxisSpacing: 30,
+                mainAxisSpacing: 15,
                 children: [
                   HomepageItemWidget(
                     imgSrc: "assets/images/input data.png",
@@ -223,7 +224,11 @@ class HomepageItemWidget extends StatelessWidget {
     return GestureDetector(
       onTap: tapFunc,
       child: Card(
-        elevation: 5,
+        // color: Color.fromRGBO(247, 244, 246, 0.494),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        elevation: 3,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
