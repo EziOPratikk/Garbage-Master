@@ -21,6 +21,7 @@ class DataInputPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final textInputDecoration = InputDecoration(
       isDense: true,
+      counterText: '',
       contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
       hintText: 'Quantity in Units',
       border: OutlineInputBorder(
@@ -65,6 +66,7 @@ class DataInputPage extends StatelessWidget {
                   'Number of filled plastics',
                   'Small plastics refers to bags that contains very small amount of wastes. We advise you not to count without filling the entire bag. The filled bag allows us to measure the data more efficiently.',
                   TextField(
+                    maxLength: 4,
                     keyboardType: const TextInputType.numberWithOptions(
                       decimal: false,
                       signed: true,
@@ -77,7 +79,7 @@ class DataInputPage extends StatelessWidget {
                     controller: smallPlasticController,
                   ),
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 20),
                 InputCard(
                   Image.asset(
                     'assets/images/bigbag.png',
@@ -99,7 +101,7 @@ class DataInputPage extends StatelessWidget {
                     controller: bigPlasticController,
                   ),
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 20),
                 InputCard(
                   Image.asset(
                     'assets/images/bin.png',
@@ -109,6 +111,7 @@ class DataInputPage extends StatelessWidget {
                   'Number of filled Dustbin',
                   'Dust bin refers to storage that contain large amount of wastes. If the dustbin is very small, please count it in plastic zone. We advise you not to count without filling the entire bin to make it more efficient',
                   TextField(
+                    maxLength: 4,
                     keyboardType: const TextInputType.numberWithOptions(
                       decimal: false,
                       signed: true,
@@ -121,7 +124,7 @@ class DataInputPage extends StatelessWidget {
                     controller: dustBinController,
                   ),
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 20),
                 InputCard(
                   Image.asset(
                     'assets/images/sack.png',
@@ -131,6 +134,7 @@ class DataInputPage extends StatelessWidget {
                   'Number of filled sack bags',
                   'Sack bag refers to bags that contains very large amount of wastes. We advise you not to count without filling the entire bag. The filled bag allows us to measure the data more efficiently.',
                   TextField(
+                    maxLength: 4,
                     keyboardType: const TextInputType.numberWithOptions(
                       decimal: false,
                       signed: true,

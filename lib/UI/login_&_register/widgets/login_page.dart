@@ -183,7 +183,7 @@ class LoginPage extends StatelessWidget {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MainScreen(),
+                        builder: (context) => const MainScreen(),
                       ),
                     );
                   } else if ((jsonDecode(response.body)["result"]).toString() ==

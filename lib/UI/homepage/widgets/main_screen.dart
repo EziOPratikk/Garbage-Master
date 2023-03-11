@@ -93,29 +93,49 @@ class _MainScreenState extends State<MainScreen> {
     return SafeArea(
       child: Scaffold(
         body: bottomNavBarPages[_bottomNavBarCurrentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          elevation: 10,
-          fixedColor: Theme.of(context).primaryColor,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_filled),
-              label: 'Home',
+        bottomNavigationBar: Container(
+          decoration: const BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black38,
+                spreadRadius: 1,
+                blurRadius: 10,
+              ),
+            ],
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.call),
-              label: 'Contact Us',
+          ),
+          child: ClipRRect(
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(30),
+              topRight: Radius.circular(30),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_rounded),
-              label: 'Profile',
+            child: BottomNavigationBar(
+              fixedColor: Theme.of(context).primaryColor,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home_filled),
+                  label: 'Home',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.call),
+                  label: 'Contact Us',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person_rounded),
+                  label: 'Profile',
+                ),
+              ],
+              currentIndex: _bottomNavBarCurrentIndex,
+              onTap: (int newIndex) {
+                setState(() {
+                  _bottomNavBarCurrentIndex = newIndex;
+                });
+              },
             ),
-          ],
-          currentIndex: _bottomNavBarCurrentIndex,
-          onTap: (int newIndex) {
-            setState(() {
-              _bottomNavBarCurrentIndex = newIndex;
-            });
-          },
+          ),
         ),
       ),
     );

@@ -138,6 +138,7 @@ class ForgotPassword extends StatelessWidget {
                                 Navigator.of(context).pop();
                               } else {
                                 progressIndicator();
+                                Navigator.pop(context, true);
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(

@@ -56,7 +56,7 @@ class RecentData extends StatelessWidget {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.4,
                           child: Image.asset(
-                            'assets/images/recycle-bin.png',
+                            'assets/images/empty.png',
                             fit: BoxFit.cover,
                           ),
                         ),

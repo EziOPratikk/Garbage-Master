@@ -36,7 +36,7 @@ class _RegisterPageState extends State<RegisterPage> {
     Ward(id: 5, title: 'Ward 5 Hadigaun'),
     Ward(id: 6, title: 'Ward 6 Bouddha'),
     Ward(id: 7, title: 'Ward 7 Mitrapark'),
-    Ward(id: 8, title: 'Ward 9 Gaushala'),
+    Ward(id: 8, title: 'Ward 8 Jayabageshwori'),
     Ward(id: 9, title: 'Ward 9 Gaushala'),
     Ward(id: 10, title: 'Ward 10 Baneshwor'),
     Ward(id: 11, title: 'Ward 11 Tripureshwor'),

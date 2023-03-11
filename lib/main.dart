@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:garbage_master/services/db_helper.dart';
 import 'package:garbage_master/services/localNotify.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import './UI/login_&_register/widgets/splash_screen.dart';
 import 'models/notifications.dart';
 
@@ -37,6 +41,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Garbage Master',
       theme: ThemeData(
+        fontFamily: 'Rubik',
         primarySwatch: Colors.green,
         primaryColor: const Color(0xff5C964A),
         snackBarTheme: const SnackBarThemeData(
@@ -45,6 +50,7 @@ class MyApp extends StatelessWidget {
         textTheme: const TextTheme(
           headline6: TextStyle(
             color: Color(0xff5C964A),
+            fontFamily: 'Rubik',
             fontSize: 22,
           ),
         ),
@@ -81,3 +87,4 @@ Future<void> backgroundHandler(RemoteMessage message) async {
 
 
 //keytool -list -v \-alias androiddebugkey -keystore C:\Users\kumal\.android\debug.keystore
+

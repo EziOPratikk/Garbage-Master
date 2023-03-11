@@ -60,7 +60,17 @@ class _NotifyState extends State<Notify> {
           ),
           body: notificationList.isEmpty
               ? Center(
-                  child: Text(notificationMsg),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/sleep.png',
+                        height: 200,
+                        width: 200,
+                      ),
+                      Text(notificationMsg),
+                    ],
+                  ),
                 )
               : ListView.builder(
                   itemCount: notificationList.length,

@@ -116,15 +116,15 @@ class _HomePageState extends State<HomePage> {
               'Home',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 25),
             Expanded(
               child: GridView.count(
                 crossAxisCount: 2,
                 crossAxisSpacing: 10,
-                mainAxisSpacing: 15,
+                mainAxisSpacing: 25,
                 children: [
                   HomepageItemWidget(
-                    imgSrc: "assets/images/input data.png",
+                    imgSrc: "assets/images/trash-bin.png",
                     title: "Input Garbage Data",
                     tapFunc: () {
                       Navigator.push(
@@ -136,8 +136,8 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                   HomepageItemWidget(
-                    imgSrc: "assets/images/waste.png",
-                    title: "Waste Segregation Guideline",
+                    imgSrc: "assets/images/recycle-bin.png",
+                    title: "Segregation Guideline",
                     tapFunc: () {
                       Navigator.push(
                         context,
@@ -148,8 +148,8 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                   HomepageItemWidget(
-                    imgSrc: "assets/images/wastedata.png",
-                    title: "Recent Data",
+                    imgSrc: "assets/images/table.png",
+                    title: "History Table",
                     tapFunc: () {
                       Navigator.push(
                         context,
@@ -160,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                   HomepageItemWidget(
-                    imgSrc: "assets/images/map.png",
+                    imgSrc: "assets/images/view-map.png",
                     title: "View Map",
                     tapFunc: () {
                       Navigator.push(
@@ -172,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                   HomepageItemWidget(
-                    imgSrc: "assets/images/map.png",
+                    imgSrc: "assets/images/garbage-truck.png",
                     title: "Track Garbage Truck",
                     tapFunc: () {
                       Navigator.push(
@@ -224,18 +224,15 @@ class HomepageItemWidget extends StatelessWidget {
     return GestureDetector(
       onTap: tapFunc,
       child: Card(
-        // color: Color.fromRGBO(247, 244, 246, 0.494),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        elevation: 3,
+        elevation: 8,
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(18.0),
           child: Column(
             children: [
               Expanded(
                 child: Image.asset(imgSrc),
               ),
+              const SizedBox(height: 15),
               Text(
                 title,
                 style: const TextStyle(
