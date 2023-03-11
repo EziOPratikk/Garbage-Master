@@ -375,17 +375,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         fillColor: textFieldFillColor,
                         filled: true,
                       ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Required';
-                        }
-                        if (!RegExp(
-                                r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
-                            .hasMatch(value)) {
-                          return 'Invalid Email Address';
-                        }
-                        return null;
-                      },
                     ),
                     const SizedBox(height: 20),
                     const Text(
@@ -466,7 +455,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         signed: true,
                       ),
                       inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(2),
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'^(?:[1-9]|[1-2][0-9]|3[0-2])$'),
+                        )
                       ],
                       decoration: InputDecoration(
                         hintStyle: const TextStyle(
@@ -506,6 +498,20 @@ class _ProfilePageState extends State<ProfilePage> {
                                   );
                                   return;
                                 }
+
+                                if (phoneNumberController.text.isNotEmpty) {
+                                  if (!RegExp(r'^98\d{8}$')
+                                      .hasMatch(phoneNumberController.text)) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      showSnackBarWidget(
+                                        'Invalid mobile number',
+                                        Theme.of(context).errorColor,
+                                      ),
+                                    );
+                                    return;
+                                  }
+                                }
+
                                 progressIndicator();
                                 final String userName =
                                     await SharedPreferences.getInstance().then(
@@ -521,20 +527,40 @@ class _ProfilePageState extends State<ProfilePage> {
                                   "ward": wardController.text.trim(),
                                   "username": userName.trim(),
                                 });
+
                                 if (_imgFile != null) {
-                                  final imgAsBytes =
-                                      await File(_imgFile!.path).readAsBytes();
-                                  final String image = base64Encode(imgAsBytes);
-                                  log(image.toString());
-                                  final insertImageResponse =
-                                      await APIServices.insertImage(
-                                    {
-                                      "name": userName.trim(),
-                                      "image":
-                                          "data:image/png;base64,${base64Encode(imgAsBytes)}",
-                                    },
-                                  );
-                                  log(insertImageResponse.body.toString());
+                                  final imgSizeInBytes =
+                                      (await File(_imgFile!.path).readAsBytes())
+                                          .lengthInBytes;
+                                  final imgSizeInKB = imgSizeInBytes / 1024;
+                                  if (imgSizeInKB <= 100) {
+                                    final imgAsBytes =
+                                        await File(_imgFile!.path)
+                                            .readAsBytes();
+
+                                    final String image =
+                                        base64Encode(imgAsBytes);
+                                    log(image.toString());
+                                    final insertImageResponse =
+                                        await APIServices.insertImage(
+                                      {
+                                        "name": userName.trim(),
+                                        "image":
+                                            "data:image/png;base64,${base64Encode(imgAsBytes)}",
+                                      },
+                                    );
+                                    log(insertImageResponse.body.toString());
+                                  } else {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      showSnackBarWidget(
+                                        'Image size must be less than 100 kb',
+                                        Theme.of(context).errorColor,
+                                      ),
+                                    );
+                                    Navigator.of(context).pop();
+                                    return;
+                                  }
+
                                   // if (insertImageResponse.statusCode == 200) {
                                   //   if ((jsonDecode(response.body)["result"])
                                   //           .toString() ==
@@ -555,7 +581,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             .backgroundColor,
                                       ),
                                     );
-
+                                    Navigator.pop(context, true);
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(

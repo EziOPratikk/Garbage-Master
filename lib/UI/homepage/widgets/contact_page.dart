@@ -20,7 +20,7 @@ class ContactPage extends StatelessWidget {
       child: Scaffold(
         body: Container(
           width: double.infinity,
-          margin: const EdgeInsets.all(10),
+          margin: const EdgeInsets.all(15),
           child: ListView(
             children: [
               _header(context),
@@ -45,25 +45,21 @@ class ContactPage extends StatelessWidget {
       padding: const EdgeInsets.only(top: 30),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.07,
-                child: Image.asset(
-                  'assets/images/contact-us.png',
-                  fit: BoxFit.contain,
-                ),
-              ),
-              const SizedBox(width: 10),
-              const Text(
-                'CONTACT US',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
+          const SizedBox(width: 10),
+          const Text(
+            'CONTACT US',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 25, bottom: 10),
+            width: MediaQuery.of(context).size.width * 0.30,
+            child: Image.asset(
+              'assets/images/contact-us.png',
+              fit: BoxFit.contain,
+            ),
           ),
           const SizedBox(height: 10),
           Row(
@@ -71,7 +67,7 @@ class ContactPage extends StatelessWidget {
               Expanded(
                 child: Text(
                   'Right now, we do not have any designated office built for this project, we have provided address, phone number below that can be used only during emergency. Otherwise you can leave us a message via email or the message section below.',
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.justify,
                 ),
               ),
             ],
@@ -246,7 +242,7 @@ class ContactPage extends StatelessWidget {
             Icons.mail_outline,
           ),
           title: 'Email',
-          subTitle: 'garbagemaster1417',
+          subTitle: 'garbagemaster100',
           subTitle1: '@gmail.com',
         ),
         CircleItemWidget(

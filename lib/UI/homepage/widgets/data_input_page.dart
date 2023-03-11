@@ -77,7 +77,7 @@ class DataInputPage extends StatelessWidget {
                     controller: smallPlasticController,
                   ),
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 20),
                 InputCard(
                   Image.asset(
                     'assets/images/bigbag.png',
@@ -99,7 +99,7 @@ class DataInputPage extends StatelessWidget {
                     controller: bigPlasticController,
                   ),
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 20),
                 InputCard(
                   Image.asset(
                     'assets/images/bin.png',
@@ -121,7 +121,7 @@ class DataInputPage extends StatelessWidget {
                     controller: dustBinController,
                   ),
                 ),
-                const SizedBox(height: 15),
+                const SizedBox(height: 20),
                 InputCard(
                   Image.asset(
                     'assets/images/sack.png',

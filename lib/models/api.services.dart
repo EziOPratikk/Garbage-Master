@@ -8,37 +8,37 @@ import '../UI/homepage/widgets/recent_data.dart';
 
 class APIServices {
   static String registerUserUrl =
-      'http://192.168.101.7:8585/ProjectAPI/RegisterUser';
+      'http://192.168.101.8:8585/ProjectAPI/RegisterUser';
 
-  static String loginUserUrl = 'http://192.168.101.7:8585/ProjectAPI/LoginUser';
+  static String loginUserUrl = 'http://192.168.101.8:8585/ProjectAPI/LoginUser';
 
   static String contactUsUrl =
-      'http://192.168.101.7:8585/ProjectAPI/InsertMessage';
+      'http://192.168.101.8:8585/ProjectAPI/InsertMessage';
 
-  static String sendEmailUrl = 'http://192.168.101.7:8585/ProjectAPI/SendEmail';
+  static String sendEmailUrl = 'http://192.168.101.8:8585/ProjectAPI/SendEmail';
 
   static String checkEmailUrl =
-      'http://192.168.101.7:8585/ProjectAPI/CheckEmail';
+      'http://192.168.101.8:8585/ProjectAPI/CheckEmail';
 
   static String resetPasswordUrl =
-      'http://192.168.101.7:8585/ProjectAPI/ResetPassword';
+      'http://192.168.101.8:8585/ProjectAPI/ResetPassword';
 
   static String currentUserUrl =
-      'http://192.168.101.7:8585/ProjectAPI/GetSpecificUser';
+      'http://192.168.101.8:8585/ProjectAPI/GetSpecificUser';
 
   static String updateGarbageDataUrl =
-      'http://192.168.101.7:8585/ProjectAPI/UpdateGarbageData';
+      'http://192.168.101.8:8585/ProjectAPI/UpdateGarbageData';
 
   static String updateProfileUrl =
-      'http://192.168.101.7:8585/ProjectAPI/UpdateProfile';
+      'http://192.168.101.8:8585/ProjectAPI/UpdateProfile';
 
-  static String getAvgUrl = 'http://192.168.101.7:8585/ProjectAPI/getAverage';
+  static String getAvgUrl = 'http://192.168.101.8:8585/ProjectAPI/getAverage';
 
   static String historyTableUrl =
-      'http://192.168.101.7:8585/ProjectAPI/HistoryTable';
+      'http://192.168.101.8:8585/ProjectAPI/HistoryTable';
 
   static String insertImageUrl =
-      'http://192.168.101.7:8585/ProjectAPI/InsertImage';
+      'http://192.168.101.8:8585/ProjectAPI/InsertImage';
 
   static Future<http.Response> registerUser(Map<String, dynamic> map) async {
     final response = await http.post(
