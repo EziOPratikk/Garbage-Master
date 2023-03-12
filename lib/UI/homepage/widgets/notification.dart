@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -6,7 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../services/db_helper.dart';
 
 class Notify extends StatefulWidget {
-  const Notify({super.key});
+  final List<Map<String, dynamic>> notificationList;
+  const Notify({super.key, required this.notificationList});
 
   @override
   State<Notify> createState() => _NotifyState();
@@ -14,25 +14,11 @@ class Notify extends StatefulWidget {
 
 class _NotifyState extends State<Notify> {
   SharedPreferences? prefs;
-  List<Map<String, dynamic>> notificationList = [];
+
   String notificationMsg = "No Notification";
   @override
   void initState() {
     super.initState();
-
-    DatabaseHelper().getNotifications().then((notifications) {
-      setState(() {
-        notificationList = notifications
-            .map((notification) => {
-                  "date": notification.date,
-                  "title": notification.title,
-                  "body": notification.body
-                })
-            .toList();
-      });
-    });
-
-    //terminated state
   }
 
   @override
@@ -45,7 +31,7 @@ class _NotifyState extends State<Notify> {
                 icon: const Icon(Icons.delete),
                 onPressed: () {
                   setState(() {
-                    notificationList.clear();
+                    widget.notificationList.clear();
                     DatabaseHelper().clearNotifications();
                   });
                 },
@@ -54,7 +40,7 @@ class _NotifyState extends State<Notify> {
             title: const Text('Notification'),
             backgroundColor: Theme.of(context).primaryColor,
           ),
-          body: notificationList.isEmpty
+          body: widget.notificationList.isEmpty
               ? Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -69,9 +55,9 @@ class _NotifyState extends State<Notify> {
                   ),
                 )
               : ListView.builder(
-                  itemCount: notificationList.length,
+                  itemCount: widget.notificationList.length,
                   itemBuilder: ((context, index) {
-                    final notification = notificationList[index];
+                    final notification = widget.notificationList[index];
                     final date = notification["date"];
 
                     return Card(

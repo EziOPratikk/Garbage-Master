@@ -1,13 +1,29 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../models/users.dart';
 import './/UI/homepage/widgets/main_screen.dart';
 import '../../../models/api.services.dart';
 import './register_page.dart';
 import './forgot_password.dart';
 import '../../progress_indicator_widget.dart';
 import '../../snackbar_widget.dart';
+
+//this is second try at fixing multiple notification issue by setting topic here
+Future<Users> getProfileData() async {
+  var puser = await SharedPreferences.getInstance();
+  puser.getString('username');
+  final currentUser = await APIServices.currentUser({
+    'username': await SharedPreferences.getInstance()
+        .then((value) => value.getString('username') ?? 'no username found'),
+  });
+  var decode = jsonDecode(currentUser.body);
+  Map<String, dynamic> userMap = decode;
+  Users profileUser = Users.fromMap(userMap);
+  return profileUser;
+}
 
 class LoginPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -16,7 +32,6 @@ class LoginPage extends StatelessWidget {
   final passwordController = TextEditingController();
 
   LoginPage({super.key});
-
   void saveUserLogin(String userName, String password) async {
     SharedPreferences prefsUserName = await SharedPreferences.getInstance();
     prefsUserName.setString('username', userName);
@@ -33,6 +48,13 @@ class LoginPage extends StatelessWidget {
       userNameController.text = savedUserName;
       passwordController.text = savedPassword;
     }
+  }
+
+  Future<void> setTopic() async {
+    Users user = await getProfileData();
+    String topic = 'ward${user.Ward}';
+    await FirebaseMessaging.instance.subscribeToTopic(topic);
+    // print('subscribed to $topic');
   }
 
   @override
@@ -168,6 +190,7 @@ class LoginPage extends StatelessWidget {
                   Navigator.of(context).pop();
                   if ((jsonDecode(response.body)["result"]).toString() ==
                       'ValidUser') {
+                    setTopic();
                     ScaffoldMessenger.of(context).showSnackBar(
                       showSnackBarWidget(
                         'Log in successfull',

@@ -17,6 +17,13 @@ import '../../progress_indicator_widget.dart';
 import '../../snackbar_widget.dart';
 import '../../../models/users.dart';
 
+Future<void> unsubscribeFromTopic() async {
+  Users user = await getProfileData();
+  String topic = 'ward${user.Ward}';
+  await FirebaseMessaging.instance.unsubscribeFromTopic(topic);
+  // print('unsubscribed from $topic');
+}
+
 Future<Users> getProfileData() async {
   var puser = await SharedPreferences.getInstance();
   puser.getString('username');
@@ -113,12 +120,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 phoneNumberController.text = phone;
                 final Uint8List base64Decodeimg = base64Decode(img);
 
-                // final file = File(_imgFile!.path);
-                // final image = MemoryImage(base64Decodeimg);
-                // print(image);
-
-                // file.writeAsBytes(base64Decodeimg);
-
                 return ListView(
                   children: [
                     Padding(
@@ -168,14 +169,11 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                           TextButton(
                             onPressed: () async {
-                              FirebaseMessaging.instance.unsubscribeFromTopic(
-                                  'ward${wardController.text}');
+                              await unsubscribeFromTopic();
                               DatabaseHelper().clearNotifications();
                               DatabaseHelper().clearWard();
-
                               LocalNotificationService.notificationsPlugin
                                   .cancelAll();
-
                               SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
                               await prefs.remove('username');
@@ -572,13 +570,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                     Navigator.of(context).pop();
                                     return;
                                   }
-
-                                  // if (insertImageResponse.statusCode == 200) {
-                                  //   if ((jsonDecode(response.body)["result"])
-                                  //           .toString() ==
-                                  //       'Inserted') {}
-                                  // }
-
                                 }
 
                                 if (response.statusCode == 200) {
@@ -597,7 +588,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => const MainScreen(),
+                                        builder: (context) =>
+                                            const MainScreen(),
                                       ),
                                     );
                                   }
