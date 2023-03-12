@@ -49,7 +49,7 @@ class TermsConditions extends StatelessWidget {
                     Navigator.pop(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => RegisterPage()));
+                            builder: (context) => const RegisterPage()));
                   },
                 ),
                 const SizedBox(width: 40),

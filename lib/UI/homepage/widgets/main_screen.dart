@@ -96,7 +96,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final bottomNavBarPages = [
-      HomePage(),
+      const HomePage(),
       ContactPage(),
       const ProfilePage(),
     ];

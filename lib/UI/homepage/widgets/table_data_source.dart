@@ -1,20 +1,10 @@
 import 'package:flutter/material.dart';
 
-import './recent_data.dart';
 
 class TableDataSource extends DataTableSource {
   final List<Map<String, dynamic>> data;
 
   TableDataSource(this.data);
-  // final List<Map<String, dynamic>> _data = List.generate(
-  //     RecentData.historyTable.length,
-  //     (index) => {
-  //           "username": RecentData.historyTable[index].username,
-  //           "waste": RecentData.historyTable[index].waste,
-  //           "ward": RecentData.historyTable[index].ward,
-  //           "date": RecentData.historyTable[index].date,
-  //         });
-
   @override
   DataRow? getRow(int index) {
     return DataRow(cells: [

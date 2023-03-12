@@ -195,7 +195,7 @@ class DataInputPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => MainScreen(),
+                            builder: (context) => const MainScreen(),
                           ),
                         );
                       }

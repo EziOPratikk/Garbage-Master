@@ -5,11 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:garbage_master/services/db_helper.dart';
 import 'package:garbage_master/services/localNotify.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import './UI/login_&_register/widgets/splash_screen.dart';
 import 'models/notifications.dart';
 

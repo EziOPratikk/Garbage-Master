@@ -1,12 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:garbage_master/services/db_helper.dart';
 import 'package:http/http.dart' as http;
 
 import './history_table.dart';
 import '../UI/homepage/widgets/recent_data.dart';
-import 'WardModel.dart';
 
 class APIServices {
   static String registerUserUrl =

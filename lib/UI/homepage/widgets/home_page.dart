@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:garbage_master/map/screens/trucktracking.dart';
 import 'package:intl/intl.dart';
@@ -8,7 +7,6 @@ import '../../../services/db_helper.dart';
 import './data_input_page.dart';
 import './waste_segregation.dart';
 import './recent_data.dart';
-import '../../../map/screens/WardMap.dart';
 import 'notification.dart';
 
 class HomePage extends StatefulWidget {
@@ -51,7 +49,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color.fromRGBO(240, 236, 236, 1),
+        backgroundColor: const Color.fromRGBO(240, 236, 236, 1),
         body: Column(
           children: [
             _header(context),

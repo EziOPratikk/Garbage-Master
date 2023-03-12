@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -8,8 +7,8 @@ class LocalNotificationService {
       FlutterLocalNotificationsPlugin();
 
   static void initialize() {
-    final InitializationSettings initializationSettings =
-        const InitializationSettings(
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
             android: AndroidInitializationSettings('@mipmap/ic_launcher'));
     notificationsPlugin.initialize(initializationSettings);
   }

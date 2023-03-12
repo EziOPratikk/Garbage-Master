@@ -1,12 +1,8 @@
-import 'dart:convert';
 
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:garbage_master/services/localNotify.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../models/notifications.dart';
 import '../../../services/db_helper.dart';
 
 class Notify extends StatefulWidget {

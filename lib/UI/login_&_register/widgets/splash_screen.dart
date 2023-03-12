@@ -4,7 +4,6 @@ import 'package:location/location.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../main.dart';
 import 'login_page.dart';
-import 'package:mapbox_gl/mapbox_gl.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -35,14 +34,12 @@ class _SplashScreenState extends State<SplashScreen> {
       permissionGranted = await location.requestPermission();
     }
     LocationData locationData = await location.getLocation();
-    LatLng currentLatLng =
-        LatLng(locationData.latitude!, locationData.longitude!);
     sharedPreferences.setDouble('latitude', locationData.latitude!);
     sharedPreferences.setDouble('longitude', locationData.longitude!);
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
         if (username != null) {
-          return MainScreen();
+          return const MainScreen();
         } else {
           return LoginPage();
         }
