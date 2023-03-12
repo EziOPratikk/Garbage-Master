@@ -79,7 +79,6 @@ Future<void> backgroundHandler(RemoteMessage message) async {
     date: DateTime.now(),
   );
   DatabaseHelper().insertNotification(notification);
-  LocalNotificationService.showNotificationOnForegrouind(message);
 
   // print(message.data.toString());
   // print(message.notification!.title);

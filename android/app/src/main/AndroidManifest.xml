@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.garbage_master">
    <application
-        android:label="garbage_master"
+        android:label="GM"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <meta-data

@@ -4,6 +4,7 @@ import 'package:garbage_master/map/screens/trucktracking.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../services/db_helper.dart';
 import './data_input_page.dart';
 import './waste_segregation.dart';
 import './recent_data.dart';
@@ -19,11 +20,22 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late String username = '';
+  List<Map<String, dynamic>> wardList = [];
 
   @override
   void initState() {
     super.initState();
     getuser();
+
+    final dbHelper = DatabaseHelper();
+    dbHelper.getWards().then((value) {
+      setState(() {
+        wardList = value
+            .map((ward) => {"wardName": ward.wardName, "average": ward.average})
+            .toList();
+        print(wardList);
+      });
+    });
   }
 
   String getuser() {
@@ -166,23 +178,23 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const GarbageMap(),
+                          builder: (context) => TrackTruck(wardList: wardList),
                         ),
                       );
                     },
                   ),
-                  HomepageItemWidget(
-                    imgSrc: "assets/images/garbage-truck.png",
-                    title: "Track Garbage Truck",
-                    tapFunc: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const TrackTruck(),
-                        ),
-                      );
-                    },
-                  ),
+                  // HomepageItemWidget(
+                  //   imgSrc: "assets/images/garbage-truck.png",
+                  //   title: "Track Garbage Truck",
+                  //   tapFunc: () {
+                  //     Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => TrackTruck(wardList: wardList),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
                 ],
               ),
             ),

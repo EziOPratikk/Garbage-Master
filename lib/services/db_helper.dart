@@ -29,12 +29,14 @@ class DatabaseHelper {
           'Create table notifications(id INTEGER PRIMARY KEY AUTOINCREMENT, title text, body text, date text)');
 
       await db.execute(
-          'CREATE TABLE IF NOT EXISTS wards(id INTEGER PRIMARY KEY AUTOINCREMENT, wardName TEXT, average INTEGER)');
+          'CREATE TABLE IF NOT EXISTS wards(id INTEGER PRIMARY KEY AUTOINCREMENT CHECK(id<=32), wardName TEXT, average INTEGER)');
     });
   }
 
   Future<void> insertWard(WardModel ward) async {
     final db = await getdb();
+    // log(ward.wardName);
+    // log(ward.average.toString());
     await db.insert('wards', ward.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
@@ -45,6 +47,18 @@ class DatabaseHelper {
     return List.generate(maps.length, (i) {
       return WardModel.fromMap(maps[i]);
     });
+  }
+
+  Future<WardModel?> getWardByName(String wardName) async {
+    final db = await getdb();
+    final List<Map<String, dynamic>> results = await db.query('wards',
+        where: 'TRIM(wardName) = ?', whereArgs: [wardName.trim()]);
+    print('Query results for $wardName: $results');
+    if (results.isEmpty) {
+      return null;
+    } else {
+      return WardModel.fromMap(results.first);
+    }
   }
 
   Future<void> insertNotification(NotificationModel notification) async {
@@ -65,5 +79,10 @@ class DatabaseHelper {
   Future<void> clearNotifications() async {
     final db = await getdb();
     await db.delete('notifications');
+  }
+
+  Future<void> clearWard() async {
+    final db = await getdb();
+    await db.delete('wards');
   }
 }

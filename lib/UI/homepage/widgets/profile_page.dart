@@ -172,6 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               FirebaseMessaging.instance.unsubscribeFromTopic(
                                   'ward${wardController.text}');
                               DatabaseHelper().clearNotifications();
+                              DatabaseHelper().clearWard();
 
                               LocalNotificationService.notificationsPlugin
                                   .cancelAll();

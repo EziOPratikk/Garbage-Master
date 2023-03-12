@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../models/WardModel.dart';
 import '../../../models/api.services.dart';
 import '../../../models/notifications.dart';
 import '../../../models/users.dart';
@@ -41,7 +42,7 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     setTopic();
     super.initState();
-
+    storeWard();
     FirebaseMessaging.instance.getInitialMessage().then((event) {
       if (event != null) {
         final notification = NotificationModel(
@@ -50,7 +51,6 @@ class _MainScreenState extends State<MainScreen> {
           date: DateTime.now(),
         );
         DatabaseHelper().insertNotification(notification);
-        LocalNotificationService.showNotificationOnForegrouind(event);
       }
     });
     //foreground state
@@ -72,7 +72,17 @@ class _MainScreenState extends State<MainScreen> {
         date: DateTime.now(),
       );
       DatabaseHelper().insertNotification(notification);
-      LocalNotificationService.showNotificationOnForegrouind(event);
+    });
+  }
+
+  Future<void> storeWard() async {
+    final db_handler = DatabaseHelper();
+    var response = await APIServices.getWards();
+    response.forEach((key, value) {
+      String wardName = key.replaceAll('Average', '');
+      int wardAverage = value;
+      WardModel ward = WardModel(wardName: wardName, average: wardAverage);
+      db_handler.insertWard(ward);
     });
   }
 
@@ -86,7 +96,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final bottomNavBarPages = [
-      const HomePage(),
+      HomePage(),
       ContactPage(),
       const ProfilePage(),
     ];
