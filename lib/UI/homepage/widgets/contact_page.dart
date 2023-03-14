@@ -138,6 +138,12 @@ class ContactPage extends StatelessWidget {
               prefixIcon: const Icon(Icons.subject_sharp),
             ),
             controller: subjectController,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Required';
+              }
+              return null;
+            }
           ),
           const SizedBox(height: 20),
           TextFormField(
