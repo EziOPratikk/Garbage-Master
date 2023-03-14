@@ -29,7 +29,7 @@ class DatabaseHelper {
           'Create table notifications(id INTEGER PRIMARY KEY AUTOINCREMENT, title text, body text, date text)');
 
       await db.execute(
-          'CREATE TABLE IF NOT EXISTS wards(id INTEGER PRIMARY KEY AUTOINCREMENT CHECK(id<=32), wardName TEXT, average INTEGER)');
+          'CREATE TABLE IF NOT EXISTS wards(id INTEGER PRIMARY KEY AUTOINCREMENT , wardName TEXT, average INTEGER)');
     });
   }
 

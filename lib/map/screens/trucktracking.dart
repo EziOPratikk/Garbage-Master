@@ -73,7 +73,7 @@ class _TrackTruckState extends State<TrackTruck> {
         minMaxZoomPreference: const MinMaxZoomPreference(12, 15),
         myLocationButtonEnabled: false,
         initialCameraPosition:
-            const CameraPosition(target: LatLng(27.6975, 85.3289), zoom: 13),
+            const CameraPosition(target: LatLng(27.6975, 85.3289), zoom: 12),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
