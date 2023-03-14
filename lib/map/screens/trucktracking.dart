@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class TrackTruck extends StatefulWidget {
+class GarbageMap extends StatefulWidget {
   final List<Map<String, dynamic>> wardList;
-  const TrackTruck({super.key, required this.wardList});
+  const GarbageMap({super.key, required this.wardList});
 
   @override
-  _TrackTruckState createState() => _TrackTruckState();
+  _GarbageMapState createState() => _GarbageMapState();
 }
 
-class _TrackTruckState extends State<TrackTruck> {
+class _GarbageMapState extends State<GarbageMap> {
   final Completer<GoogleMapController> _controller = Completer();
   Set<Polygon> _polygons = {};
 
@@ -27,6 +27,7 @@ class _TrackTruckState extends State<TrackTruck> {
   Future<void> loadPolygons() async {
     final data = await rootBundle.loadString('assets/ward.geojson');
     final features = jsonDecode(data)['features'];
+
     Set<Polygon> polygons = {};
     for (final feature in features) {
       final geometry = feature['geometry'];
@@ -36,14 +37,10 @@ class _TrackTruckState extends State<TrackTruck> {
         polygonLatLngs.add(LatLng(coordinate[1], coordinate[0]));
       }
       final properties = feature['properties'];
-      // final wardName = properties['name'].toString().toLowerCase();
-      // log(wardName);
       //Get the ward from the database using the ward name
       final ward = widget.wardList.firstWhere((ward) =>
           ward["wardName"] == properties['name'].toString().toLowerCase());
-
       final wardAverage = ward["average"];
-
       final polygon = Polygon(
         polygonId: PolygonId(properties['name']),
         points: polygonLatLngs,
@@ -51,9 +48,7 @@ class _TrackTruckState extends State<TrackTruck> {
             int.parse(properties['stroke'].substring(1, 7), radix: 16) +
                 0x80000000),
         strokeWidth: properties['stroke-width'].toInt(),
-        // strokeOpacity: properties['stroke-opacity'].toDouble(),
         fillColor: getFillColor(wardAverage),
-        // fillOpacity: properties['fill-opacity'].toDouble(),
       );
       polygons.add(polygon);
     }
@@ -66,7 +61,8 @@ class _TrackTruckState extends State<TrackTruck> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Garbage Map'),
+        centerTitle: true,
+        title: const Text('GARBAGE MAP'),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: GoogleMap(

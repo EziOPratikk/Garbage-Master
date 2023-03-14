@@ -3,12 +3,14 @@ class NotificationModel {
   late String title;
   late String body;
   late DateTime date;
+  late String messageId;
 
   NotificationModel({
     this.id,
     required this.title,
     required this.body,
     required this.date,
+    required this.messageId,
   });
 
   NotificationModel.fromJson(Map<String, dynamic> json) {
@@ -16,6 +18,7 @@ class NotificationModel {
     title = json['title'];
     body = json['body'];
     date = DateTime.parse(json['date']);
+    messageId = json['messageId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -24,6 +27,7 @@ class NotificationModel {
     data['title'] = title;
     data['body'] = body;
     data['date'] = date.toString();
+    data['messageId'] = messageId;
     return data;
   }
 }

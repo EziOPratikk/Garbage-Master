@@ -26,10 +26,10 @@ class DatabaseHelper {
     return await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
       await db.execute(
-          'Create table notifications(id INTEGER PRIMARY KEY AUTOINCREMENT, title text, body text, date text)');
+          'Create table notifications(id INTEGER PRIMARY KEY AUTOINCREMENT, title text, body text, date text,messageId text UNIQUE)');
 
       await db.execute(
-          'CREATE TABLE IF NOT EXISTS wards(id INTEGER PRIMARY KEY AUTOINCREMENT , wardName TEXT, average INTEGER)');
+          'CREATE TABLE IF NOT EXISTS wards(id INTEGER PRIMARY KEY AUTOINCREMENT, wardName TEXT, average INTEGER)');
     });
   }
 
@@ -53,7 +53,7 @@ class DatabaseHelper {
     final db = await getdb();
     final List<Map<String, dynamic>> results = await db.query('wards',
         where: 'TRIM(wardName) = ?', whereArgs: [wardName.trim()]);
-    print('Query results for $wardName: $results');
+    // print('Query results for $wardName: $results');
     if (results.isEmpty) {
       return null;
     } else {
@@ -74,6 +74,14 @@ class DatabaseHelper {
     return List.generate(maps.length, (i) {
       return NotificationModel.fromJson(maps[i]);
     });
+  }
+
+  Future<bool> notificationExists(String messageId) async {
+    final fb = await getdb();
+    final List<Map<String, dynamic>> results = await fb.query('notifications',
+        where: 'TRIM(messageId) = ?', whereArgs: [messageId.trim()]);
+
+    return results.isNotEmpty;
   }
 
   Future<void> clearNotifications() async {

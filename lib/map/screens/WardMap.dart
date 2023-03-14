@@ -9,8 +9,8 @@ import 'package:syncfusion_flutter_maps/maps.dart';
 import '../../models/api.services.dart';
 
 Future<WardAvg> getAverageData() async {
-  final AverageData = await APIServices.getAverage();
-  var decode = jsonDecode(AverageData.body);
+  final averageData = await APIServices.getAverage();
+  var decode = jsonDecode(averageData.body);
   Map<String, dynamic> map = decode;
   WardAvg wardAvg = WardAvg.fromMap(map);
 

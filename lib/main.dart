@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FireBaseHelper.instance.firebaseHelp();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Garbage Master',
@@ -68,11 +70,14 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 Future<void> backgroundHandler(RemoteMessage message) async {
-  print("This is from background handler");
+  // print("This is from background handler");
+
+  LocalNotificationService.showNotificationOnForegrouind(message);
   final notification = NotificationModel(
     title: message.data['title'] ?? '',
     body: message.data['body'] ?? '',
     date: DateTime.now(),
+    messageId: message.data['messageId'] ?? '',
   );
   DatabaseHelper().insertNotification(notification);
 
@@ -80,6 +85,45 @@ Future<void> backgroundHandler(RemoteMessage message) async {
   // print(message.notification!.title);
 }
 
+class FireBaseHelper {
+  static final FireBaseHelper _instance = FireBaseHelper._();
+  static FireBaseHelper get instance => _instance;
+  FireBaseHelper._();
+  Future<void> firebaseHelp() async {
+    FirebaseMessaging.instance.getInitialMessage();
+    //foreground state
+    FirebaseMessaging.onMessage.listen((event) async {
+      log(event.toString());
+      String? messageId = event.messageId;
+      log(messageId.toString());
+      bool exists = await DatabaseHelper().notificationExists(messageId!);
+      if (!exists) {
+        final notification = NotificationModel(
+          title: event.data['title'] ?? '',
+          body: event.data['body'] ?? '',
+          date: DateTime.now(),
+          messageId: messageId,
+        );
+        LocalNotificationService.showNotificationOnForegrouind(event);
+        DatabaseHelper().insertNotification(notification);
+      }
+    });
+    //background state
+    FirebaseMessaging.onMessageOpenedApp.listen((event) async {
+      String messageId = event.data['message_id'];
+      bool exists = await DatabaseHelper().notificationExists(messageId);
+      if (!exists) {
+        final notification = NotificationModel(
+          title: event.data['title'] ?? '',
+          body: event.data['body'] ?? '',
+          date: DateTime.now(),
+          messageId: messageId,
+        );
+        DatabaseHelper().insertNotification(notification);
+      }
+    });
+  }
+}
 
 //keytool -list -v \-alias androiddebugkey -keystore C:\Users\kumal\.android\debug.keystore
 

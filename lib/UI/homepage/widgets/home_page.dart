@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:garbage_master/map/screens/trucktracking.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +20,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late String username = '';
   List<Map<String, dynamic>> wardList = [];
+  List<Map<String, dynamic>> notificationList = [];
 
   @override
   void initState() {
@@ -31,7 +33,18 @@ class _HomePageState extends State<HomePage> {
         wardList = value
             .map((ward) => {"wardName": ward.wardName, "average": ward.average})
             .toList();
-        print(wardList);
+      });
+    });
+    DatabaseHelper().getNotifications().then((notifications) {
+      setState(() {
+        notificationList = notifications
+            .map((notification) => {
+                  "date": notification.date,
+                  "title": notification.title,
+                  "body": notification.body,
+                  "messageId": notification.messageId
+                })
+            .toList();
       });
     });
   }
@@ -62,6 +75,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   _header(context) {
+    int notificationCount = notificationList.length;
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -94,21 +108,25 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          IconButton(
-            style: const ButtonStyle(),
-            color: Colors.white,
-            icon: const Icon(
-              Icons.notifications_none_rounded,
-              size: 32,
+          Badge(
+            badgeContent: Text('$notificationCount'),
+            child: IconButton(
+              style: const ButtonStyle(),
+              color: Colors.white,
+              icon: const Icon(
+                Icons.notifications_none_rounded,
+                size: 45,
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        Notify(notificationList: notificationList),
+                  ),
+                );
+              },
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Notify(),
-                ),
-              );
-            },
           ),
         ],
       ),
@@ -176,23 +194,11 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => TrackTruck(wardList: wardList),
+                          builder: (context) => GarbageMap(wardList: wardList),
                         ),
                       );
                     },
                   ),
-                  // HomepageItemWidget(
-                  //   imgSrc: "assets/images/garbage-truck.png",
-                  //   title: "Track Garbage Truck",
-                  //   tapFunc: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) => TrackTruck(wardList: wardList),
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
                 ],
               ),
             ),
