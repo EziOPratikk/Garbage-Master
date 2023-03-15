@@ -61,8 +61,7 @@ class _GarbageMapState extends State<GarbageMap> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text('GARBAGE MAP'),
+        title: const Text('Garbage Map'),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: GoogleMap(
