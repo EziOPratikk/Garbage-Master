@@ -2,11 +2,19 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
+import 'package:mapbox_gl/mapbox_gl.dart';
 
+import '../keys.dart';
+import '../map/helpers/shared_prefs.dart';
 import './history_table.dart';
 import '../UI/homepage/widgets/recent_data.dart';
 
 class APIServices {
+  LatLng latlng = getLatLngFromSharedPrefs();
+  final String acessToken = MyKeys.mapBoxAccessToken;
+  final double START_LAT = 6.9271;
+  final double START_LNG = 79.8612;
+
   static String registerUserUrl =
       'http://192.168.1.70:85/ProjectAPI/RegisterUser';
 
@@ -113,17 +121,6 @@ class APIServices {
     return response;
   }
 
-  // static Future getCurses() async {
-  //   final response = await http.get(Uri.parse(course), headers: {
-  //     "X-Api-Key":
-  //         "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiNDY2IiwiZmlyc3RfbmFtZSI6IlN1ZGhpciIsImxhc3RfbmFtZSI6Ik1hbmFuZGhhciIsImVtYWlsIjoibWFuYW5kaGFyc3VkaGlyQGdtYWlsLmNvbSIsInJvbGUiOiJzdHVkZW50Iiwicm9sZV9pZCI6IjMiLCJ2YWxpZGl0eSI6MSwiaW1hZ2UiOiJodHRwczpcL1wvc3R1ZGl5cHJvamVjdC5jb21cL3VwbG9hZHNcL3VzZXJfaW1hZ2VcLzQ2Ni5qcGcifQ.aZML7hb9jVxbBdUX7jMWnNJHjL7vbX2uywVGrLhO20I"
-  //   });
-  //   List<Register> courseList = ((jsonDecode(response.body)["data"]) as List)
-  //       .map((e) => Register.fromMap(e))
-  //       .toList();
-  //   log((jsonDecode(response.body)["data"]).toString());
-  //   return response;
-  // }
   static Future<http.Response> currentUser(Map<String, dynamic> map) async {
     final response = await http.post(
       Uri.parse(currentUserUrl),

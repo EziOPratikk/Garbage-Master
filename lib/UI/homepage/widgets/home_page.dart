@@ -1,9 +1,11 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:garbage_master/map/screens/trucktracking.dart';
+
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../map/screens/WardMap.dart';
 import '../../../services/db_helper.dart';
 import './data_input_page.dart';
 import './waste_segregation.dart';
@@ -108,25 +110,22 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          Badge(
-            badgeContent: Text('$notificationCount'),
-            child: IconButton(
-              style: const ButtonStyle(),
-              color: Colors.white,
-              icon: const Icon(
-                Icons.notifications_none_rounded,
-                size: 45,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        Notify(notificationList: notificationList),
-                  ),
-                );
-              },
+          IconButton(
+            style: const ButtonStyle(),
+            color: Colors.white,
+            icon: const Icon(
+              Icons.notifications_none_rounded,
+              size: 45,
             ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      Notify(notificationList: notificationList),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -194,7 +193,19 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => GarbageMap(wardList: wardList),
+                          builder: (context) => GarbageMap(),
+                        ),
+                      );
+                    },
+                  ),
+                  HomepageItemWidget(
+                    imgSrc: "assets/images/view-map.png",
+                    title: "Track Garbage Truck",
+                    tapFunc: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => TrackTruck(),
                         ),
                       );
                     },

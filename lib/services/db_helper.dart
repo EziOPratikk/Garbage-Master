@@ -35,8 +35,8 @@ class DatabaseHelper {
 
   Future<void> insertWard(WardModel ward) async {
     final db = await getdb();
-    // log(ward.wardName);
-    // log(ward.average.toString());
+    log(ward.wardName);
+    log(ward.average.toString());
     await db.insert('wards', ward.toMap(),
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
@@ -92,5 +92,6 @@ class DatabaseHelper {
   Future<void> clearWard() async {
     final db = await getdb();
     await db.delete('wards');
+    await db.close();
   }
 }

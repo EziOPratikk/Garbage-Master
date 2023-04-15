@@ -44,8 +44,9 @@ class _GarbageMapState extends State<GarbageMap> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Garbage Map'),
+        title: const Text('GARBAGE MAP'),
         backgroundColor: Theme.of(context).primaryColor,
+        centerTitle: true,
       ),
       body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -157,12 +158,6 @@ class _GarbageMapState extends State<GarbageMap> {
               }
             },
           )),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          layerController.insertMarker(0);
-        },
-        child: const Icon(Icons.location_on),
-      ),
     );
   }
 }
