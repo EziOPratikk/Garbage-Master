@@ -199,8 +199,8 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                   HomepageItemWidget(
-                    imgSrc: "assets/images/view-map.png",
-                    title: "Track Garbage Truck",
+                    imgSrc: "assets/images/garbage-truck.png",
+                    title: "Garbage Truck Route",
                     tapFunc: () {
                       Navigator.push(
                         context,

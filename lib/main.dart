@@ -93,9 +93,8 @@ class FireBaseHelper {
     FirebaseMessaging.instance.getInitialMessage();
     //foreground state
     FirebaseMessaging.onMessage.listen((event) async {
-      log(event.toString());
       String? messageId = event.messageId;
-      log(messageId.toString());
+
       bool exists = await DatabaseHelper().notificationExists(messageId!);
       if (!exists) {
         final notification = NotificationModel(

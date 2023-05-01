@@ -12,17 +12,15 @@ class LocalNotificationService {
     notificationsPlugin.initialize(initializationSettings);
   }
 
-  static void showNotificationOnForegrouind(RemoteMessage message) {
-    notificationsPlugin.show(
-        DateTime.now().microsecond,
-        message.data['title'],
-        message.data['body'],
-        const NotificationDetails(
-            android: AndroidNotificationDetails(
-          "pushNotifications",
-          "pushNotificationChannel",
-          importance: Importance.max,
-          priority: Priority.high,
-        )));
+  static void showNotificationOnForegrouind(RemoteMessage message) async {
+    const NotificationDetails notification = NotificationDetails(
+        android: AndroidNotificationDetails(
+      "pushNotifications",
+      "pushNotificationChannel",
+      importance: Importance.max,
+      priority: Priority.high,
+    ));
+    await notificationsPlugin.show(DateTime.now().microsecond,
+        message.data['title'], message.data['body'], notification);
   }
 }

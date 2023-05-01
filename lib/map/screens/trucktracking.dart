@@ -1,13 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mapbox_gl/mapbox_gl.dart';
 
 import 'package:mapbox_polyline_points/mapbox_polyline_points.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:convert';
-import 'dart:math';
-import 'package:http/http.dart' as http;
 
 import '../../keys.dart';
+import '../../models/api.services.dart';
 import '../helpers/shared_prefs.dart';
 
 class TrackTruck extends StatefulWidget {
@@ -22,6 +22,8 @@ class _TrackTruckState extends State<TrackTruck> {
   late CameraPosition _initialPosition;
   late MapboxMapController mapController;
   List<LatLng> polylineCoordinates = [];
+  APIServices apiServices = APIServices();
+  @override
   void initState() {
     super.initState();
     _initialPosition = CameraPosition(
@@ -31,45 +33,14 @@ class _TrackTruckState extends State<TrackTruck> {
   }
 
   void onMapCreated(MapboxMapController controller) async {
-    this.mapController = controller;
-
-    // Create a LineString object that defines the route
-    final routeCoordinates = <LatLng>[
-      LatLng(27.751478, 85.298530),
-      LatLng(27.753064, 85.300568),
-      LatLng(27.751583, 85.302295),
-      LatLng(27.751478, 85.298530),
-    ];
-
-    // Add the LineString object to the map using a LineLayer
-    controller.addLine(
-      LineOptions(
-        geometry: routeCoordinates,
-        lineColor: "#FF0000",
-        lineWidth: 3.0,
-      ),
-    );
-
-    // Add markers for the start and end points of the route
-    controller.addSymbol(
-      SymbolOptions(
-        geometry: routeCoordinates.first,
-        iconImage: "airport-15",
-      ),
-    );
-    controller.addSymbol(
-      SymbolOptions(
-        geometry: routeCoordinates.last,
-        iconImage: "airport-15",
-      ),
-    );
+    mapController = controller;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Track Truck'),
+        title: const Text('TRUCK ROUTE'),
         backgroundColor: Theme.of(context).primaryColor,
         centerTitle: true,
       ),
@@ -84,35 +55,55 @@ class _TrackTruckState extends State<TrackTruck> {
             myLocationTrackingMode: MyLocationTrackingMode.TrackingGPS,
             minMaxZoomPreference: const MinMaxZoomPreference(10, 20),
             onStyleLoadedCallback: () async {
-              // Create a LineString object that defines the route
               final routeCoordinates = <LatLng>[];
 
-              MapboxpolylinePoints mapboxPolylinePoints =
-                  MapboxpolylinePoints();
-              MapboxPolylineResult result =
-                  await mapboxPolylinePoints.getRouteBetweenCoordinates(
-                MyKeys.mapBoxAccessToken,
-                PointLatLng(
-                    latitude: latlng.latitude, longitude: latlng.longitude),
-                PointLatLng(latitude: 27.7774731, longitude: 85.2445225),
-                TravelType.driving,
-              );
-              print(result.points);
-              List<LatLng> decodeEncodedPolyline(List<PointLatLng> encoded) {
-                List<LatLng> poly = [];
-                for (int i = 0; i < encoded.length; i++) {
-                  poly.add(LatLng(encoded[i].latitude, encoded[i].longitude));
-                }
-                return poly;
-              }
+              LatLng startCoordinates =
+                  LatLng(latlng.latitude, latlng.longitude);
+              LatLng endCoordinates = const LatLng(27.7774731, 85.2445225);
 
-              routeCoordinates.addAll(decodeEncodedPolyline(result.points[0]));
+              final aStarResult = await apiServices.getCoordinates(
+                  startCoordinates, endCoordinates);
+              final decoded = jsonDecode(aStarResult.body);
+
+              print(decoded);
+              List<LatLng> points = [];
+
+              final coordi = decoded['coordinates'];
+              print(coordi);
+              for (var i = 0; i < coordi.length; i++) {
+                var line = coordi[i];
+                var longitude = line[0];
+                var latitude = line[1];
+                var latLng = LatLng(latitude, longitude);
+                points.add(latLng);
+              }
+              // MapboxpolylinePoints mapboxPolylinePoints =
+              //     MapboxpolylinePoints();
+
+              // MapboxPolylineResult result =
+              //     await mapboxPolylinePoints.getRouteBetweenCoordinates(
+              //   MyKeys.mapBoxAccessToken,
+              //   PointLatLng(
+              //       latitude: latlng.latitude, longitude: latlng.longitude),
+              //   PointLatLng(latitude: 27.7774731, longitude: 85.2445225),
+              //   TravelType.driving,
+              // );
+              // print(result.points);
+              // List<LatLng> decodeEncodedPolyline(List<PointLatLng> encoded) {
+              //   List<LatLng> poly = [];
+              //   for (int i = 0; i < encoded.length; i++) {
+              //     poly.add(LatLng(encoded[i].latitude, encoded[i].longitude));
+              //   }
+              //   return poly;
+              // }
+
+              routeCoordinates.addAll(points);
 
               // Add the LineString object to the map using a LineLayer
               mapController.addLine(
                 LineOptions(
                   geometry: routeCoordinates,
-                  lineColor: "#FF0000",
+                  lineColor: "#5a9747",
                   lineWidth: 3.0,
                 ),
               );
@@ -121,15 +112,26 @@ class _TrackTruckState extends State<TrackTruck> {
               mapController.addSymbol(
                 SymbolOptions(
                   geometry: routeCoordinates.first,
-                  iconImage: "airport-15",
+                  iconImage: "aiport-15",
                 ),
               );
-              mapController.addSymbol(
-                SymbolOptions(
-                  geometry: routeCoordinates.last,
-                  iconImage: "airport-15",
-                ),
-              );
+
+              void addMarker(
+                  MapboxMapController controller, LatLng latLng) async {
+                var byteData =
+                    await rootBundle.load("assets/images/garbage.png");
+                var markerImage = byteData.buffer.asUint8List();
+
+                controller.addImage('marker', markerImage);
+
+                await controller.addSymbol(
+                  SymbolOptions(
+                    iconSize: 0.3,
+                    iconImage: "marker",
+                    geometry: routeCoordinates.last,
+                  ),
+                );
+              }
             },
           ),
         ),

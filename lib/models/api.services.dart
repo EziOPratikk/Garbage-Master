@@ -4,17 +4,10 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'package:mapbox_gl/mapbox_gl.dart';
 
-import '../keys.dart';
-import '../map/helpers/shared_prefs.dart';
 import './history_table.dart';
 import '../UI/homepage/widgets/recent_data.dart';
 
 class APIServices {
-  LatLng latlng = getLatLngFromSharedPrefs();
-  final String acessToken = MyKeys.mapBoxAccessToken;
-  final double START_LAT = 6.9271;
-  final double START_LNG = 79.8612;
-
   static String registerUserUrl =
       'http://192.168.1.70:85/ProjectAPI/RegisterUser';
 
@@ -188,6 +181,23 @@ class APIServices {
       return jsonResponse;
     } else {
       throw Exception('Failed to load wards');
+    }
+  }
+
+  Future<http.Response> getCoordinates(
+      LatLng startCoord, LatLng endCoord) async {
+    const String apiUrl = "http://192.168.1.70:8000";
+    final response = await http.post(Uri.parse(apiUrl),
+        body: jsonEncode({
+          "start_coord": [startCoord.latitude, startCoord.longitude],
+          "end_coord": [endCoord.latitude, endCoord.longitude],
+        }),
+        headers: {"Content-Type": "application/json"});
+
+    if (response.statusCode == 200) {
+      return response;
+    } else {
+      throw Exception("Failed to get coordinates from API");
     }
   }
 }
