@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:http/http.dart' as http;
 import 'package:mapbox_gl/mapbox_gl.dart';
-
 import './history_table.dart';
 import '../UI/homepage/widgets/recent_data.dart';
 
@@ -56,10 +54,6 @@ class APIServices {
       body: jsonEncode(map),
       headers: {'Content-Type': 'application/json', "accept": "*/*"},
     );
-    // log(map.toString());
-    // log(response.toString());
-    // log(response.body);
-    // log(response.body.toString());
     return response;
   }
 

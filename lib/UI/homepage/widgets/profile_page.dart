@@ -172,12 +172,13 @@ class _ProfilePageState extends State<ProfilePage> {
                               await unsubscribeFromTopic();
                               DatabaseHelper().clearNotifications();
                               DatabaseHelper().clearWard();
+
                               LocalNotificationService.notificationsPlugin
                                   .cancelAll();
                               SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
                               await prefs.remove('username');
-                              await FirebaseMessaging.instance.deleteToken();
+                              //await FirebaseMessaging.instance.deleteToken();
                               progressIndicator();
                               Future.delayed(
                                 const Duration(seconds: 2),

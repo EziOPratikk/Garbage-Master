@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:garbage_master/map/screens/trucktracking.dart';
 
@@ -6,19 +7,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../map/screens/WardMap.dart';
 import '../../../services/db_helper.dart';
-import './data_input_page.dart';
-import './waste_segregation.dart';
-import './recent_data.dart';
 import 'notification.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class DhomePage extends StatefulWidget {
+  const DhomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<DhomePage> createState() => _DhomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _DhomePageState extends State<DhomePage> {
   late String username = '';
   List<Map<String, dynamic>> wardList = [];
   List<Map<String, dynamic>> notificationList = [];
@@ -149,65 +147,29 @@ class _HomePageState extends State<HomePage> {
                 mainAxisSpacing: 25,
                 children: [
                   HomepageItemWidget(
-                    imgSrc: "assets/images/trash-bin.png",
-                    title: "Input Garbage Data",
-                    tapFunc: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => DataInputPage(),
-                        ),
-                      );
-                    },
-                  ),
-                  HomepageItemWidget(
-                    imgSrc: "assets/images/recycle-bin.png",
-                    title: "Segregation Guideline",
-                    tapFunc: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const WasteSegregation(),
-                        ),
-                      );
-                    },
-                  ),
-                  HomepageItemWidget(
-                    imgSrc: "assets/images/table.png",
-                    title: "History Table",
-                    tapFunc: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const RecentData(),
-                        ),
-                      );
-                    },
-                  ),
-                  HomepageItemWidget(
                     imgSrc: "assets/images/view-map.png",
                     title: "View Map",
                     tapFunc: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => GarbageMap(),
+                          builder: (context) => const GarbageMap(),
                         ),
                       );
                     },
                   ),
-                  // HomepageItemWidget(
-                  //   imgSrc: "assets/images/garbage-truck.png",
-                  //   title: "Garbage Truck Route",
-                  //   tapFunc: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) => TrackTruck(),
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
+                  HomepageItemWidget(
+                    imgSrc: "assets/images/garbage-truck.png",
+                    title: "Garbage Truck Route",
+                    tapFunc: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const TrackTruck(),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
