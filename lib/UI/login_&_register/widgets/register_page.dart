@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../../../models/ward.dart';
 import './login_page.dart';
 import '../../../models/api.services.dart';
-import './terms_&_condtions.dart';
+import 'terms_and_conditions.dart';
 import '../../progress_indicator_widget.dart';
 import '../../snackbar_widget.dart';
 
@@ -111,8 +111,8 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   _header(context) {
-    return Column(
-      children: const [
+    return const Column(
+      children: [
         Text(
           'Registration',
           style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -259,8 +259,7 @@ class _RegisterPageState extends State<RegisterPage> {
               if (value == null || value.isEmpty) {
                 return 'Required';
               }
-              if (!RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
-                  .hasMatch(value)) {
+              if (!RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$').hasMatch(value)) {
                 return 'Invalid Email Address';
               }
               return null;
@@ -349,10 +348,7 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const TermsConditions()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const TermsConditions()));
                 },
                 child: Text.rich(
                   TextSpan(
@@ -363,10 +359,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       const TextSpan(text: 'I agree to the '),
                       TextSpan(
                         text: 'Terms & Conditions',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            decoration: TextDecoration.underline,
-                            color: Theme.of(context).primaryColor),
+                        style: TextStyle(fontWeight: FontWeight.bold, decoration: TextDecoration.underline, color: Theme.of(context).primaryColor),
                       ),
                     ],
                   ),
@@ -392,8 +385,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                       if (response.statusCode == 200) {
                         Navigator.of(context).pop();
-                        if ((jsonDecode(response.body)["result"]).toString() ==
-                            'UserRegistered') {
+                        if ((jsonDecode(response.body)["result"]).toString() == 'UserRegistered') {
                           ScaffoldMessenger.of(context).showSnackBar(
                             showSnackBarWidget(
                               'Register Successfull',
@@ -406,29 +398,25 @@ class _RegisterPageState extends State<RegisterPage> {
                               builder: (context) => LoginPage(),
                             ),
                           );
-                        } else if ((jsonDecode(response.body)["result"])
-                                .toString() ==
-                            'UsernameExists') {
+                        } else if ((jsonDecode(response.body)["result"]).toString() == 'UsernameExists') {
                           ScaffoldMessenger.of(context).showSnackBar(
                             showSnackBarWidget(
                               'Username is already taken',
-                              Theme.of(context).errorColor,
+                              Theme.of(context).colorScheme.error,
                             ),
                           );
-                        } else if ((jsonDecode(response.body)["result"])
-                                .toString() ==
-                            'EmailExists') {
+                        } else if ((jsonDecode(response.body)["result"]).toString() == 'EmailExists') {
                           ScaffoldMessenger.of(context).showSnackBar(
                             showSnackBarWidget(
                               'Email is already registered',
-                              Theme.of(context).errorColor,
+                              Theme.of(context).colorScheme.error,
                             ),
                           );
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             showSnackBarWidget(
                               'Register Failed',
-                              Theme.of(context).errorColor,
+                              Theme.of(context).colorScheme.error,
                             ),
                           );
                         }
@@ -436,22 +424,20 @@ class _RegisterPageState extends State<RegisterPage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           showSnackBarWidget(
                             'Connection error',
-                            Theme.of(context).errorColor,
+                            Theme.of(context).colorScheme.error,
                           ),
                         );
                       }
                     }
                   },
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Theme.of(context).primaryColor),
-                    shape: MaterialStateProperty.all(
+                    backgroundColor: WidgetStateProperty.all(Theme.of(context).primaryColor),
+                    shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ),
-                    padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(vertical: 15)),
+                    padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 15)),
                   ),
                   child: const Text(
                     'Register',
@@ -461,13 +447,12 @@ class _RegisterPageState extends State<RegisterPage> {
               : ElevatedButton(
                   onPressed: null,
                   style: ButtonStyle(
-                    shape: MaterialStateProperty.all(
+                    shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ),
-                    padding: MaterialStateProperty.all(
-                        const EdgeInsets.symmetric(vertical: 15)),
+                    padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 15)),
                   ),
                   child: const Text(
                     'Register',

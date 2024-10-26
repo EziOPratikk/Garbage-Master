@@ -1,11 +1,10 @@
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:garbage_master/map/screens/trucktracking.dart';
 
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../map/screens/WardMap.dart';
+import '../../../map/screens/ward_map.dart';
 import '../../../services/db_helper.dart';
 import 'notification.dart';
 

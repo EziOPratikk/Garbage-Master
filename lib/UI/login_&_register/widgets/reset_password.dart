@@ -122,14 +122,14 @@ class ResetPassword extends StatelessWidget {
                 const SizedBox(height: 30),
                 ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
+                    backgroundColor: WidgetStateProperty.all(
                         Theme.of(context).primaryColor),
-                    padding: MaterialStateProperty.all(
+                    padding: WidgetStateProperty.all(
                       const EdgeInsets.symmetric(
                         vertical: 15,
                       ),
                     ),
-                    shape: MaterialStateProperty.all(
+                    shape: WidgetStateProperty.all(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
@@ -164,7 +164,7 @@ class ResetPassword extends StatelessWidget {
                           ScaffoldMessenger.of(context).showSnackBar(
                             showSnackBarWidget(
                               'Password reset failed',
-                              Theme.of(context).errorColor,
+                              Theme.of(context).colorScheme.error,
                             ),
                           );
                         }
@@ -172,7 +172,7 @@ class ResetPassword extends StatelessWidget {
                         ScaffoldMessenger.of(context).showSnackBar(
                           showSnackBarWidget(
                             'Connection Error',
-                            Theme.of(context).errorColor,
+                            Theme.of(context).colorScheme.error,
                           ),
                         );
                       }

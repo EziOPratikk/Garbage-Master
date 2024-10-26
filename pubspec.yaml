@@ -50,6 +50,7 @@ dependencies:
   path_provider: ^2.0.13
   mapbox_api: ^1.0.0
   mapbox_polyline_points: ^0.0.4
+  path:
   
 
 

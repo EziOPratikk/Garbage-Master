@@ -150,11 +150,11 @@ class DataInputPage extends StatelessWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
+                    backgroundColor: WidgetStateProperty.all(
                         Theme.of(context).primaryColor),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                    shape: WidgetStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10))),
-                    padding: MaterialStateProperty.all(
+                    padding: WidgetStateProperty.all(
                         const EdgeInsets.symmetric(
                             vertical: 15, horizontal: 30)),
                   ),
@@ -166,7 +166,7 @@ class DataInputPage extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         showSnackBarWidget(
                           'All fields cannot be empty',
-                          Theme.of(context).errorColor,
+                         Theme.of(context).colorScheme.error,
                         ),
                       );
                       return;
@@ -212,7 +212,7 @@ class DataInputPage extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         showSnackBarWidget(
                           'Connection Error',
-                          Theme.of(context).errorColor,
+                         Theme.of(context).colorScheme.error,
                         ),
                       );
                     }

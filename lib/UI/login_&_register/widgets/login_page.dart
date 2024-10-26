@@ -161,7 +161,7 @@ class LoginPage extends StatelessWidget {
               TextButton(
                 style: ButtonStyle(
                   foregroundColor:
-                      MaterialStateProperty.all(Theme.of(context).primaryColor),
+                      WidgetStateProperty.all(Theme.of(context).primaryColor),
                 ),
                 onPressed: () {
                   Navigator.push(
@@ -214,7 +214,7 @@ class LoginPage extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       showSnackBarWidget(
                         'Username doesn\'t exist',
-                        Theme.of(context).errorColor,
+                        Theme.of(context).colorScheme.error,
                       ),
                     );
                   } else if ((jsonDecode(response.body)["result"]).toString() ==
@@ -222,14 +222,14 @@ class LoginPage extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       showSnackBarWidget(
                         'Invalid Password',
-                        Theme.of(context).errorColor,
+                        Theme.of(context).colorScheme.error,
                       ),
                     );
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       showSnackBarWidget(
                         'Log in failed',
-                        Theme.of(context).errorColor,
+                      Theme.of(context).colorScheme.error,
                       ),
                     );
                   }
@@ -238,7 +238,7 @@ class LoginPage extends StatelessWidget {
                   ScaffoldMessenger.of(context).showSnackBar(
                     showSnackBarWidget(
                       'Connection error',
-                      Theme.of(context).errorColor,
+                     Theme.of(context).colorScheme.error,
                     ),
                   );
                 }
@@ -246,10 +246,10 @@ class LoginPage extends StatelessWidget {
             },
             style: ButtonStyle(
               backgroundColor:
-                  MaterialStateProperty.all(Theme.of(context).primaryColor),
-              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  WidgetStateProperty.all(Theme.of(context).primaryColor),
+              shape: WidgetStateProperty.all(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15))),
-              padding: MaterialStateProperty.all(
+              padding: WidgetStateProperty.all(
                   const EdgeInsets.symmetric(vertical: 15)),
             ),
             child: const Text(
@@ -262,7 +262,7 @@ class LoginPage extends StatelessWidget {
               const Text('Don\'t have an account?'),
               TextButton(
                   style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all(
+                    foregroundColor: WidgetStateProperty.all(
                         Theme.of(context).primaryColor),
                   ),
                   onPressed: () {

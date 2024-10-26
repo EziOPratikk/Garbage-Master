@@ -131,7 +131,7 @@ class ForgotPassword extends StatelessWidget {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   showSnackBarWidget(
                                     'Email not found',
-                                    Theme.of(context).errorColor,
+                                   Theme.of(context).colorScheme.error,
                                   ),
                                 );
 
@@ -153,20 +153,20 @@ class ForgotPassword extends StatelessWidget {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 showSnackBarWidget(
                                   'Connection error',
-                                  Theme.of(context).errorColor,
+                                  Theme.of(context).colorScheme.error,
                                 ),
                               );
                             }
                           }
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
+                          backgroundColor: WidgetStateProperty.all(
                               Theme.of(context).primaryColor),
-                          padding: MaterialStateProperty.all(
+                          padding: WidgetStateProperty.all(
                               const EdgeInsets.symmetric(
                             vertical: 15,
                           )),
-                          shape: MaterialStateProperty.all(
+                          shape: WidgetStateProperty.all(
                             RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),

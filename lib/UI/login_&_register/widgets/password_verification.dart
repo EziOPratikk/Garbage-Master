@@ -77,11 +77,11 @@ class PasswordVerification extends StatelessWidget {
               ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all(Theme.of(context).primaryColor),
-                  padding: MaterialStateProperty.all(const EdgeInsets.symmetric(
+                      WidgetStateProperty.all(Theme.of(context).primaryColor),
+                  padding: WidgetStateProperty.all(const EdgeInsets.symmetric(
                     vertical: 15,
                   )),
-                  shape: MaterialStateProperty.all(
+                  shape: WidgetStateProperty.all(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
@@ -103,7 +103,7 @@ class PasswordVerification extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         showSnackBarWidget(
                           'Invalid Pin',
-                          Theme.of(context).errorColor,
+                          Theme.of(context).colorScheme.error,
                         ),
                       );
                     }

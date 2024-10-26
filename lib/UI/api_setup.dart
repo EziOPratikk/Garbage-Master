@@ -7,9 +7,9 @@ class ApiSetup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("API SETUP"),
+        title: const Text("API SETUP"),
       ),
-      body: Column(
+      body: const Column(
         children: [],
       ),
     );

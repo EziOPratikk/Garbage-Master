@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../services/localNotify.dart';
+import '../../../services/local_notify.dart';
 import '../widgets/main_screen.dart';
 import '../../../models/api.services.dart';
 import '../../login_&_register/widgets/login_page.dart';
@@ -28,8 +28,7 @@ Future<Users> getProfileData() async {
   var puser = await SharedPreferences.getInstance();
   puser.getString('username');
   final currentUser = await APIServices.currentUser({
-    'username': await SharedPreferences.getInstance()
-        .then((value) => value.getString('username') ?? 'no username found'),
+    'username': await SharedPreferences.getInstance().then((value) => value.getString('username') ?? 'no username found'),
   });
   var decode = jsonDecode(currentUser.body);
   Map<String, dynamic> userMap = decode;
@@ -129,7 +128,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           TextButton(
                             style: ButtonStyle(
-                              foregroundColor: MaterialStateProperty.all(
+                              foregroundColor: WidgetStateProperty.all(
                                 Theme.of(context).primaryColor,
                               ),
                             ),
@@ -173,10 +172,8 @@ class _ProfilePageState extends State<ProfilePage> {
                               DatabaseHelper().clearNotifications();
                               DatabaseHelper().clearWard();
 
-                              LocalNotificationService.notificationsPlugin
-                                  .cancelAll();
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
+                              LocalNotificationService.notificationsPlugin.cancelAll();
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
                               await prefs.remove('username');
                               //await FirebaseMessaging.instance.deleteToken();
                               progressIndicator();
@@ -186,9 +183,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     showSnackBarWidget(
                                       'Logged out',
-                                      Theme.of(context)
-                                          .snackBarTheme
-                                          .backgroundColor,
+                                      Theme.of(context).snackBarTheme.backgroundColor,
                                     ),
                                   );
 
@@ -203,7 +198,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               );
                             },
                             style: ButtonStyle(
-                              foregroundColor: MaterialStateProperty.all(
+                              foregroundColor: WidgetStateProperty.all(
                                 Colors.red,
                               ),
                             ),
@@ -240,8 +235,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               height: MediaQuery.of(context).size.width * 0.35,
                               width: MediaQuery.of(context).size.width * 0.35,
                               clipBehavior: Clip.hardEdge,
-                              decoration:
-                                  const BoxDecoration(shape: BoxShape.circle),
+                              decoration: const BoxDecoration(shape: BoxShape.circle),
                               child: _imgFile == null
                                   ? Image.memory(
                                       base64Decodeimg,
@@ -249,8 +243,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     )
                                   : isImageIconPressed == true
                                       ? Image(
-                                          image:
-                                              FileImage(File(_imgFile!.path)),
+                                          image: FileImage(File(_imgFile!.path)),
                                           fit: BoxFit.cover,
                                         )
                                       : const Image(
@@ -272,21 +265,18 @@ class _ProfilePageState extends State<ProfilePage> {
                                       color: Theme.of(context).primaryColor,
                                       onPressed: () {
                                         setState(() {
-                                          isImageIconPressed =
-                                              !isImageIconPressed;
+                                          isImageIconPressed = !isImageIconPressed;
                                         });
                                         pickImage(ImageSource.gallery);
                                       },
                                     ),
                                     SizedBox(
-                                      width: MediaQuery.of(context).size.width *
-                                          0.025,
+                                      width: MediaQuery.of(context).size.width * 0.025,
                                     ),
                                   ],
                                 )
                               : SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.15,
+                                  width: MediaQuery.of(context).size.width * 0.15,
                                 ),
                         ],
                       ),
@@ -487,36 +477,27 @@ class _ProfilePageState extends State<ProfilePage> {
                         ? Align(
                             child: ElevatedButton(
                               style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Theme.of(context).primaryColor),
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(10))),
-                                padding: MaterialStateProperty.all(
-                                    const EdgeInsets.symmetric(
-                                        vertical: 15, horizontal: 30)),
+                                backgroundColor: WidgetStateProperty.all(Theme.of(context).primaryColor),
+                                shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+                                padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 15, horizontal: 30)),
                               ),
                               onPressed: () async {
-                                if (firstNameController.text.isEmpty ||
-                                    lastNameController.text.isEmpty ||
-                                    wardController.text.isEmpty) {
+                                if (firstNameController.text.isEmpty || lastNameController.text.isEmpty || wardController.text.isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     showSnackBarWidget(
                                       'Required fields cannot be empty',
-                                      Theme.of(context).errorColor,
+                                      Theme.of(context).colorScheme.error,
                                     ),
                                   );
                                   return;
                                 }
 
                                 if (phoneNumberController.text.isNotEmpty) {
-                                  if (!RegExp(r'^98\d{8}$')
-                                      .hasMatch(phoneNumberController.text)) {
+                                  if (!RegExp(r'^98\d{8}$').hasMatch(phoneNumberController.text)) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       showSnackBarWidget(
                                         'Invalid mobile number',
-                                        Theme.of(context).errorColor,
+                                        Theme.of(context).colorScheme.error,
                                       ),
                                     );
                                     return;
@@ -524,13 +505,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 }
 
                                 progressIndicator();
-                                final String userName =
-                                    await SharedPreferences.getInstance().then(
-                                        (value) =>
-                                            value.getString('username') ??
-                                            'no username found');
-                                final response =
-                                    await APIServices.updateProfile({
+                                final String userName = await SharedPreferences.getInstance().then((value) => value.getString('username') ?? 'no username found');
+                                final response = await APIServices.updateProfile({
                                   "fName": firstNameController.text.trim(),
                                   "mName": middleNameController.text.trim(),
                                   "lName": lastNameController.text.trim(),
@@ -540,24 +516,17 @@ class _ProfilePageState extends State<ProfilePage> {
                                 });
 
                                 if (_imgFile != null) {
-                                  final imgSizeInBytes =
-                                      (await File(_imgFile!.path).readAsBytes())
-                                          .lengthInBytes;
+                                  final imgSizeInBytes = (await File(_imgFile!.path).readAsBytes()).lengthInBytes;
                                   final imgSizeInKB = imgSizeInBytes / 1024;
                                   if (imgSizeInKB <= 100) {
-                                    final imgAsBytes =
-                                        await File(_imgFile!.path)
-                                            .readAsBytes();
+                                    final imgAsBytes = await File(_imgFile!.path).readAsBytes();
 
-                                    final String image =
-                                        base64Encode(imgAsBytes);
+                                    final String image = base64Encode(imgAsBytes);
                                     log(image.toString());
-                                    final insertImageResponse =
-                                        await APIServices.insertImage(
+                                    final insertImageResponse = await APIServices.insertImage(
                                       {
                                         "name": userName.trim(),
-                                        "image":
-                                            "data:image/png;base64,${base64Encode(imgAsBytes)}",
+                                        "image": "data:image/png;base64,${base64Encode(imgAsBytes)}",
                                       },
                                     );
                                     log(insertImageResponse.body.toString());
@@ -565,7 +534,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       showSnackBarWidget(
                                         'Image size must be less than 100 kb',
-                                        Theme.of(context).errorColor,
+                                        Theme.of(context).colorScheme.error,
                                       ),
                                     );
                                     Navigator.of(context).pop();
@@ -574,33 +543,26 @@ class _ProfilePageState extends State<ProfilePage> {
                                 }
 
                                 if (response.statusCode == 200) {
-                                  if ((jsonDecode(response.body)["result"])
-                                          .toString() ==
-                                      'Table Updated') {
+                                  if ((jsonDecode(response.body)["result"]).toString() == 'Table Updated') {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       showSnackBarWidget(
                                         'Profile Updated',
-                                        Theme.of(context)
-                                            .snackBarTheme
-                                            .backgroundColor,
+                                        Theme.of(context).snackBarTheme.backgroundColor,
                                       ),
                                     );
                                     Navigator.pop(context, true);
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) =>
-                                            const MainScreen(),
+                                        builder: (context) => const MainScreen(),
                                       ),
                                     );
                                   }
-                                  if ((jsonDecode(response.body)["result"])
-                                          .toString() ==
-                                      'Field cannot be empty') {
+                                  if ((jsonDecode(response.body)["result"]).toString() == 'Field cannot be empty') {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       showSnackBarWidget(
                                         'Please provide the required field',
-                                        Theme.of(context).errorColor,
+                                        Theme.of(context).colorScheme.error,
                                       ),
                                     );
                                   }

@@ -42,9 +42,9 @@ class WasteSegregation extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 30),
-                Column(
+                const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
+                  children: [
                     Text(
                       'What is Waste Segregation ?',
                       style: TextStyle(

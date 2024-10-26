@@ -62,8 +62,8 @@ class ContactPage extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          Row(
-            children: const [
+          const Row(
+            children: [
               Expanded(
                 child: Text(
                   'Right now, we do not have any designated office built for this project, we have provided address, phone number below that can be used only during emergency. Otherwise you can leave us a message via email or the message section below.',
@@ -120,8 +120,7 @@ class ContactPage extends StatelessWidget {
               if (value == null || value.isEmpty) {
                 return 'Required';
               }
-              if (!RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$')
-                  .hasMatch(value)) {
+              if (!RegExp(r'^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$').hasMatch(value)) {
                 return 'Invalid Email Address';
               }
               return null;
@@ -130,29 +129,27 @@ class ContactPage extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           TextFormField(
-            decoration: InputDecoration(
-              hintText: "Subject",
-              border: outlineInputBorder,
-              fillColor: textFieldFillColor,
-              filled: true,
-              prefixIcon: const Icon(Icons.subject_sharp),
-            ),
-            controller: subjectController,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Required';
-              }
-              return null;
-            }
-          ),
+              decoration: InputDecoration(
+                hintText: "Subject",
+                border: outlineInputBorder,
+                fillColor: textFieldFillColor,
+                filled: true,
+                prefixIcon: const Icon(Icons.subject_sharp),
+              ),
+              controller: subjectController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Required';
+                }
+                return null;
+              }),
           const SizedBox(height: 20),
           TextFormField(
             textAlign: TextAlign.start,
             maxLines: null,
             decoration: InputDecoration(
               hintText: "Message",
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 50, horizontal: 10),
+              contentPadding: const EdgeInsets.symmetric(vertical: 50, horizontal: 10),
               border: outlineInputBorder,
               fillColor: textFieldFillColor,
               filled: true,
@@ -171,52 +168,28 @@ class ContactPage extends StatelessWidget {
           Align(
             child: ElevatedButton(
               style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all(Theme.of(context).primaryColor),
-                shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10))),
-                padding: MaterialStateProperty.all(
-                    const EdgeInsets.symmetric(vertical: 15, horizontal: 30)),
+                backgroundColor: WidgetStateProperty.all(Theme.of(context).primaryColor),
+                shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
+                padding: WidgetStateProperty.all(const EdgeInsets.symmetric(vertical: 15, horizontal: 30)),
               ),
               onPressed: () async {
                 if (_formKey.currentState!.validate()) {
-                  final response = await APIServices.contactUs({
-                    "name": nameController.text.trim(),
-                    "email": emailController.text.trim(),
-                    "subject": subjectController.text.trim(),
-                    "message": messageController.text.trim()
-                  });
+                  final response = await APIServices.contactUs({"name": nameController.text.trim(), "email": emailController.text.trim(), "subject": subjectController.text.trim(), "message": messageController.text.trim()});
                   if (response.statusCode == 200) {
-                    if ((jsonDecode(response.body)["result"]).toString() ==
-                        'Submitted') {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          behavior: SnackBarBehavior.floating,
-                          margin: const EdgeInsets.all(15),
-                          elevation: 5,
-                          content: const Text('Submitted'),
-                          backgroundColor:
-                              Theme.of(context).snackBarTheme.backgroundColor));
+                    if ((jsonDecode(response.body)["result"]).toString() == 'Submitted') {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(behavior: SnackBarBehavior.floating, margin: const EdgeInsets.all(15), elevation: 5, content: const Text('Submitted'), backgroundColor: Theme.of(context).snackBarTheme.backgroundColor));
                       nameController.text = '';
                       emailController.text = '';
                       subjectController.text = '';
                       messageController.text = '';
-                    } else if ((jsonDecode(response.body)["result"])
-                            .toString() ==
-                        'Not Submitted') {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          behavior: SnackBarBehavior.floating,
-                          margin: const EdgeInsets.all(15),
-                          elevation: 5,
-                          content: const Text('Not Submitted'),
-                          backgroundColor: Theme.of(context).errorColor));
+                    } else if ((jsonDecode(response.body)["result"]).toString() == 'Not Submitted') {
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(behavior: SnackBarBehavior.floating, margin: const EdgeInsets.all(15), elevation: 5, content: const Text('Not Submitted'), backgroundColor: Theme.of(context).colorScheme.error));
                     }
                   } else {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        behavior: SnackBarBehavior.floating,
-                        margin: const EdgeInsets.all(15),
-                        elevation: 5,
-                        content: const Text('Connection error'),
-                        backgroundColor: Theme.of(context).errorColor));
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(behavior: SnackBarBehavior.floating, margin: const EdgeInsets.all(15), elevation: 5, content: const Text('Connection error'), backgroundColor: Theme.of(context).colorScheme.error));
                   }
                 }
               },
@@ -233,9 +206,9 @@ class ContactPage extends StatelessWidget {
   }
 
   _footer(context) {
-    return Row(
+    return const Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: const [
+      children: [
         CircleItemWidget(
           icon: Icon(Icons.location_on_outlined),
           title: 'Location',

@@ -1,18 +1,18 @@
 class Login {
-  late String Username;
-  late String Password;
+  late String userName;
+  late String password;
 
-  Login(this.Username, this.Password);
+  Login(this.userName, this.password);
 
   Login.fromMap(Map<String, dynamic> map) {
-    Username = map["username"];
-    Password = map["password"];
+    userName = map["username"];
+    password = map["password"];
   }
 
   Map<String, dynamic> toMap() {
     return {
-      "username": Username,
-      "password": Password,
+      "userName": userName,
+      "password": password,
     };
   }
 }

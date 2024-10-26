@@ -13,9 +13,9 @@ class TermsConditions extends StatelessWidget {
           height: 60,
           width: double.infinity,
           color: Theme.of(context).primaryColor,
-          child: Column(
+          child: const Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: const [
+            children: [
               Center(
                 child: Text(
                   'Garbage Master',
@@ -46,10 +46,7 @@ class TermsConditions extends StatelessWidget {
                   color: Theme.of(context).primaryColor,
                   icon: const Icon(Icons.arrow_back_ios_new_rounded),
                   onPressed: () {
-                    Navigator.pop(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const RegisterPage()));
+                    Navigator.pop(context, MaterialPageRoute(builder: (context) => const RegisterPage()));
                   },
                 ),
                 const SizedBox(width: 40),

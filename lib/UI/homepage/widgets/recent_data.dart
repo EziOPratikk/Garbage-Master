@@ -23,10 +23,8 @@ class RecentData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (historyTable != null) {
-      historyTable.clear();
-    }
-
+    historyTable.clear();
+  
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
